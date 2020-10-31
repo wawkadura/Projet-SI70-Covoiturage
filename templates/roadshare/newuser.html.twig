@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+    <div class="example-wrapper">
+        <h1>Je crée mon compte:</h1><br><br>
+        <form method="post" action="">
+            <label>
+                Nom : <input type="text" name="nom" />
+            </label><br>
+            <label>
+                Prénom : <input type="text" name="prenom" />
+            </label><br/>
+            <label>
+                Date de naissance : <input type="date" name="date de naissance" />
+            </label><br>
+            <label>
+                Teléphone : <input type="" name="telephone" />
+            </label><br/>
+            <label>
+                Email : <input type="email" name="email" />
+            </label><br/>
+            <label>
+                Mot de passe : <input type="text" name="password" />
+            </label><br/><br/>
+
+            <label>
+              Valider :  <input type="submit" name="valide"/>
+            </label>
+
+        </form>
+
+    </div>
+{% endblock %}
