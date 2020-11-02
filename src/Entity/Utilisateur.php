@@ -6,6 +6,7 @@ use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ *   Utilisateur
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
  */
 class Utilisateur
@@ -17,32 +18,24 @@ class Utilisateur
      */
     private $id;
     /**
-     * @ORM\Column(type="String", lenght=50)
+     * @ORM\Column(type="String")
      */
     private $nom;
 
     /**
-     * @ORM\Column(type="String", lenght=50)
+     * @ORM\Column(type="String")
      */
     private $prenom;
 
     /**
-     * @ORM\Column(type="datetime", lenght=50)
+     * @ORM\Column(type="date")
      */
     private $datedenaissance;
     /**
-     * @ORM\Column(type="int")
+     * @ORM\Column(type="String")
      */
     private $telephone;
-    /**
-     * @ORM\Column(type="String", lenght=100)
-     */
-    private $email;
 
-    /**
-     * @ORM\Column(type="String", lenght=100)
-     */
-    private $password;
 
     public function getId(): int
     {
@@ -57,7 +50,7 @@ class Utilisateur
     {
         return $this->nom;
     }
-    public function setNom($nom): string
+    public function setNom($nom): void
     {
         $this->nom = $nom;
     }
@@ -66,7 +59,7 @@ class Utilisateur
     {
         return $this->prenom;
     }
-    public function setPrenom($prenom): string
+    public function setPrenom($prenom): void
     {
         $this->prenom = $prenom;
     }
@@ -80,52 +73,15 @@ class Utilisateur
         $this->datedenaissance = $datedenaissance;
     }
 
-    /**
-     * @return mixed
-     */
     public function getTelephone()
     {
         return $this->telephone;
     }
 
-    /**
-     * @param mixed $telephone
-     */
-    public function setTelephone($telephone): int
+    public function setTelephone($telephone): void
     {
         $this->telephone = $telephone;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param mixed $email
-     */
-    public function setEmail($email): string
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param mixed $password
-     */
-    public function setPassword($password): string
-    {
-        $this->password = $password;
-    }
 
 }

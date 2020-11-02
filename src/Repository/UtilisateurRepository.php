@@ -5,6 +5,9 @@ namespace App\Repository;
 use App\Entity\Utilisateur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Form\FormTypeInterface;
+
 
 /**
  * @method Utilisateur|null find($id, $lockMode = null, $lockVersion = null)
@@ -18,6 +21,7 @@ class UtilisateurRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Utilisateur::class);
     }
+
 
     // /**
     //  * @return Utilisateur[] Returns an array of Utilisateur objects
@@ -47,4 +51,6 @@ class UtilisateurRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
 }
