@@ -64,7 +64,7 @@ class RoadshareController extends AbstractController
       $form = $this->createForm(UtilisateurType::class,$utilisateur);
       $form->handleRequest($manager);//symfony va faire le lien entre les données des champs du formulaire et la variable $utilisateur
 
-       $form1=$this->cretaeFrorm(CompteType::class,$compte);
+       $form1=$this->createForm(CompteType::class,$compte);
        $form1->handleRequest($manager);
 
        if($form->isSubmitted() && $form1->isSubmitted())
