@@ -75,7 +75,7 @@ class Compte
 
     public function getUsername()
     {
-
+        // TODO: Implement getUsername() method.
     }
 
     public function eraseCredentials()
