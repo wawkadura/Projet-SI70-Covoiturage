@@ -4,12 +4,12 @@ namespace App\Form;
 
 use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Validator\Constraints\Date;
 
 
 class UtilisateurType extends AbstractType
@@ -21,8 +21,6 @@ class UtilisateurType extends AbstractType
             ->add('prenom',TextType::class)
             ->add('datedenaissance',DateTimeType::class)
             ->add('telephone',TextType::class)
-            ->add('email',TextType::class)
-            ->add('password',PasswordType::class)
         ;
     }
 

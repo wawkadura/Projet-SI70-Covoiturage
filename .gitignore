@@ -14,14 +14,3 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
-
-###> symfony/web-server-bundle ###
-/.web-server-pid
-###< symfony/web-server-bundle ###
-
-###> config de walid ###
-/composer.json
-/composer.lock
-/symfony.lock
-/config/bundles.php
-###< config de walid ###

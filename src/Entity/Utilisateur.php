@@ -18,12 +18,12 @@ class Utilisateur
      */
     private $id;
     /**
-     * @ORM\Column(type="String")
+     * @ORM\Column(type="text")
      */
     private $nom;
 
     /**
-     * @ORM\Column(type="String")
+     * @ORM\Column(type="text")
      */
     private $prenom;
 
@@ -32,7 +32,7 @@ class Utilisateur
      */
     private $datedenaissance;
     /**
-     * @ORM\Column(type="String")
+     * @ORM\Column(type="text")
      */
     private $telephone;
 
@@ -59,7 +59,7 @@ class Utilisateur
     {
         return $this->prenom;
     }
-    public function setPrenom($prenom): void
+    public function setPrenom($prenom):void
     {
         $this->prenom = $prenom;
     }
@@ -82,6 +82,5 @@ class Utilisateur
     {
         $this->telephone = $telephone;
     }
-
 
 }
