@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraint as Assert;
  *     message="l'email que vous avez indiquer est déjà utilisé!"
  * )
  */
-class Compte implements UserInterface
+class Compte
 {
     /**
      *  Compte
@@ -28,7 +28,6 @@ class Compte implements UserInterface
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\Email()
      */
     private $email;
 
@@ -53,8 +52,7 @@ class Compte implements UserInterface
 
         return $this;
     }
-
-    public function getPassword(string $password)
+    public function getPassword()
     {
         return $this->password;
     }
@@ -62,7 +60,6 @@ class Compte implements UserInterface
     public function setPassword($password): void
     {
         $this->password= $password;
-
     }
 
     public function getRoles()
@@ -78,12 +75,13 @@ class Compte implements UserInterface
 
     public function getUsername()
     {
-        // TODO: Implement getUsername() method.
+
     }
 
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
     }
+
 
 }

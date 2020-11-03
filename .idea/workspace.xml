@@ -11,32 +11,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aeb0068c-984f-4ff4-9046-6b0c8af30abd" name="Default Changelist" comment="projet covoiturage">
-      <change afterPath="$PROJECT_DIR$/migrations/Version20201102195226.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/Version20201102195858.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/Version20201102200237.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/Version20201102200759.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/Version20201102201022.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/Version20201102202035.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/SecurityController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/Compte.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/Utilisateur.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Form/CompteType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Form/UtilisateurType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Repository/CompteRepository.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Repository/UtilisateurRepository.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/security/connexion.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/security/index.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/security/login.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/RoadshareController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RoadshareController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/roadshare/connexion.html.twig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/roadshare/home.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/roadshare/home.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/roadshare/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/roadshare/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/roadshare/newuser.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/SecurityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/SecurityController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Compte.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Compte.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,7 +152,8 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/PhpstormProjects/Projet-SI70-Covoiturage" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -199,6 +178,7 @@
       <workItem from="1604165989528" duration="7693000" />
       <workItem from="1604386944320" duration="5168000" />
       <workItem from="1604395336984" duration="20504000" />
+      <workItem from="1604416160155" duration="5235000" />
     </task>
     <task id="LOCAL-00001" summary="projet">
       <created>1604174164742</created>
@@ -214,7 +194,14 @@
       <option name="project" value="LOCAL" />
       <updated>1604178396353</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="the last">
+      <created>1604416405509</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1604416405509</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -236,7 +223,8 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="projet" />
     <MESSAGE value="projet covoiturage" />
-    <option name="LAST_COMMIT_MESSAGE" value="projet covoiturage" />
+    <MESSAGE value="the last" />
+    <option name="LAST_COMMIT_MESSAGE" value="the last" />
   </component>
   <component name="WindowStateProjectService">
     <state x="349" y="67" key="#CLI_Interpreters" timestamp="1603900995402">
@@ -247,10 +235,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="475" y="55" key="#PHP/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1603900999726" />
-    <state x="574" y="94" key="#com.intellij.ide.util.MemberChooser" timestamp="1604403445795">
+    <state x="574" y="94" key="#com.intellij.ide.util.MemberChooser" timestamp="1604417296056">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="574" y="94" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1604403445795" />
+    <state x="574" y="94" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1604417296056" />
     <state x="499" y="167" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1604400867761">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -273,10 +261,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="603" y="115" key="RollbackChangesDialog/0.0.1536.824@0.0.1536.824" timestamp="1604178529071" />
-    <state x="-1469" y="183" key="Vcs.Push.Dialog.v2" timestamp="1604415622205">
+    <state x="-1469" y="183" key="Vcs.Push.Dialog.v2" timestamp="1604416412911">
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="-1469" y="183" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1604415622205" />
+    <state x="-1469" y="183" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1604416412911" />
     <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1604413436281" />
     <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1604178807003" />
     <state x="586" y="326" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1604161802274">

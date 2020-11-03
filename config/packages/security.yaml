@@ -2,7 +2,6 @@ security:
     encoders:
         App\Entity\Compte:
             algorithm: bcrypt
-
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         users_in_memory: { memory: null }
@@ -17,10 +16,9 @@ security:
         main:
             anonymous: true
             provider: in_database
-
             form_login:
-                login_path: connexion
-                check_path: connexion
+                login_path: storeUser
+                check_path: storeUser
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
