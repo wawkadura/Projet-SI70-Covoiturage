@@ -35,11 +35,11 @@ class RoadshareController extends AbstractController
         return $this->render('roadshare/home.html.twig');
     }
     /**
-     * @Route("/newuser", name="newuser")
+     * @Route("/inscription", name="newuser")
      */
     public function newuser(): Response
     {
-        return $this->render('roadshare/newuser.html.twig');
+        return $this->render('roadshare/inscription.html.twig');
     }
     /**
      * @Route("/connexion", name="connexion")

@@ -1,27 +1,23 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
-
-    <div class="example-wrapper">
-        <h1> Je me connecte :</h1><br><br>
-        <form method="post" action="">
-            <label>
-                ID : <input type="text" name="id" />
-            </label><br>
-
-            <label>
-                Mot de passe : <input type="password" name="password" />
-            </label><br/><br/>
-
-            <label>
-                <input type="submit" value="valider"/>
-            </label>
-
-        </form>
-
+<br>
+<div class="jumbotron">
+<h6 class="display-4">Connexion</h6>
+<form  method="post" action="">
+  <fieldset>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Email address</label>
+      <input type="email" class="form-control" id="exampleInputEmail1" name="id" aria-describedby="emailHelp" placeholder="Enter email">
     </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Password</label>
+      <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </fieldset>
+</form>
+</div>
+
+
 {% endblock %}
