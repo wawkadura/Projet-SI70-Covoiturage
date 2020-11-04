@@ -32,7 +32,7 @@ class SecurityController extends AbstractController
         $compte= new Compte();
 
 
-        $email= $request->get('email');
+       /* $email= $request->get('email');
         $password = $request->get('password');
 
         $nom = $request->get('nom');
@@ -46,7 +46,7 @@ class SecurityController extends AbstractController
         $utilisateur->setDatedenaissance(new \DateTime($datedenaissance));
 
         $compte->setEmail($email);
-        $compte->SetPassword($password);
+        $compte->SetPassword($password);*/
 
         //je recupère le formulaire new user
         $form = $this->createForm(UtilisateurType::class,$utilisateur);
@@ -58,16 +58,17 @@ class SecurityController extends AbstractController
 
             //enregistrement du nv utilisateur
             $manager = $this->getDoctrine()->getManager();
+            dump($utilisateur);
             $manager->persist($utilisateur);
             $manager->persist($compte);
             $manager->flush();
 
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('login_brouillon');
 
     }
 
     /**
-     * @Route("/login", name="login")
+     * @Route("/login_brouillon", name="login_brouillin")
      */
     public function login(){
       return $this->render('security/login.html.twig') ;

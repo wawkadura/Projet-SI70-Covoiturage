@@ -23,7 +23,7 @@ class Entreprise
     private $nom;
 
     /**
-     * @ORM\OneToOne(targetEntity=adressePostale::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=AdressePostale::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $idAdressePostale;
