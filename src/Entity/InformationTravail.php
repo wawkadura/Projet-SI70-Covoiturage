@@ -31,7 +31,7 @@ class InformationTravail
      * @ORM\ManyToOne(targetEntity=Entreprise::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $idEntreprise;
+    private $entreprise;
 
     public function getId(): ?int
     {
@@ -62,14 +62,14 @@ class InformationTravail
         return $this;
     }
 
-    public function getIdEntreprise(): ?Entreprise
+    public function getEntreprise(): ?Entreprise
     {
-        return $this->idEntreprise;
+        return $this->entreprise;
     }
 
-    public function setIdEntreprise(?Entreprise $idEntreprise): self
+    public function setEntreprise(?Entreprise $entreprise): self
     {
-        $this->idEntreprise = $idEntreprise;
+        $this->entreprise = $entreprise;
 
         return $this;
     }

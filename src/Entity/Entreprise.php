@@ -26,7 +26,7 @@ class Entreprise
      * @ORM\OneToOne(targetEntity=adressePostale::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $idAdressePostale;
+    private $adressePostale;
 
     public function getId(): ?int
     {
@@ -45,14 +45,14 @@ class Entreprise
         return $this;
     }
 
-    public function getIdAdressePostale(): ?adressePostale
+    public function getAdressePostale(): ?adressePostale
     {
-        return $this->idAdressePostale;
+        return $this->adressePostale;
     }
 
-    public function setIdAdressePostale(adressePostale $idAdressePostale): self
+    public function setAdressePostale(adressePostale $adressePostale): self
     {
-        $this->idAdressePostale = $idAdressePostale;
+        $this->adressePostale = $adressePostale;
 
         return $this;
     }

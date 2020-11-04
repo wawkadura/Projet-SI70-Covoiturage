@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TrajetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,7 +28,7 @@ class Trajet
      * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="trajets")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $idConducteur;
+    private $conducteur;
 
     /**
      * @ORM\Column(type="time")
@@ -42,13 +44,13 @@ class Trajet
      * @ORM\ManyToOne(targetEntity=adressePostale::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $idAdresseDepart;
+    private $adresseDepart;
 
     /**
      * @ORM\ManyToOne(targetEntity=adressePostale::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $idAdresseArrivee;
+    private $adresseArrivee;
 
     /**
      * @ORM\Column(type="integer")
@@ -64,6 +66,22 @@ class Trajet
      * @ORM\Column(type="string", length=255)
      */
     private $etat;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="trajet")
+     */
+    private $reservations;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Avis::class, mappedBy="trajet", orphanRemoval=true)
+     */
+    private $avis;
+
+    public function __construct()
+    {
+        $this->reservations = new ArrayCollection();
+        $this->avis = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -82,14 +100,14 @@ class Trajet
         return $this;
     }
 
-    public function getIdConducteur(): ?Utilisateur
+    public function getConducteur(): ?Utilisateur
     {
-        return $this->idConducteur;
+        return $this->conducteur;
     }
 
-    public function setIdConducteur(?Utilisateur $idConducteur): self
+    public function setConducteur(?Utilisateur $conducteur): self
     {
-        $this->idConducteur = $idConducteur;
+        $this->conducteur = $conducteur;
 
         return $this;
     }
@@ -118,26 +136,26 @@ class Trajet
         return $this;
     }
 
-    public function getIdAdresseDepart(): ?adressePostale
+    public function getAdresseDepart(): ?adressePostale
     {
-        return $this->idAdresseDepart;
+        return $this->adresseDepart;
     }
 
-    public function setIdAdresseDepart(?adressePostale $idAdresseDepart): self
+    public function setAdresseDepart(?adressePostale $adresseDepart): self
     {
-        $this->idAdresseDepart = $idAdresseDepart;
+        $this->adresseDepart = $adresseDepart;
 
         return $this;
     }
 
-    public function getIdAdresseArrivee(): ?adressePostale
+    public function getAdresseArrivee(): ?adressePostale
     {
-        return $this->idAdresseArrivee;
+        return $this->adresseArrivee;
     }
 
-    public function setIdAdresseArrivee(?adressePostale $idAdresseArrivee): self
+    public function setAdresseArrivee(?adressePostale $adresseArrivee): self
     {
-        $this->idAdresseArrivee = $idAdresseArrivee;
+        $this->adresseArrivee = $adresseArrivee;
 
         return $this;
     }
@@ -174,6 +192,66 @@ class Trajet
     public function setEtat(string $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Reservation[]
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): self
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations[] = $reservation;
+            $reservation->setTrajet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): self
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getTrajet() === $this) {
+                $reservation->setTrajet(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Avis[]
+     */
+    public function getAvis(): Collection
+    {
+        return $this->avis;
+    }
+
+    public function addAvi(Avis $avi): self
+    {
+        if (!$this->avis->contains($avi)) {
+            $this->avis[] = $avi;
+            $avi->setTrajet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAvi(Avis $avi): self
+    {
+        if ($this->avis->removeElement($avi)) {
+            // set the owning side to null (unless already changed)
+            if ($avi->getTrajet() === $this) {
+                $avi->setTrajet(null);
+            }
+        }
 
         return $this;
     }

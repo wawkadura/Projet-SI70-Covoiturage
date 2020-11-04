@@ -18,12 +18,6 @@ class Avis
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Trajet::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $idTrajet;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $message;
@@ -33,21 +27,27 @@ class Avis
      */
     private $note;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Trajet::class, inversedBy="avis")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $trajet;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="avisRecu")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $destinataire;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="avisPoste")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $expediteur;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdTrajet(): ?Trajet
-    {
-        return $this->idTrajet;
-    }
-
-    public function setIdTrajet(?Trajet $idTrajet): self
-    {
-        $this->idTrajet = $idTrajet;
-
-        return $this;
     }
 
     public function getMessage(): ?string
@@ -70,6 +70,42 @@ class Avis
     public function setNote(float $note): self
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    public function getTrajet(): ?Trajet
+    {
+        return $this->trajet;
+    }
+
+    public function setTrajet(?Trajet $trajet): self
+    {
+        $this->trajet = $trajet;
+
+        return $this;
+    }
+
+    public function getDestinataire(): ?Utilisateur
+    {
+        return $this->destinataire;
+    }
+
+    public function setDestinataire(?Utilisateur $destinataire): self
+    {
+        $this->destinataire = $destinataire;
+
+        return $this;
+    }
+
+    public function getExpediteur(): ?Utilisateur
+    {
+        return $this->expediteur;
+    }
+
+    public function setExpediteur(?Utilisateur $expediteur): self
+    {
+        $this->expediteur = $expediteur;
 
         return $this;
     }

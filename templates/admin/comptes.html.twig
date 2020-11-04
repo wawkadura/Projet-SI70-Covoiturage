@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1> Comptes </h1>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">email</th>
+      <th scope="col">motdepasse</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for compte in comptes %}
+      <tr class="table-secondary">
+        <th scope="row">{{ compte.id }}</th>
+        <td>{{ compte.email }}</td>
+        <td>{{ compte.password }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}

@@ -26,7 +26,6 @@ class Criteres
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $animaux;
-
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */

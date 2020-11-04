@@ -19,6 +19,7 @@ class Utilisateur
      * @ORM\Column(type="integer")
      */
     private $id;
+
     /**
      * @ORM\Column(type="text")
      */
@@ -33,19 +34,73 @@ class Utilisateur
      * @ORM\Column(type="date")
      */
     private $datedenaissance;
+
     /**
      * @ORM\Column(type="text")
      */
     private $telephone;
 
     /**
-     * @ORM\OneToMany(targetEntity=Trajet::class, mappedBy="idConducteur")
+     * @ORM\OneToMany(targetEntity=Trajet::class, mappedBy="conducteur")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $trajets;
+    private $trajetsProposer;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Description::class, mappedBy="id")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Voiture::class, mappedBy="id")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $voiture;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Criteres::class, mappedBy="id")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $criteres;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Compte::class, mappedBy="id")
+     * @ORM\JoinColumn(nullable=false) 
+     */
+    private $compte;
+    
+    /**
+     * @ORM\OneToOne(targetEntity=InformationTravail::class, mappedBy="id")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $informationTravail;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="id")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $reservations;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Avis::class, mappedBy="id", orphanRemoval=true)
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $avisRecu;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Avis::class, mappedBy="id", orphanRemoval=true)
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $avisPoste;
+
 
     public function __construct()
     {
-        $this->trajets = new ArrayCollection();
+        $this->trajetsProposer = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
+        $this->avisRecu = new ArrayCollection();
+        $this->avisPoste = new ArrayCollection();
     }
 
 
@@ -95,19 +150,68 @@ class Utilisateur
         $this->telephone = $telephone;
     }
 
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    public function setDescription($description): void
+    {
+        $this->description = $description;
+    }
+
+    public function getVoiture()
+    {
+        return $this->voiture;
+    }
+
+    public function setVoiture($voiture): void
+    {
+        $this->voiture = $voiture;
+    }
+
+    public function getCriteres()
+    {
+        return $this->criteres;
+    }
+
+    public function setCriteres($criteres): void
+    {
+        $this->criteres = $criteres;
+    }
+
+    public function getCompte()
+    {
+        return $this->compte;
+    }
+
+    public function setCompte($compte): void
+    {
+        $this->compte = $compte;
+    }
+
+    public function getInformationTravail()
+    {
+        return $this->informationTravail;
+    }
+
+    public function setInformationTravail($informationTravail): void
+    {
+        $this->informationTravail = $informationTravail;
+    }
     /**
      * @return Collection|Trajet[]
      */
-    public function getTrajets(): Collection
+    public function getTrajetsProposer(): Collection
     {
-        return $this->trajets;
+        return $this->trajetsProposer;
     }
 
     public function addTrajet(Trajet $trajet): self
     {
-        if (!$this->trajets->contains($trajet)) {
-            $this->trajets[] = $trajet;
-            $trajet->setIdConducteur($this);
+        if (!$this->trajetsProposer->contains($trajet)) {
+            $this->trajetsProposer[] = $trajet;
+            $trajet->setConducteur($this);
         }
 
         return $this;
@@ -115,10 +219,100 @@ class Utilisateur
 
     public function removeTrajet(Trajet $trajet): self
     {
-        if ($this->trajets->removeElement($trajet)) {
+        if ($this->trajetsProposer->removeElement($trajet)) {
             // set the owning side to null (unless already changed)
-            if ($trajet->getIdConducteur() === $this) {
-                $trajet->setIdConducteur(null);
+            if ($trajet->getConducteur() === $this) {
+                $trajet->setConducteur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Reservation[]
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): self
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations[] = $reservation;
+            $reservation->setDemandeur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): self
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getDemandeur() === $this) {
+                $reservation->setDemandeur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Avis[]
+     */
+    public function getAvisRecu(): Collection
+    {
+        return $this->avisRecu;
+    }
+
+    public function addAvisRecu(Avis $avisRecu): self
+    {
+        if (!$this->avisRecu->contains($avisRecu)) {
+            $this->avisRecu[] = $avisRecu;
+            $avisRecu->setDestinataire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAvisRecu(Avis $avisRecu): self
+    {
+        if ($this->avisRecu->removeElement($avisRecu)) {
+            // set the owning side to null (unless already changed)
+            if ($avisRecu->getDestinataire() === $this) {
+                $avisRecu->setDestinataire(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Avis[]
+     */
+    public function getAvisPoste(): Collection
+    {
+        return $this->avisPoste;
+    }
+
+    public function addAvisPoste(Avis $avisPoste): self
+    {
+        if (!$this->avisPoste->contains($avisPoste)) {
+            $this->avisPoste[] = $avisPoste;
+            $avisPoste->setExpediteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAvisPoste(Avis $avisPoste): self
+    {
+        if ($this->avisPoste->removeElement($avisPoste)) {
+            // set the owning side to null (unless already changed)
+            if ($avisPoste->getExpediteur() === $this) {
+                $avisPoste->setExpediteur(null);
             }
         }
 
