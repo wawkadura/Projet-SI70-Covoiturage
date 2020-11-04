@@ -7,13 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraint as Assert;
+use App\Entity\CompteType;
 
 
 /**
  * @ORM\Entity(repositoryClass=CompteRepository::class)
  * @UniqueEntity(
  *     fields={"email"},
- *     message="l'email que vous avez indiquer est déjà utilisé!"
+ *     message="l'email est déjà utilisé!"
  * )
  */
 class Compte implements UserInterface
@@ -35,7 +36,7 @@ class Compte implements UserInterface
     /**
      * @ORM\Column(type="text")
      */
-    private $motdepasse;
+    private $password;
 
   
     public function getId(): ?int
@@ -54,25 +55,22 @@ class Compte implements UserInterface
 
         return $this;
     }
-    public function getMotdepasse()
+    
+    public function setPassword($password): void
     {
-        return $this->motdepasse;
+        $this->password= $password;
     }
 
-    public function setMotdepasse($motdepasse): void
+    public function getPassword()
     {
-        $this->motdepasse= $motdepasse;
+        return $this->password;
     }
 
     public function getRoles()
     {
         // TODO: Implement getRoles() method.
     }
-    public function getPassword( string $hash)
-    {
-        // TODO: Implement getRoles() method.
-    }
-
+   
     public function getSalt()
     {
         // TODO: Implement getSalt() method.
