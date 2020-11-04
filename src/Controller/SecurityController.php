@@ -13,17 +13,18 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 
+
 class SecurityController extends AbstractController
 {
 
     /**
      * @Route("/storeUser", name="storeUser")
-     * @param Request $manager
+     * @param Request $request
      * @param UserPasswordEncoderInterface $encoder
      * @return Response
      * @throws \Exception
      */
-    public function storeUser(Request $manager,UserPasswordEncoderInterface $encoder): Response
+    public function storeUser(Request $request,UserPasswordEncoderInterface $encoder): Response
     {
 
         //je crée un un utilisateur
@@ -31,13 +32,13 @@ class SecurityController extends AbstractController
         $compte= new Compte();
 
 
-        $email= $manager->get('email');
-        $password = $manager->get('password');
+        $email= $request->get('email');
+        $password = $request->get('password');
 
-        $nom = $manager->get('nom');
-        $prenom = $manager->get('prenom');
-        $telephone = $manager->get('telephone');
-        $datedenaissance = $manager->get('datedenaissance');
+        $nom = $request->get('nom');
+        $prenom = $request->get('prenom');
+        $telephone = $request->get('telephone');
+        $datedenaissance = $request->get('datedenaissance');
 
         $utilisateur->setNom($nom);
         $utilisateur->setPrenom($prenom);
@@ -49,9 +50,9 @@ class SecurityController extends AbstractController
 
         //je recupère le formulaire new user
         $form = $this->createForm(UtilisateurType::class,$utilisateur);
-        $form->handleRequest($manager);//symfony va faire le lien entre les données des champs du formulaire et la variable $utilisateur
+        $form->handleRequest($request);//symfony va faire le lien entre les données des champs du formulaire et la variable $utilisateur
         $form1 = $this->createForm(CompteType::class,$compte);
-        $form1->handleRequest($manager);
+        $form1->handleRequest($request);
 
 
 
