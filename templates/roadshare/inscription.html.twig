@@ -4,24 +4,30 @@
 <br>
 <div class="jumbotron">
 <h6 class="display-4">Inscription</h6>
-<form method="post" action="{{path('storeUser')}}">
+{{form_start(formUtilisateur)}}
   <fieldset>
     <div class="form-group">
       <label>Nom</label>
-      <input type="text" class="form-control" required name="nom" placeholder="Entrée votre nom">
+      {{form_widget(formUtilisateur.nom)}}
+      {# <input type="text" class="form-control" required name="nom" placeholder="Entrée votre nom"> #}
     </div>
     <div class="form-group">
       <label>Prénom</label>
-      <input type="text" class="form-control" required name="prenom" placeholder="Entrée votre prénom">
+      {{form_widget(formUtilisateur.prenom)}}
+      {# <input type="text" class="form-control" required name="prenom" placeholder="Entrée votre prénom"> #}
     </div>
     <div class="form-group">
       <label for="exampleInputPassword1">Date de naissance : </label>
-      <input type="date" class="form-control" required name="datedenaissance" id="exampleInputPassword1" >
+      {{form_widget(formUtilisateur.datedenaissance)}}
     </div>
     <div class="form-group">
       <label for="exampleInputPassword1">Téléphone : </label>
-      <input type="text" class="form-control" id="exampleInputPassword1" required name="telephone" placeholder="Entrée votre numéro de téléphone (format 0612345678)" >
+      {{form_widget(formUtilisateur.telephone)}}
+      {# <input type="text" class="form-control" id="exampleInputPassword1" required name="telephone" placeholder="Entrée votre numéro de téléphone (format 0612345678)" > #}
     </div>
+  </fieldset>
+    {{form_end(formUtilisateur)}}
+  <form method="post" action="">
     <div class="form-group">
       <label for="exampleInputEmail1">Adress Mail : </label>
       <input type="email" class="form-control" id="exampleInputEmail1" required  name="email" aria-describedby="emailHelp" placeholder="Entrée votre email">
@@ -36,7 +42,7 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>
-  </fieldset>
+  
 </form>
 </div>
 

@@ -41,13 +41,13 @@ class Trajet
     private $heureArrivee;
 
     /**
-     * @ORM\ManyToOne(targetEntity=adressePostale::class)
+     * @ORM\ManyToOne(targetEntity=AdressePostale::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $adresseDepart;
 
     /**
-     * @ORM\ManyToOne(targetEntity=adressePostale::class)
+     * @ORM\ManyToOne(targetEntity=AdressePostale::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $adresseArrivee;

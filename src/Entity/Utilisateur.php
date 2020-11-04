@@ -33,7 +33,7 @@ class Utilisateur
     /**
      * @ORM\Column(type="date")
      */
-    private $datedenaissance;
+    private $dateDeNaissance;
 
     /**
      * @ORM\Column(type="text")
@@ -131,13 +131,13 @@ class Utilisateur
         $this->prenom = $prenom;
     }
 
-    public function getDatedenaissance()
+    public function getDateDeNaissance()
     {
-        return $this->datedenaissance;
+        return $this->dateDeNaissance;
     }
-    public function setDatedenaissance($datedenaissance): void
+    public function setDateDeNaissance($dateDeNaissance): void
     {
-        $this->datedenaissance = $datedenaissance;
+        $this->dateDeNaissance = $dateDeNaissance;
     }
 
     public function getTelephone()

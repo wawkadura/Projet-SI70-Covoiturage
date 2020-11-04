@@ -74,10 +74,10 @@ class SecurityController extends AbstractController
       return $this->render('security/login.html.twig') ;
     }
 
-    /**
-     * @Route("/inscription", name="inscription")
-     */
-    public function inscription(){
-        return $this->render('security/inscription.html.twig') ;
-    }
+    // /**
+    //  * @Route("/inscription", name="inscription")
+    //  */
+    // public function inscription(){
+    //     return $this->render('security/inscription.html.twig') ;
+    // }
 }
