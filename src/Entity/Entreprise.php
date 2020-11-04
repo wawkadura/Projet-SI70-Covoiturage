@@ -23,11 +23,6 @@ class Entreprise
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $siret;
-
-    /**
      * @ORM\OneToOne(targetEntity=adressePostale::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
@@ -46,18 +41,6 @@ class Entreprise
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getSiret(): ?string
-    {
-        return $this->siret;
-    }
-
-    public function setSiret(string $siret): self
-    {
-        $this->siret = $siret;
 
         return $this;
     }

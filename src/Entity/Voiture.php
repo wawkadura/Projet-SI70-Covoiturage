@@ -32,6 +32,11 @@ class Voiture
      */
     private $immatriculation;
 
+     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $model;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -72,4 +77,18 @@ class Voiture
 
         return $this;
     }
+    public function getModel(): ?string
+    {
+        return $this->model;
+    }
+
+    public function setModel(string $model): self
+    {
+        $this->model = $model;
+
+        return $this;
+    }
+
+
+
 }
