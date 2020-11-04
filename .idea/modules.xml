@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/roadshare.iml" filepath="$PROJECT_DIR$/.idea/roadshare.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Projet-SI70-Covoiturage.iml" filepath="$PROJECT_DIR$/.idea/Projet-SI70-Covoiturage.iml" />
     </modules>
   </component>
 </project>
