@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraint as Assert;
  *     message="l'email que vous avez indiquer est déjà utilisé!"
  * )
  */
-class Compte
+class Compte implements UserInterface
 {
     /**
      *  Compte
@@ -37,6 +37,27 @@ class Compte
      */
     private $password;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="salt", type="string", length=255)
+     */
+    private $salt;
+ 
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="roles", type="array")
+     */
+    private $roles = array();
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="username", type="string", length=255, unique=true)
+     */
+    private $username;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,7 +74,7 @@ class Compte
 
         return $this;
     }
-    public function getPassword()
+    public function getPassword(string $hash)
     {
         return $this->password;
     }
