@@ -35,29 +35,9 @@ class Compte implements UserInterface
     /**
      * @ORM\Column(type="text")
      */
-    private $password;
+    private $motdepasse;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="salt", type="string", length=255)
-     */
-    private $salt;
- 
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="roles", type="array")
-     */
-    private $roles = array();
-     /**
-     * @var string
-     *
-     * @ORM\Column(name="username", type="string", length=255, unique=true)
-     */
-    private $username;
-
-
+  
     public function getId(): ?int
     {
         return $this->id;
@@ -74,21 +54,24 @@ class Compte implements UserInterface
 
         return $this;
     }
-    public function getPassword(string $hash)
+    public function getMotdepasse()
     {
-        return $this->password;
+        return $this->motdepasse;
     }
 
-    public function setPassword($password): void
+    public function setMotdepasse($motdepasse): void
     {
-        $this->password= $password;
+        $this->motdepasse= $motdepasse;
     }
 
     public function getRoles()
     {
         // TODO: Implement getRoles() method.
     }
-
+    public function getPassword( string $hash)
+    {
+        // TODO: Implement getRoles() method.
+    }
 
     public function getSalt()
     {
