@@ -18,7 +18,7 @@
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
-
+.vscode
 ###> vscode requirements ###
 /composer.json
 /composer.lock

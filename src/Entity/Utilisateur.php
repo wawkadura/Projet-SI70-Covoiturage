@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,6 +37,16 @@ class Utilisateur
      * @ORM\Column(type="text")
      */
     private $telephone;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Trajet::class, mappedBy="idConducteur")
+     */
+    private $trajets;
+
+    public function __construct()
+    {
+        $this->trajets = new ArrayCollection();
+    }
 
 
     public function getId(): int
@@ -81,6 +93,36 @@ class Utilisateur
     public function setTelephone($telephone): void
     {
         $this->telephone = $telephone;
+    }
+
+    /**
+     * @return Collection|Trajet[]
+     */
+    public function getTrajets(): Collection
+    {
+        return $this->trajets;
+    }
+
+    public function addTrajet(Trajet $trajet): self
+    {
+        if (!$this->trajets->contains($trajet)) {
+            $this->trajets[] = $trajet;
+            $trajet->setIdConducteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrajet(Trajet $trajet): self
+    {
+        if ($this->trajets->removeElement($trajet)) {
+            // set the owning side to null (unless already changed)
+            if ($trajet->getIdConducteur() === $this) {
+                $trajet->setIdConducteur(null);
+            }
+        }
+
+        return $this;
     }
 
 }
