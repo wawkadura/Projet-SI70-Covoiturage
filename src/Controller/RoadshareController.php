@@ -60,4 +60,12 @@ class RoadshareController extends AbstractController
         ]);
     }
 
+     /**
+     * @Route("/redirection", name="redirection")
+     */
+    public function Redirection(): Response
+    {
+        return $this->render('roadshare/redirection.html.twig');
+    }
+
 }

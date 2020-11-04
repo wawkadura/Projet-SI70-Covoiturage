@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<body>
+ <div class="jumbotron">
+    <font size="+3">Veuillez-vous connecter ou vous inscrire</font><br/>
+    <div class="list-group"><br/>
+        <a href="/inscription" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Je me m'inscrit</h5>
+            </div>
+        </a>
+        <br>
+        <a href="/login" class="list-group-item list-group-item-action flex-column align-items-start alert-success">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Je me connect</h5>
+            </div>
+        </a>
+        </div>
+    </div>
+</body>
+
+{% endblock %}

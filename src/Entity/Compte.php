@@ -7,13 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraint as Assert;
+use App\Entity\CompteType;
 
 
 /**
  * @ORM\Entity(repositoryClass=CompteRepository::class)
  * @UniqueEntity(
  *     fields={"email"},
- *     message="l'email que vous avez indiquer est déjà utilisé!"
+ *     message="l'email est déjà utilisé!"
  * )
  */
 class Compte
