@@ -28,6 +28,7 @@ class Compte
 
     /**
      * @ORM\Column(type="text")
+     * Assert\Email()
      */
     private $email;
 

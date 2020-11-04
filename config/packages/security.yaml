@@ -17,8 +17,8 @@ security:
             anonymous: true
             provider: in_database
             form_login:
-                login_path: storeUser
-                check_path: storeUser
+                login_path: login
+                check_path: login
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

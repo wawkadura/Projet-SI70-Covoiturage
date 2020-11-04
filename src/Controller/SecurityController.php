@@ -46,9 +46,6 @@ class SecurityController extends AbstractController
 
         $compte->setEmail($email);
         $compte->SetPassword($password);
-        //hasher un mot de passe
-        //$hash =$encoder->encodePassword($compte,$compte->getPassword());
-        //$compte->SetPassword($hash);
 
         //je recupère le formulaire new user
         $form = $this->createForm(UtilisateurType::class,$utilisateur);
