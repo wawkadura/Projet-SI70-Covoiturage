@@ -13,7 +13,7 @@ class CompteFixtures extends Fixture
         for ($i=0; $i < 10; $i++) { 
             $compte = new Compte();
             $compte->setEmail("walid$i@yahoo.com")
-                    ->setMotdepasse(password_hash("waw$i",PASSWORD_DEFAULT));
+                    ->setPassword(password_hash("waw$i",PASSWORD_DEFAULT));
             $manager->persist($compte);
         }
 
