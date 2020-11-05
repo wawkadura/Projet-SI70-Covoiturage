@@ -17,7 +17,7 @@ use App\Entity\CompteType;
  *     message="l'email est déjà utilisé!"
  * )
  */
-class Compte implements UserInterface
+class Compte implements UserInterface 
 {
     /**
      *  Compte
@@ -37,32 +37,33 @@ class Compte implements UserInterface
      * @ORM\Column(type="text")
      */
     private $password;
-
-  
+    
+ 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(string $hash): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(): self
     {
         $this->email = $email;
 
         return $this;
     }
     
-    public function setPassword($password): void
+    public function setPassword(string $password): void
     {
         $this->password= $password;
     }
 
-    public function getPassword(string $hash)  
+    public function getPassword(string $hash)
     {
+
         return $this->password;
     }
 
