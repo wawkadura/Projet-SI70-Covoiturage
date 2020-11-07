@@ -79,7 +79,7 @@ class Compte implements UserInterface
     {
         $this->confirm_motDePasse= $confirm_motdepasse;
     }
-    public function getPassword(){ return $this->getMotDePasse();}
+    public function getPassword(string $hash){ return $this->getMotDePasse();}
 
     public function getSalt(){}
     public function eraseCredentials(){}
