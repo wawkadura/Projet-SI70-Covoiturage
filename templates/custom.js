@@ -15,3 +15,7 @@ function myFunction() {
       }
     }
   }
+  function submitForms(){
+    document.getElementById("1").submit();
+    document.getElementById("2").submit();
+}

@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Compte;
 use App\Entity\Utilisateur;
+use App\Form\CompteType;
+use App\Form\InscriptionFormType;
 use App\Form\UtilisateurType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ObjectManager;
@@ -12,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class RoadshareController extends AbstractController
 {
@@ -35,31 +37,34 @@ class RoadshareController extends AbstractController
     /**
      * @Route("/roadshare/inscription", name="roadshare_inscription")
      */
-    public function inscription(Request $request, ObjectManager $manager, UserPasswordEncoder $encoder): Response
+    public function inscription(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder): Response
     {
         $utilisateur = new Utilisateur;
         $compte = new Compte;
+        
+        $formData['utilisateur'] = $utilisateur;
+        $formData['compte']  = $compte;
 
-        $formUtilisateur = $this->createForm(UtilisateurType::class, $utilisateur);
-        $formUtilisateur->handleRequest($request);
+        $form = $this->createForm(InscriptionFormType::class, $formData);
+        $form->handleRequest($request);
 
-        $formCompte = $this->createForm(UtilisateurType::class, $compte);
-        $formCompte->handleRequest($request);
+        dump($form);
 
-        if(($formUtilisateur->isSubmitted() && $formUtilisateur->isValid()) && ($formCompte->isSubmitted() && $formCompte->isValid())){
+        if(($form['compte']->isSubmitted() && $form['compte']->isValid()) && 
+            ($form['utilisateur']->isSubmitted() && $form['utilisateur']->isValid())){
+
             $hash = $encoder->encodePassword($compte,$compte->getMotDePasse());
             $compte->setMotDePasse($hash);
-            $utilisateur->setCompte($compte);
             $manager->persist($compte);
+
+            $utilisateur->setCompte($compte);
             $manager->persist($utilisateur);
+
             $manager->flush();
-            return $this->redirectToRoute('roadshare_profil', [
-                'id' => $compte->getId()
-            ]);
+            return $this->redirectToRoute('roadshare_connexion');
         }
         return $this->render('roadshare/inscription.html.twig', [
-            'formUtilisateur' => $formUtilisateur->createView(),
-            'formCompte' => $formCompte->createView()
+            'form' => $form->createView()
         ]);
     }
 
@@ -83,10 +88,10 @@ class RoadshareController extends AbstractController
     public function Deconnexion(){}
 
     /**
-     * @Route("roadshare/profil", name="roadshare_profil")
+     * @Route("roadshare/profil/{id}", name="roadshare_profil")
      */
-    public function Profil(){
-
+    public function Profil($id){
+        return $this->render('roadshare/profil.html.twig');
     }
 
 }

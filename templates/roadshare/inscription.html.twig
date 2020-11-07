@@ -4,46 +4,48 @@
 <br>
 <div class="jumbotron">
 <h6 class="display-4">Inscription</h6>
-{{form_start(formUtilisateur)}}
+{{form_start(form)}}
   <fieldset>
     <div class="form-group">
-      <label>Nom</label>
-      {{form_widget(formUtilisateur.nom)}}
+      {{form_row(form.utilisateur.nom, {'label':'Nom :', 'attr' : {
+        'placeholder': 'Entrée votre nom'
+      }})}}
       {# <input type="text" class="form-control" required name="nom" placeholder="Entrée votre nom"> #}
     </div>
     <div class="form-group">
-      <label>Prénom</label>
-      {{form_widget(formUtilisateur.prenom)}}
+      {{form_row(form.utilisateur.prenom, {'label':'Prénom :', 'attr' : {
+        'placeholder': 'Entrée votre prénom'
+      }})}}
       {# <input type="text" class="form-control" required name="prenom" placeholder="Entrée votre prénom"> #}
     </div>
     <div class="form-group">
-      <label for="exampleInputPassword1">Date de naissance : </label>
-      {{form_widget(formUtilisateur.datedenaissance)}}
+      {{form_row(form.utilisateur.dateDeNaissance, {'label':'Date de naissance :'})}}
     </div>
     <div class="form-group">
-      <label for="exampleInputPassword1">Téléphone : </label>
-      {{form_widget(formUtilisateur.telephone)}}
+      {{form_row(form.utilisateur.telephone, {'label':'Téléphone :', 'attr' : {
+        'placeholder': 'Entrée votre numéro de téléphone'
+      }})}}
       {# <input type="text" class="form-control" id="exampleInputPassword1" required name="telephone" placeholder="Entrée votre numéro de téléphone (format 0612345678)" > #}
     </div>
+    <div class="form-group">
+      {{form_row(form.compte.email, {'label':'Email :', 'attr' : {
+        'placeholder': 'Entrée votre adresse mail'
+      }})}}
+    </div>
+    <div class="form-group">
+      {{form_row(form.compte.motDePasse, {'label':'Mot de passe :', 'attr' : {
+        'placeholder': 'Entrée votre mot de passe'
+      }})}}
+    </div>
+    <div class="form-group">
+      {{form_row(form.compte.confirm_motDePasse, {'label':'Confirmer Mot de passe :', 'attr' : {
+        'placeholder': 'Confirmer votre mot de passe'
+      }})}}
+    </div>
   </fieldset>
-    {{form_end(formUtilisateur)}}
-  <form method="post" action="">
-    <div class="form-group">
-      <label for="exampleInputEmail1">Adress Mail : </label>
-      <input type="email" class="form-control" id="exampleInputEmail1" required  name="email" aria-describedby="emailHelp" placeholder="Entrée votre email">
-    </div>
-    <div class="form-group">
-      <label for="exampleInputPassword1">Mot de passe : </label>
-      <input type="password" class="form-control" id="exampleInputPassword1" required name="password" placeholder="Mot de passe">
-    </div>
-    <div class="form-group">
-      <label for="exampleInputPassword2">Confirmé mot de passe : </label>
-      <input type="password" class="form-control" id="exampleInputPassword2" name="password1" placeholder="Mot de passe">
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Valider</button>
   
-</form>
+{{form_end(form)}}
 </div>
 
 {% endblock %}
