@@ -7,6 +7,7 @@ use App\Entity\Utilisateur;
 use App\Form\CompteType;
 use App\Form\InscriptionFormType;
 use App\Form\UtilisateurType;
+use App\Repository\UtilisateurRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,59 +21,33 @@ class RoadshareController extends AbstractController
 {
    
     /**
-     * @Route("/", name="home")
+     * @Route("/", name="roadshare_home")
      */
     public function home(): Response
     {
-        return $this->render('roadshare/home.html.twig');
-    }
-    
-    /**
-     * @Route("/user/connected", name="user_connected")
-     */
-    public function Homepage(): Response
-    {
-        return $this->render('roadshare/pageprincipal.html.twig');
+        $user = $this->getUser();
+
+        return $this->render('roadshare/home.html.twig', [
+            'user' => $user
+        ]);
     }
 
     /**
-     * @Route("roadshare/connexion", name="roadshare_connexion")
+     * @Route("/connexion", name="roadshare_connexion")
      */
     public function Connexion(): Response
     {
-        return $this->render('security/login.html.twig');
+        return $this->render('roadshare/connexion.html.twig');
     }
     /**
-     * @Route("roadshare/deconnexion", name="roadshare_deconnexion")
+     * @Route("/deconnexion", name="roadshare_deconnexion")
      */
     public function Deconnexion(){}
 
-      /**
-     * @Route("/redirection", name="redirection")
-     */
-    public function Redirection(): Response
-    {
-        return $this->render('roadshare/redirection.html.twig');
-    }
-
     /**
-     * @Route("/new/trajet", name="new_tajet")
+     * @Route("/inscription", name="roadshare_inscription")
      */
-    public function newtrajet(): Response
-    {
-        return $this->render('roadshare/proposition.html.twig');
-    }
-
-    /**
-     * @Route("roadshare/profil/{id}", name="roadshare_profil")
-     */
-    public function Profil($id){
-        return $this->render('roadshare/profil.html.twig');
-    }
-    /**
-     * @Route("/roadshare/inscription", name="roadshare_inscription")
-     */
-    public function inscription(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder): Response
+    public function Inscription(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder): Response
     {
         $utilisateur = new Utilisateur;
         $compte = new Compte;
@@ -96,12 +71,47 @@ class RoadshareController extends AbstractController
             $manager->persist($utilisateur);
 
             $manager->flush();
-            return $this->redirectToRoute('user_connected');
+            return $this->redirectToRoute('roadshare_connexion');
         }
         return $this->render('roadshare/inscription.html.twig', [
             'form' => $form->createView()
         ]);
     }
+    /**
+     * @Route("/proposition", name="roadshare_proposition")
+     */
+    public function Proposition(): Response
+    {
+        $user = $this->getUser();
+        return $this->render('roadshare/proposition.html.twig', [
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * @Route("/recherche", name="roadshare_recherche")
+     */
+    public function Recherche(): Response
+    {
+        $user = $this->getUser();
+        return $this->render('roadshare/recherche.html.twig', [
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * @Route("/profil", name="roadshare_profil")
+     */
+    public function Profil(UtilisateurRepository $repo){
+        $user = $this->getUser();
+        $utilisateur = $repo->findBy(array("compte" => $user->getId()));
+        dump($utilisateur[0]);
+        return $this->render('roadshare/profil.html.twig', [
+            'user' => $user,
+            'utilisateur' => $utilisateur[0]
+        ]);
+    }
+
 
  
 }

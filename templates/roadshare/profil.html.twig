@@ -2,9 +2,9 @@
 
 {% block body %}
 
-{# {{ utilisateur.nom}}
+{{ utilisateur.nom}}
 {{ utilisateur.prenom}}
 {{ utilisateur.telephone}}
-{{ utilisateur.dateDeNaissance}} #}
+{{ utilisateur.dateDeNaissance | date('d/m/Y')}}
 
 {% endblock %}

@@ -21,7 +21,7 @@ security:
                 check_path: roadshare_connexion
             logout:
                 path: roadshare_deconnexion
-                target: home
+                target: roadshare_home
 
                 # where to redirect after logout
                 # target: app_any_route
