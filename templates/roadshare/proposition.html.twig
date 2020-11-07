@@ -1,35 +1,59 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
+<br>
 <div class="jumbotron">
-<h6 class="display-4">Je propose un trajet </h6>
-<form method="post" action="">
+<h6 class="display-4"> Prosition trajet</h6>
+{{form_start(form)}}
   <fieldset>
+
     <div class="form-group">
-      <label >date : </label>
-      <input type="date" class="form-control" required name="date" id="exampleInputPassword1" >
+      {{form_row(form.adresse_postale.numroRue, {'label':'Numero rue:', 'attr' : {
+        'placeholder': 'Entrée votre numero de rue de départ'
+      }})}}
     </div>
+    <div class="form-group">
+      {{form_row(form.adresse_postale.rue, {'label':'Rue:', 'attr' : {
+        'placeholder': 'numero rue de départ'
+      }})}}
+    </div>
+    <div class="form-group">
+      {{form_row(form.adresse_postale.vile, {'label':'Ville :','attr' : {
+        'placeholder': 'vile de rue de départ'
+       }})}}
+    </div>
+    <div class="form-group">
+      {{form_row(form.adresse_postale.departement, {'label':'Département :', 'attr' : {
+        'placeholder': 'Département de départ'
+      }})}} <br/>
+
+      
      <div class="form-group">
-      <label >heure_depart: </label>
-      <input type="text" class="form-control" required name="heure_depart" id="exampleInputPassword1" placeholder="format hh:min">
+      {{form_row(form.adresse_postale.numroRue, {'label':'Numero rue:', 'attr' : {
+        'placeholder': 'Entrée votre numero de rue de la destination'
+      }})}}
     </div>
     <div class="form-group">
-      <label >heure_arriver: </label>
-      <input type="text" class="form-control" required name="heure_arriver" id="exampleInputPassword1" placeholder="format hh:min">
+      {{form_row(form.adresse_postale.rue, {'label':'Rue:', 'attr' : {
+        'placeholder': 'numero rue de la destination'
+      }})}}
+ 
     </div>
     <div class="form-group">
-      <label >Nombre de places: </label>
-      <input type="text" class="form-control"  name="nb_places" id="exampleInputPassword1" placeholder="Entrez le nombre de place disponible">
+      {{form_row(form.adresse_postale.vile, {'label':'Ville :','attr' : {
+        'placeholder': 'vile de rue de la destination'
+       }})}}
     </div>
     <div class="form-group">
-      <label >Prix: </label>
-      <input type="text" class="form-control" required name="prix" id="exampleInputPassword1" placeholder="">
+      {{form_row(form.adresse_postale.departement, {'label':'Département :', 'attr' : {
+        'placeholder': 'Département de la destination'
+      }})}} <br/>  
     </div>
-    <div class="form-group">
-      <label >Etat reservation: </label>
-      <input type="text" class="form-control" required name="etat" id="exampleInputPassword1" placeholder="Saisir le nombre de place disponible">
-    </div>
-  </fieldset>
-</form>  
+
+
+    <button type="submit" class="btn btn-primary">Valider</button>
+   </fieldset>
+{{form_end(form)}}
+</div>
+
 {% endblock %}
