@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="jumbotron">
+<h4 class="display-4">Saisir votre adresse de depart </h4>
+<form method="post" action="">
+  <fieldset>
+    <div class="form-group">
+      <label>Numero rue</label>
+      <input type="text" class="form-control" required name="numero_rue" placeholder="numero rue de depart">
+    </div>
+    <div class="form-group">
+      <label>Rue</label>
+      <input type="text" class="form-control" required name="rue" placeholder="rue de depart">
+    </div>
+    <div class="form-group">
+      <label>Ville</label>
+      <input type="text" class="form-control" required name="ville" placeholder="Ville de depart">
+    </div>
+     <div class="form-group">
+      <label>Département</label>
+      <input type="text" class="form-control" required name="departement" placeholder="e.g 90000">
+    </div>
+     </fieldset>
+</form>   
+
+{% endblock %}

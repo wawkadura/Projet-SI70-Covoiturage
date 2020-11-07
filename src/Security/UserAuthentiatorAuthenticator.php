@@ -106,3 +106,4 @@ class UserAuthentiatorAuthenticator extends AbstractFormLoginAuthenticator imple
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 }
+

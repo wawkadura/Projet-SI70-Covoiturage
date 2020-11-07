@@ -7,55 +7,29 @@
 <form method="post" action="">
   <fieldset>
     <div class="form-group">
-      <label>Rue</label>
-      <input type="text" class="form-control" required name="numero_rue" placeholder="numero rue de depart">
-    </div>
-    <div class="form-group">
-      <label>Ville</label>
-      <input type="text" class="form-control" required name="ville" placeholder="Ville de depart">
-    </div>
-     <div class="form-group">
-      <label>Département</label>
-      <input type="text" class="form-control" required name="departement" placeholder="e.g 90000">
-    </div>
-    <div class="form-group">
       <label >date : </label>
       <input type="date" class="form-control" required name="date" id="exampleInputPassword1" >
     </div>
      <div class="form-group">
       <label >heure_depart: </label>
-      <input type="text" class="form-control" required name="heure_depart" id="exampleInputPassword1" placeholder="format hh/min">
+      <input type="text" class="form-control" required name="heure_depart" id="exampleInputPassword1" placeholder="format hh:min">
     </div>
     <div class="form-group">
       <label >heure_arriver: </label>
-      <input type="text" class="form-control" required name="heure_arriver" id="exampleInputPassword1" placeholder="format hh/min">
+      <input type="text" class="form-control" required name="heure_arriver" id="exampleInputPassword1" placeholder="format hh:min">
     </div>
-
+    <div class="form-group">
+      <label >Nombre de places: </label>
+      <input type="text" class="form-control"  name="nb_places" id="exampleInputPassword1" placeholder="Entrez le nombre de place disponible">
+    </div>
+    <div class="form-group">
+      <label >Prix: </label>
+      <input type="text" class="form-control" required name="prix" id="exampleInputPassword1" placeholder="">
+    </div>
+    <div class="form-group">
+      <label >Etat reservation: </label>
+      <input type="text" class="form-control" required name="etat" id="exampleInputPassword1" placeholder="Saisir le nombre de place disponible">
+    </div>
   </fieldset>
-</form>
-</div>
-
-<div class="jumbotron">
-<h6 class="display-4">je propose un trajet </h6>
-<form method="post" action="">
-  <fieldset>
-    <div class="form-group">
-      <label>D'où partez vous </label>
-      <input type="text" class="form-control" required name="nom" placeholder="">
-    </div>
-    <div class="form-group">
-      <label>Où allez-vous?</label>
-      <input type="text" class="form-control" required name="prenom" placeholder="Entrée votre prénom">
-    </div>
-    <div class="form-group">
-      <label for="exampleInputPassword1">Date de naissance : </label>
-      <input type="date" class="form-control" required name="datedenaissance" id="exampleInputPassword1" >
-    </div>
-   
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </fieldset>
-</form>
-</div>
-
-
+</form>  
 {% endblock %}
