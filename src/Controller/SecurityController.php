@@ -67,12 +67,10 @@ class SecurityController extends AbstractController
 
     }
 
-    /**
-     * @Route("/login_brouillon", name="login_brouillin")
-     */
-    public function login(){
-      return $this->render('security/login.html.twig') ;
-    }
+
+    // public function login(){
+    //   return $this->render('security/login.html.twig') ;
+    // }
 
     // /**
     //  * @Route("/inscription", name="inscription")

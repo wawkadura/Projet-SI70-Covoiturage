@@ -1,5 +1,7 @@
 security:
-    
+    encoders:
+            App\Entity\Compte:
+                algorithm: bcrypt
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         users_in_memory: { memory: null }
@@ -15,13 +17,12 @@ security:
             anonymous: true
             provider: in_database
             form_login:
-                login_path: login
-                check_path: login
-            guard:
-                authenticators:
-                    - App\Security\UserAuthentiatorAuthenticator
+                login_path: roadshare_connexion
+                check_path: roadshare_connexion
             logout:
-                path: app_logout
+                path: roadshare_deconnexion
+                target: home
+
                 # where to redirect after logout
                 # target: app_any_route
 

@@ -11,7 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Security\Core\Encoder\EncoderFactory;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 class RoadshareController extends AbstractController
 {
@@ -34,7 +35,7 @@ class RoadshareController extends AbstractController
     /**
      * @Route("/roadshare/inscription", name="roadshare_inscription")
      */
-    public function inscription(Request $request, ObjectManager $manager): Response
+    public function inscription(Request $request, ObjectManager $manager, UserPasswordEncoder $encoder): Response
     {
         $utilisateur = new Utilisateur;
         $compte = new Compte;
@@ -46,6 +47,8 @@ class RoadshareController extends AbstractController
         $formCompte->handleRequest($request);
 
         if(($formUtilisateur->isSubmitted() && $formUtilisateur->isValid()) && ($formCompte->isSubmitted() && $formCompte->isValid())){
+            $hash = $encoder->encodePassword($compte,$compte->getMotDePasse());
+            $compte->setMotDePasse($hash);
             $utilisateur->setCompte($compte);
             $manager->persist($compte);
             $manager->persist($utilisateur);
@@ -66,6 +69,24 @@ class RoadshareController extends AbstractController
     public function Redirection(): Response
     {
         return $this->render('roadshare/redirection.html.twig');
+    }
+    /**
+     * @Route("roadshare/connexion", name="roadshare_connexion")
+     */
+    public function Connexion(): Response
+    {
+        return $this->render('security/login.html.twig');
+    }
+    /**
+     * @Route("roadshare/deconnexion", name="roadshare_deconnexion")
+     */
+    public function Deconnexion(){}
+
+    /**
+     * @Route("roadshare/profil", name="roadshare_profil")
+     */
+    public function Profil(){
+
     }
 
 }

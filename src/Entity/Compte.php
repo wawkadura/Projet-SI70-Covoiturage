@@ -17,7 +17,7 @@ use App\Entity\CompteType;
  *     message="l'email est déjà utilisé!"
  * )
  */
-class Compte
+class Compte implements UserInterface
 {
     /**
      *  Compte
@@ -64,27 +64,13 @@ class Compte
     {
         $this->motDePasse= $motdepasse;
     }
+    public function getPassword(){ return $this->getMotDePasse();}
 
-    public function getRoles()
-    {
-        // TODO: Implement getRoles() method.
+    public function getSalt(){}
+    public function eraseCredentials(){}
+    public function getUsername(){return "User $this->id";}
+    public function getRoles(){
+        return ['ROLE_USER'];
     }
-
-
-    public function getSalt()
-    {
-        // TODO: Implement getSalt() method.
-    }
-
-    public function getUsername()
-    {
-        // TODO: Implement getUsername() method.
-    }
-
-    public function eraseCredentials()
-    {
-        // TODO: Implement eraseCredentials() method.
-    }
-
 
 }
