@@ -114,11 +114,15 @@ class RoadshareController extends AbstractController
     /**
      * @Route("/recherche", name="roadshare_recherche")
      */
-    public function Recherche(): Response
-    {
+    public function Recherche(Request $request): Response
+    {   
+        
+        $results = False;
         $user = $this->getUser();
+
         return $this->render('roadshare/recherche.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'results' => $results
         ]);
     }
 

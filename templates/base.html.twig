@@ -24,14 +24,15 @@
         <ul class="navbar-nav mr-auto"></ul>
         <form class="form-inline my-2 my-lg-0">
         {% if app.user %}
-        <div class="container">
-            <div class="dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ user.email }}</button>
-                    <ul class="dropdown-menu">
-                            <li><a href="{{path('roadshare_profil')}}">Profil</a></li>
-                            <li><a href="#">vos Trajets</a></li>
-                            <li><a href="{{path('roadshare_deconnexion')}}">Déconnection</a></li>
-                    </ul>
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.email }}</button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop3" style="">
+                <a class="dropdown-item" href="{{path('roadshare_profil')}}">Profil</a>
+                <a class="dropdown-item" href="#">Vos Trajets</a>
+                <a class="dropdown-item" href="{{path('roadshare_deconnexion')}}">Déconnection</a>
+                </div>
             </div>
         </div>
         {% else %}
