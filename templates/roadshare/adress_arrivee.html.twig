@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  {% extends 'base.html.twig' %}
+
+{% block body %}
+<br>
+<div class="jumbotron">
+<h6 class="display-4">Prosition trajet</h6>
+{{form_start(form)}}
+  <fieldset>
+
+
+<div class="form-group">
+  
+     <div class="form-group">
+      {{form_row(form.AdressePostale.numroRue, {'label':'Numero rue:', 'attr' : {
+        'placeholder': 'Entrée votre numero de rue de la destination'
+      }})}}
+    </div>
+    <div class="form-group">
+      {{form_row(form.AdressePostale.rue, {'label':'Rue:', 'attr' : {
+        'placeholder': 'numero rue de la destination'
+      }})}}
+ 
+    </div>
+    <div class="form-group">
+      {{form_row(form.AdressePostale.vile, {'label':'Ville :','attr' : {
+        'placeholder': 'vile de rue de la destination'
+       }})}}
+    </div>
+    <div class="form-group">
+      {{form_row(form.AdressePostale.departement, {'label':'Département :', 'attr' : {
+        'placeholder': 'Département de la destination'
+      }})}} <br/>  
+    </div>
+
+
+   </fieldset>
+{{form_end(form)}}
+</div>
+
+{% endblock %}
+
+{% endblock %}

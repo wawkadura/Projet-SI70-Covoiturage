@@ -5,7 +5,35 @@
 <div class="jumbotron">
 <h6 class="display-4">Prosition trajet</h6>
 {{form_start(form)}}
-<h1> just need to do the view </h1>
+ <fieldset>
+{{ form_row(form.trajet.date)}}
+{{ form_row(form.trajet.heureDepart)}}
+{{ form_row(form.trajet.heureArrivee)}}
+{{ form_row(form.trajet.nbPlaces)}}
+{{ form_row(form.trajet.prix)}}
+{{ form_row(form.trajet.etat)}}
+<h2>Adresse départ</h2>
+ {{form_row(form.AdressePostale.numeroRue, {'label':'Numero rue:', 'attr' : {
+        'placeholder': 'Entrée votre numero de rue de départ'
+      }})}}
+ {{form_row(form.AdressePostale.rue, {'label':'Rue:', 'attr' : {
+        'placeholder': 'numero rue de départ'
+      }})}}
+   
+ {{form_row(form.AdressePostale.ville, {'label':'Ville :','attr' : {
+        'placeholder': 'ville de rue de départ'
+       }})}}
+    
+ {{form_row(form.AdressePostale.departement, {'label':'Département :', 'attr' : {
+        'placeholder': 'Département de départ'
+      }})}}
+
+<h2>Adresse d'arrivée</h2>
+<h1> we gonna have a problem sincerly</h1>
+
+
+ </fieldset>
+ <button type="submit" class="btn btn-primary">Valider</button>
 {{form_end(form)}}
 </div>
 
