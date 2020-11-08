@@ -10,6 +10,50 @@
 {{form_start(form)}}
   <fieldset>
 
+
+<div class="form-group">
+      {{form_row(form.adresse_postale.numroRue, {'label':'Numero rue:', 'attr' : {
+        'placeholder': 'Entrée votre numero de rue de départ'
+      }})}}
+    </div>
+    <div class="form-group">
+      {{form_row(form.adresse_postale.rue, {'label':'Rue:', 'attr' : {
+        'placeholder': 'numero rue de départ'
+      }})}}
+    </div>
+    <div class="form-group">
+      {{form_row(form.adresse_postale.vile, {'label':'Ville :','attr' : {
+        'placeholder': 'vile de rue de départ'
+       }})}}
+    </div>
+    <div class="form-group">
+      {{form_row(form.adresse_postale.departement, {'label':'Département :', 'attr' : {
+        'placeholder': 'Département de départ'
+      }})}} <br/>
+  
+     <div class="form-group">
+      {{form_row(form.adresse_postale.numroRue, {'label':'Numero rue:', 'attr' : {
+        'placeholder': 'Entrée votre numero de rue de la destination'
+      }})}}
+    </div>
+    <div class="form-group">
+      {{form_row(form.adresse_postale.rue, {'label':'Rue:', 'attr' : {
+        'placeholder': 'numero rue de la destination'
+      }})}}
+ 
+    </div>
+    <div class="form-group">
+      {{form_row(form.adresse_postale.vile, {'label':'Ville :','attr' : {
+        'placeholder': 'vile de rue de la destination'
+       }})}}
+    </div>
+    <div class="form-group">
+      {{form_row(form.adresse_postale.departement, {'label':'Département :', 'attr' : {
+        'placeholder': 'Département de la destination'
+      }})}} <br/>  
+    </div>
+
+
     <div class="form-group">
       {{form_row(form.trajet.date, {'label':'Date de départ :', 'attr' : {
         'placeholder': ''
@@ -35,6 +79,9 @@
         'placeholder': ''
       }})}}
     </div>
+
+
+
    </fieldset>
 {{form_end(form)}}
 </div>

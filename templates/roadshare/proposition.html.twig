@@ -3,56 +3,9 @@
 {% block body %}
 <br>
 <div class="jumbotron">
-<h6 class="display-4"> Prosition trajet</h6>
+<h6 class="display-4">Prosition trajet</h6>
 {{form_start(form)}}
-  <fieldset>
-
-    <div class="form-group">
-      {{form_row(form.adresse_postale.numroRue, {'label':'Numero rue:', 'attr' : {
-        'placeholder': 'Entrée votre numero de rue de départ'
-      }})}}
-    </div>
-    <div class="form-group">
-      {{form_row(form.adresse_postale.rue, {'label':'Rue:', 'attr' : {
-        'placeholder': 'numero rue de départ'
-      }})}}
-    </div>
-    <div class="form-group">
-      {{form_row(form.adresse_postale.vile, {'label':'Ville :','attr' : {
-        'placeholder': 'vile de rue de départ'
-       }})}}
-    </div>
-    <div class="form-group">
-      {{form_row(form.adresse_postale.departement, {'label':'Département :', 'attr' : {
-        'placeholder': 'Département de départ'
-      }})}} <br/>
-
-      
-     <div class="form-group">
-      {{form_row(form.adresse_postale.numroRue, {'label':'Numero rue:', 'attr' : {
-        'placeholder': 'Entrée votre numero de rue de la destination'
-      }})}}
-    </div>
-    <div class="form-group">
-      {{form_row(form.adresse_postale.rue, {'label':'Rue:', 'attr' : {
-        'placeholder': 'numero rue de la destination'
-      }})}}
- 
-    </div>
-    <div class="form-group">
-      {{form_row(form.adresse_postale.vile, {'label':'Ville :','attr' : {
-        'placeholder': 'vile de rue de la destination'
-       }})}}
-    </div>
-    <div class="form-group">
-      {{form_row(form.adresse_postale.departement, {'label':'Département :', 'attr' : {
-        'placeholder': 'Département de la destination'
-      }})}} <br/>  
-    </div>
-
-
-    <button type="submit" class="btn btn-primary">Valider</button>
-   </fieldset>
+<h1> just need to do the view </h1>
 {{form_end(form)}}
 </div>
 

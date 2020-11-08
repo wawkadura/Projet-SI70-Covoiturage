@@ -2,16 +2,16 @@
 
 namespace App\Controller;
 
-use App\Entity\AdressePostale;
 use App\Entity\Compte;
-use App\Entity\Trajet;
 use App\Entity\Utilisateur;
+use App\Entity\Trajet;
+use App\Entity\AdressePostale;
+use App\Form\PropositionType;
 use App\Form\CompteType;
 use App\Form\InscriptionFormType;
 use App\Form\UtilisateurType;
 use App\Form\AdressepostaleType;
 use App\Form\TrajetType;
-use App\Form\propositionFromType;
 use App\Repository\UtilisateurRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ObjectManager;
@@ -81,48 +81,15 @@ class RoadshareController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-    /**
-     * @Route("/proposition", name="roadshare_proposition")
-     */
-    public function Proposition(Request $request, ObjectManager $manager): Response
-    {   
-        $user = $this->getUser();
-        $trajet = new Trajet;
-        $adressepostale = new AdressePostale;
-        
-        $formData['trajet'] = $trajet;
-        $formData['adresse_postale']  = $adressepostale;
-
-        $form = $this->createForm(propositionFormType::class, $formData);
-        $form->handleRequest($request);
-
-        dump($form);
-        if(($form['trajet']->isSubmitted() && $form['trajet']->isValid()) && 
-            ($form['adresse_postale']->isSubmitted() && $form['adresse_postale']->isValid())){
-
-            $manager->persist($trajet);
-            $manager->persist($adressepostale);
-            $manager->flush();
-            return $this->redirectToRoute('roadshare_home');
-        }
-        return $this->render('roadshare/proposition.html.twig', [
-            'form' => $form->createView(),
-            'user' => $user
-        ]);
-    }
-
+  
     /**
      * @Route("/recherche", name="roadshare_recherche")
      */
-    public function Recherche(Request $request): Response
-    {   
-        
-        $results = False;
+    public function Recherche(): Response
+    {
         $user = $this->getUser();
-
         return $this->render('roadshare/recherche.html.twig', [
-            'user' => $user,
-            'results' => $results
+            'user' => $user
         ]);
     }
 
@@ -138,4 +105,33 @@ class RoadshareController extends AbstractController
             'utilisateur' => $utilisateur[0]
         ]);
     }
+
+    /**
+     * @Route("/proposition", name="roadshare_proposition")
+     */
+    public function PropositionTrajet(Request $request, ObjectManager $manager): Response
+    {
+        $trajet = new Trajet();
+        $adressepostale = new AdressePostale();
+        
+        $formData['AdressePostale']  = $adressepostale;
+        $formData['trajet'] = $trajet;
+      
+        $form = $this->createForm(PropositionType::class, $formData);
+        $form->handleRequest($request);
+        if(($form['trajet']->isSubmitted() && $form['trajet']->isValid()) && 
+            ($form['AdressePostale']->isSubmitted() && $form['AdressePostale']->isValid())){
+
+            $manager->persist($trajet);
+            $manager->persist($adressepostale);
+            $manager->flush();
+            return $this->redirectToRoute('roadshare_home');
+        }
+        $user = $this->getUser();
+        return $this->render('roadshare/proposition.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user
+        ]);
+    }
+ 
 }

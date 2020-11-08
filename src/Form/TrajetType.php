@@ -22,9 +22,6 @@ class TrajetType extends AbstractType
             ->add('nbPlaces',TextType::class)
             ->add('prix',TextType::class)
             ->add('etat',TextType::class)
-            ->add('conducteur')
-            ->add('adresseDepart')
-            ->add('adresseArrivee')
         ;
     }
 
