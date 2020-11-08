@@ -109,21 +109,31 @@ class RoadshareController extends AbstractController
     /**
      * @Route("/proposition", name="roadshare_proposition")
      */
-    public function PropositionTrajet(Request $request, ObjectManager $manager): Response
+    public function Proposition(Request $request, ObjectManager $manager,UtilisateurRepository $repo): Response
     {
         $trajet = new Trajet();
-        $adressepostale = new AdressePostale();
+        $adresseDepart = new AdressePostale();
+        $adresseArrivee = new AdressePostale();
         
-        $formData['AdressePostale']  = $adressepostale;
+        $formData['AdresseDepart']  = $adresseDepart;
+        $formData['AdresseArrivee']  =  $adresseArrivee;
         $formData['trajet'] = $trajet;
       
         $form = $this->createForm(PropositionType::class, $formData);
         $form->handleRequest($request);
         if(($form['trajet']->isSubmitted() && $form['trajet']->isValid()) && 
-            ($form['AdressePostale']->isSubmitted() && $form['AdressePostale']->isValid())){
+            ($form['AdresseDepart']->isSubmitted() && $form['AdresseDepart']->isValid()) && 
+            ($form['AdresseArrivee']->isSubmitted() && $form['AdresseArrivee']->isValid())){
 
+            $user = $this->getUser();
+            $conducteur = $repo->findBy(array("compte" => $user->getId()));
+            $trajet->setConducteur($conducteur[0]);
+            
+            $trajet->setAdresseDepart($adresseDepart);
+            $trajet->setAdresseArrivee($adresseArrivee);    
             $manager->persist($trajet);
-            $manager->persist($adressepostale);
+            $manager->persist($adresseDepart);
+            $manager->persist($adresseArrivee);
             $manager->flush();
             return $this->redirectToRoute('roadshare_home');
         }

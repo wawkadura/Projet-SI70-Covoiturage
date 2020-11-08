@@ -13,24 +13,35 @@
 {{ form_row(form.trajet.prix)}}
 {{ form_row(form.trajet.etat)}}
 <h2>Adresse départ</h2>
- {{form_row(form.AdressePostale.numeroRue, {'label':'Numero rue:', 'attr' : {
+ {{form_row(form.AdresseDepart.numeroRue, {'label':'Numero rue:', 'attr' : {
         'placeholder': 'Entrée votre numero de rue de départ'
       }})}}
- {{form_row(form.AdressePostale.rue, {'label':'Rue:', 'attr' : {
+ {{form_row(form.AdresseDepart.rue, {'label':'Rue:', 'attr' : {
         'placeholder': 'numero rue de départ'
       }})}}
    
- {{form_row(form.AdressePostale.ville, {'label':'Ville :','attr' : {
+ {{form_row(form.AdresseDepart.ville, {'label':'Ville :','attr' : {
         'placeholder': 'ville de rue de départ'
        }})}}
     
- {{form_row(form.AdressePostale.departement, {'label':'Département :', 'attr' : {
+ {{form_row(form.AdresseDepart.departement, {'label':'Département :', 'attr' : {
         'placeholder': 'Département de départ'
       }})}}
 
-<h2>Adresse d'arrivée</h2>
-<h1> we gonna have a problem sincerly</h1>
+<h2>Adresse de destination</h2>
 
+      {{form_row(form.AdresseArrivee.numeroRue, {'label':'Numero rue:', 'attr' : {
+        'placeholder': 'Entrée votre numero de rue de la destination'
+      }})}}
+      {{form_row(form.AdresseArrivee.rue, {'label':'Rue:', 'attr' : {
+        'placeholder': 'numero rue de la destination'
+      }})}}
+      {{form_row(form.AdresseArrivee.ville, {'label':'Ville :','attr' : {
+        'placeholder': 'ville de rue de la destination'
+       }})}}
+      {{form_row(form.AdresseArrivee.departement, {'label':'Département :', 'attr' : {
+        'placeholder': 'Département de la destination'
+      }})}} 
 
  </fieldset>
  <button type="submit" class="btn btn-primary">Valider</button>

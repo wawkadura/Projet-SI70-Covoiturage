@@ -12,7 +12,8 @@ class PropositionType extends AbstractType
     {
         $builder
             ->add('trajet',TrajetType::class)
-            ->add('AdressePostale',AdressepostaleType::class)
+            ->add('AdresseDepart',AdressepostaleType::class)
+            ->add('AdresseArrivee',AdressepostaleType::class)
         ;
     }
 
