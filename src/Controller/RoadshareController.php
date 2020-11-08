@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\AdressePostale;
 use App\Entity\Compte;
+use App\Entity\Trajet;
 use App\Entity\Utilisateur;
 use App\Form\CompteType;
 use App\Form\InscriptionFormType;
@@ -82,10 +84,29 @@ class RoadshareController extends AbstractController
     /**
      * @Route("/proposition", name="roadshare_proposition")
      */
-    public function Proposition(): Response
-    {
+    public function Proposition(Request $request, ObjectManager $manager): Response
+    {   
         $user = $this->getUser();
+        $trajet = new Trajet;
+        $adressepostale = new AdressePostale;
+        
+        $formData['trajet'] = $trajet;
+        $formData['adresse_postale']  = $adressepostale;
+
+        $form = $this->createForm(propositionFormType::class, $formData);
+        $form->handleRequest($request);
+
+        dump($form);
+        if(($form['trajet']->isSubmitted() && $form['trajet']->isValid()) && 
+            ($form['adresse_postale']->isSubmitted() && $form['adresse_postale']->isValid())){
+
+            $manager->persist($trajet);
+            $manager->persist($adressepostale);
+            $manager->flush();
+            return $this->redirectToRoute('roadshare_home');
+        }
         return $this->render('roadshare/proposition.html.twig', [
+            'form' => $form->createView(),
             'user' => $user
         ]);
     }
@@ -113,33 +134,4 @@ class RoadshareController extends AbstractController
             'utilisateur' => $utilisateur[0]
         ]);
     }
-
-    /**
-     * @Route("/propositionTrajet", name="roadshare_propositiontrajet")
-     */
-    public function PropositionTrajet(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder): Response
-    {
-        $trajet = new Trajet;
-        $adresspostale = new AdressePostale;
-        
-        $formData['trajet'] = $trajet;
-        $formData['adresse_postale']  = $adressepostale;
-
-        $form = $this->createForm(propositionFormType::class, $formData);
-        $form->handleRequest($request);
-
-        dump($form);
-        if(($form['trajet']->isSubmitted() && $form['trajet']->isValid()) && 
-            ($form['adresse_postale']->isSubmitted() && $form['adresse_postale']->isValid())){
-
-            $manager->persist($trajet);
-            $manager->persist($adressepostale);
-            $manager->flush();
-            return $this->redirectToRoute('roadshare_home');
-        }
-        return $this->render('roadshare/proposition.html.twig', [
-            'form' => $form->createView()
-        ]);
-    }
- 
 }
