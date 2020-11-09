@@ -6,6 +6,7 @@ use App\Repository\TrajetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TrajetRepository::class)
@@ -19,8 +20,10 @@ class Trajet
      */
     private $id;
 
+   
     /**
      * @ORM\Column(type="date")
+     * 
      */
     private $date;
 
@@ -32,11 +35,13 @@ class Trajet
 
     /**
      * @ORM\Column(type="time")
+     * @Assert\LessThan(propertyPath ="heureArrivee", message="verifier que l'heure départ est inférieur à l'heure d'arrivée")
      */
     private $heureDepart;
 
     /**
      * @ORM\Column(type="time")
+     * * @Assert\GreaterThan(propertyPath ="heureDepart", message="verifier que l'heure départ est inférieur à l'heure d'arrivée")
      */
     private $heureArrivee;
 
@@ -80,7 +85,8 @@ class Trajet
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
-        $this->avis = new ArrayCollection();
+        $this->avis = new ArrayCollection(); 
+        $this->date = new \DateTime('now');
     }
 
     public function getId(): ?int
