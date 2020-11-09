@@ -11,6 +11,8 @@ use App\Form\CompteType;
 use App\Form\InscriptionFormType;
 use App\Form\UtilisateurType;
 use App\Form\TrajetType;
+use App\Repository\AdressePostaleRepository;
+use App\Repository\TrajetRepository;
 use App\Repository\UtilisateurRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ObjectManager;
@@ -121,17 +123,28 @@ class RoadshareController extends AbstractController
     /**
      * @Route("/recherche", name="roadshare_recherche")
      */
-    public function Recherche(Request $request): Response
+    public function Recherche(Request $request, TrajetRepository $trajetRepo, AdressePostaleRepository $adresseRepo): Response
     {   
-        $results = $request->request;
-        dump($results);
+        $recherche = $request->request;
         $user = $this->getUser();
-        // if($results->count()>0){
+        if($recherche->count()>0){
+            $adresseDepart = new AdressePostale();
+            $adresseDepart->setRue($recherche->get('adresseDepart'))
+                            ->setVille($recherche->get('villeDepart'))
+                            ->setCodePostale($recherche->get('codePostaleDepart')); 
+            $adresseArrivee = new AdressePostale();
+            $adresseArrivee->setRue($recherche->get('adresseArrivee'))
+                            ->setVille($recherche->get('villeArrivee'))
+                            ->setCodePostale($recherche->get('codePostaleArrivee'));
+            $dateDepart = $recherche->get('dateDepart');
+            $heureDepart = $recherche->get('heureDepart');
 
-        // }
+            $adressesTrouver = $adresseRepo->findBy(array('codePostale'=>$adresseDepart->getCodePostale()));
+            
+        }
         return $this->render('roadshare/recherche.html.twig', [
             'user' => $user,
-            'results' => ($results->count()>0)
+            'recherche' => ($recherche->count()>0)
         ]);
     }
 

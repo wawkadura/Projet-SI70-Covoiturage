@@ -2,30 +2,42 @@
 
 {% block body %}
 <div class="jumbotron">
-    <form methode='post' action="{{path('roadshare_recherche')}}" >
-      <label lass="col-sm-6 col-form-label">Départ : </label> 
-      <div class="form-inline">
-        <input class="form-control mr-sm-2" name="adresse" type="text" placeholder="Adresse" required>
-        <input class="form-control mr-sm-2" name="codePostale" type="Number" placeholder="Code Postale" required>
-        <input class="form-control mr-sm-2" name="ville" type="text" placeholder="Ville" required>
+
+    <form method="post" action="{{path('roadshare_recherche')}}" >
+      <div class="card bg-secondary mb-3" >
+        <div class="card-body">
+          <h5 class="card-title">Départ : </h5>
+          <div class="form-inline">
+            <input class="form-control mr-sm-2" name="adresseDepart" type="text" placeholder="Adresse" required>
+            <input class="form-control mr-sm-2" name="codePostaleDepart" type="Number" placeholder="Code Postale" required>
+            <input class="form-control mr-sm-2" name="villeDepart" type="text" placeholder="Ville" required>
+          </div>
+        </div>
       </div>
-      <label lass="col-sm-6 col-form-label">Destination : </label> 
-      <div class="form-inline">
-        <input class="form-control mr-sm-2" name="adresse" type="text" placeholder="Adresse" required>
-        <input class="form-control mr-sm-2" name="codePostale" type="Number" placeholder="Code Postale" required>
-        <input class="form-control mr-sm-2" name="ville" type="text" placeholder="Ville" required>
+      <div class="card bg-secondary mb-3" >
+        <div class="card-body">
+          <h5 class="card-title">Arrivée : </h5>
+          <div class="form-inline">
+            <input class="form-control mr-sm-2" name="adresseArrivee" type="text" placeholder="Adresse" required>
+            <input class="form-control mr-sm-2" name="codePostaleArrivee" type="Number" placeholder="Code Postale" required>
+            <input class="form-control mr-sm-2" name="villeArrivee" type="text" placeholder="Ville" required>
+          </div>
+        </div>
       </div>
-      <label lass="col-sm-6 col-form-label">Date & Heure de depart : </label> 
-      <div class="form-inline">
-        <input class="form-control mr-sm-6" name="dateDepart" type="date" placeholder="Date" required>
-        <input class="form-control mr-sm-6" name="heureDepart" type="time" placeholder="Heure" required>
+      <div class="card bg-secondary mb-3" >
+        <div class="card-body">
+          <h5 class="card-title">Date & Heure de depart : </h5>
+          <div class="form-inline">
+            <input class="form-control mr-sm-6" name="dateDepart" type="date" placeholder="Date" required>
+            <input class="form-control mr-sm-6" name="heureDepart" type="time" placeholder="Heure" required>
+          </div>
+        </div>
       </div>
-      <br>
       <button type="submit" class="btn btn-primary btn-lg btn-block">Lancer la recherche</button>
     </form>
 </div>
 
-{% if results %}
+{% if recherche %}
 <div>
   <ul class="pagination pagination-lg">
     <li class="page-item disabled">
