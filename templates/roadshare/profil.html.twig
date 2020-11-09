@@ -1,10 +1,17 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-{{ utilisateur.nom}}<br/>
-{{ utilisateur.prenom}}<br/>
-{{ utilisateur.telephone}}<br/>
-{{ utilisateur.dateDeNaissance | date('d/m/Y')}}
+<h4> A propo de vous </h4>
+<div class="jumbotron">
+    {{utilisateur.nom}}
+    {{ utilisateur.prenom}}<br/>
+    {{ utilisateur.telephone}}<br/>
+    {{ utilisateur.dateDeNaissance | date('d/m/Y')}}
+    <a class="nav-link" href=""}}">Modifier les informations personnelles</a>
+</div>
+<div>
+<a class="nav-link" href="{{path('roadshare_voiture')}}">Ajouter un vehicule</a>
+</div>
 
 {% endblock %}
+
