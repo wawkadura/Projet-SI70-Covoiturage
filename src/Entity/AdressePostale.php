@@ -18,11 +18,6 @@ class AdressePostale
     private $id;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $numeroRue;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $rue;
@@ -35,23 +30,11 @@ class AdressePostale
     /**
      * @ORM\Column(type="integer")
      */
-    private $departement;
+    private $codePostale;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getNumeroRue(): ?int
-    {
-        return $this->numeroRue;
-    }
-
-    public function setNumeroRue(?int $numeroRue): self
-    {
-        $this->numeroRue = $numeroRue;
-
-        return $this;
     }
 
     public function getRue(): ?string
@@ -78,14 +61,14 @@ class AdressePostale
         return $this;
     }
 
-    public function getDepartement(): ?int
+    public function getCodePostale(): ?int
     {
-        return $this->departement;
+        return $this->codePostale;
     }
 
-    public function setDepartement(int $departement): self
+    public function setCodePostale(int $codePostale): self
     {
-        $this->departement = $departement;
+        $this->codePostale = $codePostale;
 
         return $this;
     }

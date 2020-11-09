@@ -10,13 +10,11 @@ use App\Form\PropositionType;
 use App\Form\CompteType;
 use App\Form\InscriptionFormType;
 use App\Form\UtilisateurType;
-use App\Form\AdressepostaleType;
 use App\Form\TrajetType;
 use App\Repository\UtilisateurRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
@@ -81,30 +79,6 @@ class RoadshareController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-  
-    /**
-     * @Route("/recherche", name="roadshare_recherche")
-     */
-    public function Recherche(): Response
-    {
-        $user = $this->getUser();
-        return $this->render('roadshare/recherche.html.twig', [
-            'user' => $user
-        ]);
-    }
-
-    /**
-     * @Route("/profil", name="roadshare_profil")
-     */
-    public function Profil(UtilisateurRepository $repo){
-        $user = $this->getUser();
-        $utilisateur = $repo->findBy(array("compte" => $user->getId()));
-        dump($utilisateur[0]);
-        return $this->render('roadshare/profil.html.twig', [
-            'user' => $user,
-            'utilisateur' => $utilisateur[0]
-        ]);
-    }
 
     /**
      * @Route("/proposition", name="roadshare_proposition")
@@ -115,15 +89,15 @@ class RoadshareController extends AbstractController
         $adresseDepart = new AdressePostale();
         $adresseArrivee = new AdressePostale();
         
-        $formData['AdresseDepart']  = $adresseDepart;
-        $formData['AdresseArrivee']  =  $adresseArrivee;
+        $formData['adresseDepart']  = $adresseDepart;
+        $formData['adresseArrivee']  =  $adresseArrivee;
         $formData['trajet'] = $trajet;
       
         $form = $this->createForm(PropositionType::class, $formData);
         $form->handleRequest($request);
         if(($form['trajet']->isSubmitted() && $form['trajet']->isValid()) && 
-            ($form['AdresseDepart']->isSubmitted() && $form['AdresseDepart']->isValid()) && 
-            ($form['AdresseArrivee']->isSubmitted() && $form['AdresseArrivee']->isValid())){
+            ($form['adresseDepart']->isSubmitted() && $form['adresseDepart']->isValid()) && 
+            ($form['adresseArrivee']->isSubmitted() && $form['adresseArrivee']->isValid())){
 
             $user = $this->getUser();
             $conducteur = $repo->findBy(array("compte" => $user->getId()));
@@ -143,5 +117,37 @@ class RoadshareController extends AbstractController
             'user' => $user
         ]);
     }
+  
+    /**
+     * @Route("/recherche", name="roadshare_recherche")
+     */
+    public function Recherche(Request $request): Response
+    {   
+        $results = $request->request;
+        dump($results);
+        $user = $this->getUser();
+        // if($results->count()>0){
+
+        // }
+        return $this->render('roadshare/recherche.html.twig', [
+            'user' => $user,
+            'results' => ($results->count()>0)
+        ]);
+    }
+
+    /**
+     * @Route("/profil", name="roadshare_profil")
+     */
+    public function Profil(UtilisateurRepository $repo){
+        $user = $this->getUser();
+        $utilisateur = $repo->findBy(array("compte" => $user->getId()));
+        dump($utilisateur[0]);
+        return $this->render('roadshare/profil.html.twig', [
+            'user' => $user,
+            'utilisateur' => $utilisateur[0]
+        ]);
+    }
+
+
  
 }
