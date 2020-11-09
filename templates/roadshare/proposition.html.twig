@@ -3,46 +3,55 @@
 {% block body %}
 <br>
 <div class="jumbotron">
-<h6 class="display-4">Prosition trajet</h6>
+<h6 class="display-4">Proposition de trajet</h6>
 {{form_start(form)}}
  <fieldset>
-{{ form_row(form.trajet.date)}}
-{{ form_row(form.trajet.heureDepart)}}
-{{ form_row(form.trajet.heureArrivee)}}
-{{ form_row(form.trajet.nbPlaces)}}
-{{ form_row(form.trajet.prix)}}
-{{ form_row(form.trajet.etat)}}
-<h2>Adresse départ</h2>
- {{form_row(form.AdresseDepart.numeroRue, {'label':'Numero rue:', 'attr' : {
-        'placeholder': 'Entrée votre numero de rue de départ'
+{{ form_row(form.trajet.date, {'label':'Date du trajet : '})}}
+{{ form_row(form.trajet.heureDepart, {'label':'Heure de départ :', 'attr' : {
+        'placeholder': 'Entrée le nombre de places'
       }})}}
- {{form_row(form.AdresseDepart.rue, {'label':'Rue:', 'attr' : {
-        'placeholder': 'numero rue de départ'
-      }})}}
-   
- {{form_row(form.AdresseDepart.ville, {'label':'Ville :','attr' : {
-        'placeholder': 'ville de rue de départ'
-       }})}}
-    
- {{form_row(form.AdresseDepart.departement, {'label':'Département :', 'attr' : {
-        'placeholder': 'Département de départ'
+{{ form_row(form.trajet.heureArrivee, {'label':'Heure d\'arrivée :', 'attr' : {
+        'placeholder': 'Entrée le nombre de places'
       }})}}
 
-<h2>Adresse de destination</h2>
+<div class="card bg-secondary mb-3" >
+  <div class="card-body">
+    <h4 class="card-title">Adresse départ</h4>
+      {{form_row(form.adresseDepart.rue, {'label':'Rue:', 'attr' : {
+              'placeholder': 'Entrée l\'adresse de la rue'
+            }})}}
+        
+      {{form_row(form.adresseDepart.ville, {'label':'Ville :','attr' : {
+              'placeholder': 'Entrée la ville'
+            }})}}
+          
+      {{form_row(form.adresseDepart.codePostale, {'label':'Code postale :', 'attr' : {
+              'placeholder': 'Entrée le code postale'
+            }})}}
 
-      {{form_row(form.AdresseArrivee.numeroRue, {'label':'Numero rue:', 'attr' : {
-        'placeholder': 'Entrée votre numero de rue de la destination'
+  </div>
+</div>
+<div class="card bg-secondary mb-3">
+  <div class="card-body">
+    <h4 class="card-title">Adresse de destination</h4>
+      {{form_row(form.adresseArrivee.rue, {'label':'Rue:', 'attr' : {
+        'placeholder': 'Entrée l\'adresse de la rue'
       }})}}
-      {{form_row(form.AdresseArrivee.rue, {'label':'Rue:', 'attr' : {
-        'placeholder': 'numero rue de la destination'
-      }})}}
-      {{form_row(form.AdresseArrivee.ville, {'label':'Ville :','attr' : {
-        'placeholder': 'ville de rue de la destination'
+      {{form_row(form.adresseArrivee.ville, {'label':'Ville :','attr' : {
+        'placeholder': 'Entrée la ville'
        }})}}
-      {{form_row(form.AdresseArrivee.departement, {'label':'Département :', 'attr' : {
-        'placeholder': 'Département de la destination'
+      {{form_row(form.adresseArrivee.codePostale, {'label':'Code postale :', 'attr' : {
+        'placeholder': 'Entrée le code postale'
       }})}} 
+  </div>
+</div>
 
+  {{ form_row(form.trajet.nbPlaces, {'label':'Nombre de places disponibles :', 'attr' : {
+        'placeholder': 'Entrée le nombre de places'
+      }})}}
+  {{ form_row(form.trajet.prix, {'label':'Prix (€) : ', 'attr' : {
+        'placeholder': 'Entrée le prix du trajet'
+      }})}}
  </fieldset>
  <button type="submit" class="btn btn-primary">Valider</button>
 {{form_end(form)}}

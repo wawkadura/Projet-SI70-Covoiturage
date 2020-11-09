@@ -2,11 +2,26 @@
 
 {% block body %}
 <div class="jumbotron">
-    <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Adresse">
-        <input class="form-control mr-sm-2" type="Number" placeholder="Code Postale">
-        <input class="form-control mr-sm-2" type="text" placeholder="Ville">
-        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+    <form methode='post' action="{{path('roadshare_recherche')}}" >
+      <label lass="col-sm-6 col-form-label">Départ : </label> 
+      <div class="form-inline">
+        <input class="form-control mr-sm-2" name="adresse" type="text" placeholder="Adresse" required>
+        <input class="form-control mr-sm-2" name="codePostale" type="Number" placeholder="Code Postale" required>
+        <input class="form-control mr-sm-2" name="ville" type="text" placeholder="Ville" required>
+      </div>
+      <label lass="col-sm-6 col-form-label">Destination : </label> 
+      <div class="form-inline">
+        <input class="form-control mr-sm-2" name="adresse" type="text" placeholder="Adresse" required>
+        <input class="form-control mr-sm-2" name="codePostale" type="Number" placeholder="Code Postale" required>
+        <input class="form-control mr-sm-2" name="ville" type="text" placeholder="Ville" required>
+      </div>
+      <label lass="col-sm-6 col-form-label">Date & Heure de depart : </label> 
+      <div class="form-inline">
+        <input class="form-control mr-sm-6" name="dateDepart" type="date" placeholder="Date" required>
+        <input class="form-control mr-sm-6" name="heureDepart" type="time" placeholder="Heure" required>
+      </div>
+      <br>
+      <button type="submit" class="btn btn-primary btn-lg btn-block">Lancer la recherche</button>
     </form>
 </div>
 
