@@ -7,7 +7,9 @@ use App\Entity\Utilisateur;
 use App\Entity\Trajet;
 use App\Entity\AdressePostale;
 use App\Entity\Voiture;
+use App\Entity\Criteres;
 use App\Form\VoitureType;
+use App\Form\CriteresType;
 use App\Form\PropositionType;
 use App\Form\CompteType;
 use App\Form\InscriptionFormType;
@@ -23,6 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 
 class RoadshareController extends AbstractController
@@ -161,42 +164,68 @@ class RoadshareController extends AbstractController
     public function Profil(UtilisateurRepository $repo){
         $user = $this->getUser();
         $utilisateur = $repo->findBy(array("compte" => $user->getId()));
-        $voiture = $repo->findBy(array("compte" => $user->getId()));
-        //dump($utilisateur[0]);
+       
         return $this->render('roadshare/profil.html.twig', [
             'user' => $user,
             'utilisateur' => $utilisateur[0],
-            'voiture' => $voiture[0]
         ]);
     }
 
     /**
-     * @Route("/voiture", name="roadshare_voiture")
+     * @Route("/modification", name="roadshare_get_modification")
      */
-    public function voiture(Request $request, ObjectManager $manager,UtilisateurRepository $repo){
-        $voiture = new voiture();
-        $utilisateur = new Utilisateur;
-
-        $form = $this->createForm(VoitureType::class, $voiture);
-        $form->handleRequest($request);
-
-        if(($form->isSubmitted() && $form->isValid())){
-            $user = $this->getUser();
-            $car = $repo->findBy(array("compte" => $user->getId()));
-            $utilisateur->setVoiture($car[0]);
-            dump($car[0]);
-
-            $manager->persist($voiture);
-            $manager->flush();
-
-            return $this->redirectToRoute('roadshare_profil');
-
-        }
+    public function getIformation(){
         $user = $this->getUser();
-        return $this->render('roadshare/voiture.html.twig', [
-            'form' => $form->createView(),
+        $voitures= $this->getDoctrine()->getRepository(Voiture::class)->findBy(array("compte" => $user->getId()))[0];
+        $criteres= $this->getDoctrine()->getRepository(Voiture::class)->findBy(array("compte" => $user->getId()))[0];
+
+        return $this->render('roadshare/informations.html.twig', [
+            'voitures'=>$voitures,
+            'criteres'=>$criteres,
             'user' => $user
         ]);
     }
+
+ 
+    /**
+     * @Route("/edit/{id}", name="roadshare_set_information")
+     * @ParamConverter("id", class="Criteres" options={"id":"criteres"}) //il ya un erreur a ce niveau.
+    */
+    public function setmodification(Criteres $criteres,Voiture $voiture,Request $request,ObjectManager $manager,UtilisateurRepository $repo){
+        //$voiture = new voiture();
+        //criteres= new Criteres();
+        
+        $form = $this->createForm(VoitureType::class, $voiture);
+        $form->handleRequest($request);
+
+        $form1 = $this->createForm(CriteresType::class, $criteres);
+        $form1->handleRequest($request);
+
+        if(($form->isSubmitted() && $form->isValid())){
+            $user = $this->getUser();
+            $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
+            $utilisateur->setVoiture($voiture);
+
+            $manager->persist($voiture);
+            $manager->flush();
+        }
+
+        if(($form1->isSubmitted() && $form1->isValid())){
+            $user = $this->getUser();
+            $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
+            $utilisateur->setCritres($criteres);
+
+            $manager->persist($criteres);
+            $manager->flush();
+        }
+
+        $user = $this->getUser();
+        return $this->render('roadshare/informations.html.twig', [
+            'form' => $form->createView(),
+            'form1' => $form1->createView(),
+            'user' => $user
+        ]);
+    }
+
 
 }
