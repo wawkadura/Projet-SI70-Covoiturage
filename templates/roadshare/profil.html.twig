@@ -7,10 +7,12 @@
     {{ utilisateur.prenom}}<br/>
     {{ utilisateur.telephone}}<br/>
     {{ utilisateur.dateDeNaissance | date('d/m/Y')}}
-    <a class="nav-link" href=""}}">Modifier les informations personnelles</a>
 </div>
+ 
+
+
 <div>
-<a class="nav-link" href="{{path('roadshare_voiture')}}">Ajouter un vehicule</a>
+  <a class="nav-link" href="{{path('roadshare_set_information',{'id':voiture.id, 'id':criteres.id})}}"> Modifier ses informations </a>
 </div>
 
 {% endblock %}

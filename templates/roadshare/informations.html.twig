@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<br>
+<div class="jumbotron">
+
+<h4> Vos critères</h4>
+<fieldset>
+<div class="card bg-secondary mb-3" >
+  <div class="card-body">
+      {{form_row(form1.fumeur, {'label':'Fumeur:', 'attr' : {
+              'placeholder': 'Indiquer si vous accepter un trajet avec un fumeur '
+            }})}}
+        
+      {{form_row(form1.animaux, {'label':'Animax :','attr' : {
+              'placeholder': 'Est vous dacord de faire un trajet avec des animaux a bord ?'
+            }})}}
+          
+      {{form_row(form1.valise, {'label':'valise:', 'attr' : {
+              'placeholder': 'Indiquer si vous avez ou si vous acceptez les valises'
+            }})}}
+         
+  </div>
+</fieldset> 
+<button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
+
+<h4> Voiture</h4>
+{{form_start(form)}}
+<fieldset>
+<div class="card bg-secondary mb-3" >
+  <div class="card-body">
+      {{form_row(form.marque, {'label':'Marque:', 'attr' : {
+              'placeholder': 'marque du véhicule'
+            }})}}
+        
+      {{form_row(form.couleur, {'label':'Couleur :','attr' : {
+              'placeholder': 'Couleur du véhicule'
+            }})}}
+          
+      {{form_row(form.immatriculation, {'label':'Immatriculation:', 'attr' : {
+              'placeholder': 'Immatriculation du véhicule'
+            }})}}
+      {{form_row(form.model, {'label':'Model:', 'attr' : {
+              'placeholder': 'Model du véhicule'
+            }})}}      
+  </div>
+</fieldset>  
+<button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
+
+{{form_end(form)}}
+
+{% endblock %}
