@@ -70,21 +70,33 @@ class RoadshareController extends AbstractController
     {
         $utilisateur = new Utilisateur;
         $compte = new Compte;
-        
+        $adressePostale = new AdressePostale;
+        $description = new Description;
+
         $formData['utilisateur'] = $utilisateur;
         $formData['compte']  = $compte;
+        $formData['adressePostale']  = $adressePostale;
+        $formData['description']  = $description;
 
         $form = $this->createForm(InscriptionFormType::class, $formData);
         $form->handleRequest($request);
     
-        if(($form['compte']->isSubmitted() && $form['compte']->isValid()) && 
-            ($form['utilisateur']->isSubmitted() && $form['utilisateur']->isValid())){
+        if(($form['compte']->isSubmitted() && $form['compte']->isValid()) 
+            &&($form['utilisateur']->isSubmitted() && $form['utilisateur']->isValid())
+            && ($form['adressePostale']->isSubmitted() && $form['adressePostale']->isValid())
+            && ($form['description']->isSubmitted() && $form['description']->isValid())){
 
             $hash = $encoder->encodePassword($compte,$compte->getMotDePasse());
             $compte->setMotDePasse($hash);
             $manager->persist($compte);
-
             $utilisateur->setCompte($compte);
+
+            $manager->persist($adressePostale);
+            $utilisateur->setAdressePostale($adressePostale);
+
+            $manager->persist($description);
+            $utilisateur->setDescription($description);
+
             $manager->persist($utilisateur);
             $manager->flush();
             return $this->redirectToRoute('roadshare_connexion');
@@ -147,6 +159,7 @@ class RoadshareController extends AbstractController
         $user = $this->getUser();
 
         if($recherche->count()>0){ 
+            
             $infosEntrees = Array(); // [adresseDepart, adresseArrivee, dateDepart, heureDepart]
             $trajetsExistants = $trajetRepo->findAll();
             $infosEntrees[0] = new AdressePostale();
@@ -159,7 +172,8 @@ class RoadshareController extends AbstractController
                             ->setCodePostale($recherche->get('codePostaleArrivee'));
             $infosEntrees[2] = $recherche->get('dateDepart');
             $infosEntrees[3]= $recherche->get('heureDepart');
-            
+            $infosEntrees[4] = Array($recherche->get('fumeur'), $recherche->get('animaux'), $recherche->get('musique'));
+
             $trajets = $this->Comparaison($infosEntrees,$trajetsExistants);
 
 
@@ -186,27 +200,19 @@ class RoadshareController extends AbstractController
         $trajetNiv3= Array(); //correspondance fort
         $niv1=0;
         $niv2=0;
-        $niv3=0;
         foreach ($trajetsExistants as $trajet) {
 
             if($trajet->getDate()->format('Y-m-d')==$dateDepart 
             && $trajet->getHeureDepart()->format('H:i')>=$heureDepart 
             && strtolower($trajet->getAdresseDepart()->getVille())==strtolower($adresseDepart->getVille() )
-            && strtolower($trajet->getAdresseArrivee()->getVille())==strtolower($adresseArrivee->getVille() )
+            && strtolower($trajet->getAdresseArrivee()->getVille())==strtolower($adresseArrivee->getVille()
+            && $this->Criteres($trajet->getConducteur(),$infosEntrees[4]))
             ){// niveau 1 
-                if($trajet->getAdresseDepart()->getCodePostale()==$adresseDepart->getCodePostale() 
-                && $trajet->getAdresseArrivee()->getCodePostale()==$adresseArrivee->getCodePostale() 
+                if(strtolower($trajet->getAdresseDepart()->getRue())==strtolower($adresseDepart->getRue()) 
+                && strtolower($trajet->getAdresseArrivee()->getRue())==strtolower($adresseArrivee->getRue() )
                 ){// niveau 2
-                    if(strtolower($trajet->getAdresseDepart()->getRue())==strtolower($adresseDepart->getRue()) 
-                    && strtolower($trajet->getAdresseArrivee()->getRue())==strtolower($adresseArrivee->getRue() )
-                    ){ // niveau 3
-                        $trajetNiv3[$niv3]=$trajet;
-                        $niv3 = $niv3 +1;
-                    }
-                    else{
-                        $trajetNiv2[$niv2]=$trajet;
-                        $niv2 = $niv2 +1;
-                    }
+                    $trajetNiv2[$niv2]=$trajet;
+                    $niv2 = $niv2 +1;
                 }
                 else{
                     $trajetNiv1[$niv1]=$trajet;
@@ -234,6 +240,19 @@ class RoadshareController extends AbstractController
             $i = $i+1;
         }
         return $trajets;
+    }
+
+    public function Criteres($conducteur,$criteres){
+        $description = $conducteur->getDescription();
+        if(!isset($description)){
+            return False;
+        }
+        if($criteres[0] && $description->getFumeur()
+        || $criteres[1] && !$description->getMusique()
+        || $criteres[2] && !$description->getAnimaux()){
+            return False;
+        }
+        return true;
     }
 
     /**

@@ -1,29 +1,45 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}RoadShare{% endblock %}</title>
-        <link rel="stylesheet" href="https://bootswatch.com/4/cerulean/bootstrap.min.css">
-        {# <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> #}
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        {# <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> #}
-        <script src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}RoadShare{% endblock %}</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/cerulean/bootstrap.min.css">
+    {# <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> #}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    {# <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> #}
+    <script src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    </head>
+</head>
 
-    <body>
-    
-   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="/">RoadShare</a>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/"><h2>RoadShare</h2></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav mr-auto"></ul>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                {% if app.user %}
+                    <a class="nav-link my-2 my-sm-0" href="{{path('roadshare_recherche')}}"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="kirk-icon sc-bZQynM jLitmr mr-m" width="24" height="24" aria-hidden="true"><g fill="none" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><line x1="22" y1="22" x2="16.4" y2="16.4"></line><circle cx="10" cy="10" r="9"></circle></g></svg> Recherche</a>
+                {% else %}
+                    <a class="nav-link my-2 my-sm-0" href="{{path('roadshare_connexion')}}"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="kirk-icon sc-bZQynM jLitmr mr-m" width="24" height="24" aria-hidden="true"><g fill="none" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><line x1="22" y1="22" x2="16.4" y2="16.4"></line><circle cx="10" cy="10" r="9"></circle></g></svg> Recherche</a>
+                {% endif %}
+            </li>
+            <li class="nav-item">
+                {% if app.user %}
+                    <a class="nav-link" href="{{path('roadshare_proposition')}}"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="kirk-icon sc-bZQynM jLitmr mr-m" width="24" height="24" aria-hidden="true"><g fill="none" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><circle cx="12" cy="12" r="11"></circle><path d="M12 7v10M17 12H7"></path></g></svg> Proposer un trajet</a>
+                {% else %}
+                    <a class="nav-link" href="{{path('roadshare_connexion')}}"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="kirk-icon sc-bZQynM jLitmr mr-m" width="24" height="24" aria-hidden="true"><g fill="none" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><circle cx="12" cy="12" r="11"></circle><path d="M12 7v10M17 12H7"></path></g></svg> Proposer un trajet</a>
+                {% endif %}
+            </li>
+        </ul>
         <form class="form-inline my-2 my-lg-0">
         {% if app.user %}
+
         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
             
             <div class="btn-group" role="group">
