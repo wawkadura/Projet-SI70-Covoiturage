@@ -5,51 +5,72 @@
 <div class="jumbotron">
 
 <h4> Vos critères</h4>
-{{form_start(formCriteres)}}
+{{form_start(formDescription)}}
 <fieldset>
 <div class="card bg-secondary mb-3" >
   <div class="card-body">
-      {{form_row(formCriteres.fumeur, {'label':'Fumeur:', 'attr' : {
-              'placeholder': 'Indiquer si vous accepter un trajet avec un fumeur '
+   {{form_row(formDescription.miniBio, {'label':'Fumeur:', 'attr' : {
+              'placeholder': 'Rediger une mini biographie'
             }})}}
         
-      {{form_row(formCriteres.animaux, {'label':'Animax :','attr' : {
+      {{form_row(formDescription.bavard, {'label':'bavard:', 'attr' : {
+              'placeholder': 'ête vous bavard ? '
+            }})}}
+        
+      {{form_row(formDescription.animaux, {'label':'Animax :','attr' : {
               'placeholder': 'Est vous dacord de faire un trajet avec des animaux a bord ?'
             }})}}
           
-      {{form_row(formCriteres.valise, {'label':'valise:', 'attr' : {
-              'placeholder': 'Indiquer si vous avez ou si vous acceptez les valises'
+      {{form_row(formDescription.centreInterets, {'label':'Vos centre d'interêts:', 'attr' : {
+              'placeholder': 'vos centre d'interêts'
             }})}}
          
   </div>
 </fieldset> 
 <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
-{{form_end(formCriteres)}}
+{{form_end(formDescription)}}
 
 
 <h4> Voiture</h4>
-{{form_start(form)}}
+{{form_start(formVoiture)}}
 <fieldset>
 <div class="card bg-secondary mb-3" >
   <div class="card-body">
-      {{form_row(form.marque, {'label':'Marque:', 'attr' : {
+      {{form_row(formVoiture.marque, {'label':'Marque:', 'attr' : {
               'placeholder': 'marque du véhicule'
             }})}}
         
-      {{form_row(form.couleur, {'label':'Couleur :','attr' : {
+      {{form_row(formVoiture.couleur, {'label':'Couleur :','attr' : {
               'placeholder': 'Couleur du véhicule'
             }})}}
           
-      {{form_row(form.immatriculation, {'label':'Immatriculation:', 'attr' : {
+      {{form_row(formVoiture.immatriculation, {'label':'Immatriculation:', 'attr' : {
               'placeholder': 'Immatriculation du véhicule'
             }})}}
-      {{form_row(form.model, {'label':'Model:', 'attr' : {
+      {{form_row(formVoiture.model, {'label':'Model:', 'attr' : {
               'placeholder': 'Model du véhicule'
             }})}}      
   </div>
 </fieldset>  
 <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
 
-{{form_end(form)}}
+{{form_end(formVoiture)}}
+
+{% endblock %}
+
+<h4> Travail</h4>
+{{form_start(formVoiture)}}
+<fieldset>
+<div class="card bg-secondary mb-3" >
+  <div class="card-body">
+      {{form_row(formEntreprise.non, {'label':'Marque:', 'attr' : {
+              'placeholder': 'Nom de l\'entreprise'
+            }})}}
+             
+  </div>
+</fieldset>  
+<button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
+
+{{form_end(formtravail)}}
 
 {% endblock %}

@@ -8,7 +8,13 @@ use App\Entity\Trajet;
 use App\Entity\AdressePostale;
 use App\Entity\Voiture;
 use App\Entity\Criteres;
+use App\Entity\Entreprise;
+use App\Entity\Description;
+use App\Entity\InformationTravail;
+use App\Form\TravailType;
 use App\Form\VoitureType;
+use App\Form\DescriptionType;
+use App\Form\EntrepriseType;
 use App\Form\CriteresType;
 use App\Form\PropositionType;
 use App\Form\CompteType;
@@ -268,47 +274,59 @@ class RoadshareController extends AbstractController
         $user = $this->getUser();
         $utilisateur = $repo->findBy(array("compte" => $user->getId()));
         $voitures= $this->getDoctrine()->getRepository(Voiture::class)->findAll();
-        $criteres= $this->getDoctrine()->getRepository(Criteres::class)->findAll();
+        $description= $this->getDoctrine()->getRepository(Description::class)->findAll();
 
         return $this->render('roadshare/profil.html.twig', [
             'user' => $user,
             'utilisateur' => $utilisateur[0],
             'voitures'=>$voitures[0],
-            'criteres'=>$criteres
+            'description'=>$description
+         
         ]);
 
    
     }
 
-  
+
     /**
      * @Route("/setinformation", name="roadshare_setinformation") 
     */
     public function setInformation(Request $request,ObjectManager $manager,UtilisateurRepository $repo){
     
-        //
+        
         $user = $this->getUser();
         $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
 
         $voiture= $utilisateur->getVoiture();
-        $criteres= $utilisateur->getCriteres();
+        $description= $utilisateur->getDescription();
+
+
+        $entreprise = new Entreprise();
+        $informationTravail = new InformationTravail();
+        
+        $formData['informationTravail']  =  $informationTravail;
+        $formData['entreprise'] = $entreprise;
 
         if(isset($voture))
         {
             $voiture = new Voiture();
         }
-        if(isset($criteres))
+        if(isset($description))
         {
-            $criteres= new Criteres();
+            $description= new Description();
         }
-        
-        $form = $this->createForm(VoitureType::class, $voiture);
-        $form->handleRequest($request);
 
-        $formCriteres = $this->createForm(CriteresType::class, $criteres);
-        $formCriteres->handleRequest($request);
 
-        if(($form->isSubmitted() && $form->isValid())){
+        $formVoiture = $this->createForm(VoitureType::class, $voiture);
+        $formVoiture->handleRequest($request);
+
+        $formDescription = $this->createForm(DescriptionType::class, $description);
+        $formDescription->handleRequest($request);
+
+        $formTravail = $this->createForm(TravailType::class, $formData);
+        $formTravail->handleRequest($request);
+
+        if(($formVoiture->isSubmitted() && $formVoiture->isValid())){
             $utilisateur->setVoiture($voiture);
 
             $manager->persist($voiture);
@@ -316,20 +334,33 @@ class RoadshareController extends AbstractController
            
         }
 
-        if(($formCriteres->isSubmitted() && $formCriteres->isValid())){
-            $utilisateur->setCriteres($criteres);
+        if(($formDescription->isSubmitted() && $formDescription->isValid())){
+            $utilisateur->setCriteres($description);
 
-            dump($formCriteres);
-            $manager->persist($criteres);
+            dump($formDescription);
+            $manager->persist($description);
+            $manager->flush();
+
+        }
+        if(($formEntreprise->isSubmitted() &&  $formEntreprise->isValid())){
+        
+        if(($formTravail['entreprise']->isSubmitted() && $formTravail['entreprise']->isValid()) && 
+        ($formTravail['informationTravail']->isSubmitted() && $formTravail['informationTravail']->isValid()))
+
+        //fk et pK
+            
+        //
+            $manager->persist($entreprise);
+            $manager->persist($informationTravail);
             $manager->flush();
 
         }
         return $this->render('roadshare/informations.html.twig', [
-            'form' => $form->createView(),
-            'formCriteres' => $formCriteres->createView(),
+            'formVoiture' => $formVoiture->createView(),
+            'formDescription' => $formDescription->createView(),
+            'formtravail' => $formTravail->createView(),
             'user' => $user
         ]);
     }
-
 
 }
