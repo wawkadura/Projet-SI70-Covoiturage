@@ -14,19 +14,19 @@ class CriteresType extends AbstractType
     {
         $builder
             ->add('fumeur',ChoiceType::class, [
-            'choix'=>[
+            'choices'=>[
                 'Oui' => true,
                 'non' => false,
                 ],
             ])
             ->add('animaux',ChoiceType::class, [
-            'choix'=>[
+            'choices'=>[
                 'Oui' => true,
                 'non' => false,
                 ],
             ])
             ->add('valise',ChoiceType::class, [
-            'choix'=>[
+            'choices'=>[
                 'Oui' => true,
                 'non' => false,
                 ],

@@ -269,64 +269,64 @@ class RoadshareController extends AbstractController
         $utilisateur = $repo->findBy(array("compte" => $user->getId()));
         $voitures= $this->getDoctrine()->getRepository(Voiture::class)->findAll();
         $criteres= $this->getDoctrine()->getRepository(Criteres::class)->findAll();
+
         return $this->render('roadshare/profil.html.twig', [
             'user' => $user,
             'utilisateur' => $utilisateur[0],
             'voitures'=>$voitures[0],
-            'criteres'=>$criteres[0]
+            'criteres'=>$criteres
         ]);
+
+   
     }
 
+  
     /**
-     * @Route("/modification", name="roadshare_get_modification")
-     */
-    public function getInformation(){
-        $user = $this->getUser();
-        $voitures= $this->getDoctrine()->getRepository(Voiture::class)->findBy(array("compte" => $user->getId()))[0];
-        $criteres= $this->getDoctrine()->getRepository(Criteres::class)->findBy(array("compte" => $user->getId()))[0];
-        return $this->render('roadshare/informations.html.twig', [
-            'voitures'=>$voitures,
-            'criteres'=>$criteres,
-            'user' => $user
-        ]);
-    }
-
-    /**
-     * @Route("/edit/{id}", name="roadshare_setinformation") 
-     * @ParamConverter("id", options={"id":"criteres"})
+     * @Route("/setinformation", name="roadshare_setinformation") 
     */
-    public function edit(Voiture $voitures,Criteres $criteres,Request $request,ObjectManager $manager,UtilisateurRepository $repo){
-        //$voitures = new voiture();
-        //criteres= new Criteres();
+    public function setInformation(Request $request,ObjectManager $manager,UtilisateurRepository $repo){
+    
+        //
+        $user = $this->getUser();
+        $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
+
+        $voiture= $utilisateur->getVoiture();
+        $criteres= $utilisateur->getCriteres();
+
+        if(isset($voture))
+        {
+            $voiture = new Voiture();
+        }
+        if(isset($criteres))
+        {
+            $criteres= new Criteres();
+        }
         
-        $form = $this->createForm(VoitureType::class, $voitures);
+        $form = $this->createForm(VoitureType::class, $voiture);
         $form->handleRequest($request);
 
-        $form1 = $this->createForm(CriteresType::class, $criteres);
-        $form1->handleRequest($request);
+        $formCriteres = $this->createForm(CriteresType::class, $criteres);
+        $formCriteres->handleRequest($request);
 
         if(($form->isSubmitted() && $form->isValid())){
-            $user = $this->getUser();
-            $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
-            $utilisateur->setVoiture($voitures);
+            $utilisateur->setVoiture($voiture);
 
-            $manager->persist($voitures);
+            $manager->persist($voiture);
             $manager->flush();
+           
         }
 
-        if(($form1->isSubmitted() && $form1->isValid())){
-            $user = $this->getUser();
-            $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
+        if(($formCriteres->isSubmitted() && $formCriteres->isValid())){
             $utilisateur->setCriteres($criteres);
 
+            dump($formCriteres);
             $manager->persist($criteres);
             $manager->flush();
-        }
 
-        $user = $this->getUser();
+        }
         return $this->render('roadshare/informations.html.twig', [
             'form' => $form->createView(),
-            'form1' => $form1->createView(),
+            'formCriteres' => $formCriteres->createView(),
             'user' => $user
         ]);
     }

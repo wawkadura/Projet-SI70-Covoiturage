@@ -5,24 +5,27 @@
 <div class="jumbotron">
 
 <h4> Vos critères</h4>
+{{form_start(formCriteres)}}
 <fieldset>
 <div class="card bg-secondary mb-3" >
   <div class="card-body">
-      {{form_row(form1.fumeur, {'label':'Fumeur:', 'attr' : {
+      {{form_row(formCriteres.fumeur, {'label':'Fumeur:', 'attr' : {
               'placeholder': 'Indiquer si vous accepter un trajet avec un fumeur '
             }})}}
         
-      {{form_row(form1.animaux, {'label':'Animax :','attr' : {
+      {{form_row(formCriteres.animaux, {'label':'Animax :','attr' : {
               'placeholder': 'Est vous dacord de faire un trajet avec des animaux a bord ?'
             }})}}
           
-      {{form_row(form1.valise, {'label':'valise:', 'attr' : {
+      {{form_row(formCriteres.valise, {'label':'valise:', 'attr' : {
               'placeholder': 'Indiquer si vous avez ou si vous acceptez les valises'
             }})}}
          
   </div>
 </fieldset> 
 <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
+{{form_end(formCriteres)}}
+
 
 <h4> Voiture</h4>
 {{form_start(form)}}
