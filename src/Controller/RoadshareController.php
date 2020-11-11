@@ -7,7 +7,6 @@ use App\Entity\Utilisateur;
 use App\Entity\Trajet;
 use App\Entity\AdressePostale;
 use App\Entity\Voiture;
-use App\Entity\Criteres;
 use App\Entity\Entreprise;
 use App\Entity\Description;
 use App\Entity\InformationTravail;
@@ -15,7 +14,6 @@ use App\Form\TravailType;
 use App\Form\VoitureType;
 use App\Form\DescriptionType;
 use App\Form\EntrepriseType;
-use App\Form\CriteresType;
 use App\Form\PropositionType;
 use App\Form\CompteType;
 use App\Form\InscriptionFormType;
@@ -295,11 +293,12 @@ class RoadshareController extends AbstractController
         $voitures= $this->getDoctrine()->getRepository(Voiture::class)->findAll();
         $description= $this->getDoctrine()->getRepository(Description::class)->findAll();
 
+        dump($utilisateur);
         return $this->render('roadshare/profil.html.twig', [
             'user' => $user,
             'utilisateur' => $utilisateur[0],
-            'voitures'=>$voitures[0],
-            'description'=>$description
+            'description'=>$description[0],
+            'voitures'=>$voitures
          
         ]);
 
@@ -319,12 +318,17 @@ class RoadshareController extends AbstractController
         $voiture= $utilisateur->getVoiture();
         $description= $utilisateur->getDescription();
 
+        /*$informationTravail= $utilisateur->getInformationTravail();
+        $entreprise=$informationTravail->getEntreprise();
+        $adressePostale=$entreprise->getAdressePostale();*/
+
 
         $entreprise = new Entreprise();
         $informationTravail = new InformationTravail();
-        
+       
         $formData['informationTravail']  =  $informationTravail;
         $formData['entreprise'] = $entreprise;
+
 
         if(isset($voture))
         {
@@ -367,10 +371,10 @@ class RoadshareController extends AbstractController
         ($formTravail['informationTravail']->isSubmitted() && $formTravail['informationTravail']->isValid()))
 
         //fk et pK
-            
+           /* $utilisateur=this->setInformationTravail($informationTravail);
+            $informationTravail=this->setEntreprise($entreprise);
+            $entreprise=this->getAdressePostale();*/
 
-        
-        //
             $manager->persist($entreprise);
             $manager->persist($informationTravail);
             $manager->flush();

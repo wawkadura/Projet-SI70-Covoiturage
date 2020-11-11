@@ -9,14 +9,12 @@
     {{ utilisateur.dateDeNaissance | date('d/m/Y')}}
 </div>
 
-
 <div class="jumbotron">
-  {{voitures.marque}}<br/>
-  {{ voitures.couleur}}<br/>
-  {{ voitures.model}}<br/>
-  {{ voitures.immatriculation}}
+  {{description.miniBio}}<br/>
+  {{ description.voyagerAvecMusique}}<br/>
+  {{ description.voyagerAvecAnimaux}}<br/>
+  {{ description.centreInterets}}
 </div>
-
 
 <div>
   <a class="nav-link" href="{{path('roadshare_setinformation')}}"> Modifier ses informations </a>
