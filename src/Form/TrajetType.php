@@ -19,7 +19,12 @@ class TrajetType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date',DateType::class)
+            ->add('date',DateType::class, array(
+                'widget' => 'choice',
+                'years' => range(date('Y'), date('Y')+1),
+                'months' => range(date('m'), 12),
+                'days' => range(date('d'), 31),
+              ))
             ->add('heureDepart',TimeType::class)
             ->add('heureArrivee',TimeType::class)
             ->add('nbPlaces',IntegerType::class)
