@@ -267,10 +267,13 @@ class RoadshareController extends AbstractController
     public function Profil(UtilisateurRepository $repo){
         $user = $this->getUser();
         $utilisateur = $repo->findBy(array("compte" => $user->getId()));
-       
+        $voitures= $this->getDoctrine()->getRepository(Voiture::class)->findAll();
+        $criteres= $this->getDoctrine()->getRepository(Criteres::class)->findAll();
         return $this->render('roadshare/profil.html.twig', [
             'user' => $user,
             'utilisateur' => $utilisateur[0],
+            'voitures'=>$voitures[0],
+            'criteres'=>$criteres[0]
         ]);
     }
 
@@ -288,16 +291,15 @@ class RoadshareController extends AbstractController
         ]);
     }
 
-    //@ParamConverter("id", class="voiture", options={"id": "id"})
     /**
-     * @Route("/edit/{id}", name="roadshare_setinformation")
-     * 
+     * @Route("/edit/{id}", name="roadshare_setinformation") 
+     * @ParamConverter("id", options={"id":"criteres"})
     */
-    public function setmodification(Voiture $voiture,Criteres $criteres,Request $request,ObjectManager $manager,UtilisateurRepository $repo){
-        //$voiture = new voiture();
+    public function edit(Voiture $voitures,Criteres $criteres,Request $request,ObjectManager $manager,UtilisateurRepository $repo){
+        //$voitures = new voiture();
         //criteres= new Criteres();
         
-        $form = $this->createForm(VoitureType::class, $voiture);
+        $form = $this->createForm(VoitureType::class, $voitures);
         $form->handleRequest($request);
 
         $form1 = $this->createForm(CriteresType::class, $criteres);
@@ -306,9 +308,9 @@ class RoadshareController extends AbstractController
         if(($form->isSubmitted() && $form->isValid())){
             $user = $this->getUser();
             $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
-            $utilisateur->setVoiture($voiture);
+            $utilisateur->setVoiture($voitures);
 
-            $manager->persist($voiture);
+            $manager->persist($voitures);
             $manager->flush();
         }
 
