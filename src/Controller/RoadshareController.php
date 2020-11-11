@@ -277,11 +277,10 @@ class RoadshareController extends AbstractController
     /**
      * @Route("/modification", name="roadshare_get_modification")
      */
-    public function getIformation(){
+    public function getInformation(){
         $user = $this->getUser();
         $voitures= $this->getDoctrine()->getRepository(Voiture::class)->findBy(array("compte" => $user->getId()))[0];
-        $criteres= $this->getDoctrine()->getRepository(Voiture::class)->findBy(array("compte" => $user->getId()))[0];
-
+        $criteres= $this->getDoctrine()->getRepository(Criteres::class)->findBy(array("compte" => $user->getId()))[0];
         return $this->render('roadshare/informations.html.twig', [
             'voitures'=>$voitures,
             'criteres'=>$criteres,
@@ -289,12 +288,12 @@ class RoadshareController extends AbstractController
         ]);
     }
 
- 
+    //@ParamConverter("id", class="voiture", options={"id": "id"})
     /**
-     * @Route("/edit/{id}", name="roadshare_set_information")
-     * @ParamConverter("id", class="Criteres" options={"id":"criteres"}) //il ya un erreur a ce niveau.
+     * @Route("/edit/{id}", name="roadshare_setinformation")
+     * 
     */
-    public function setmodification(Criteres $criteres,Voiture $voiture,Request $request,ObjectManager $manager,UtilisateurRepository $repo){
+    public function setmodification(Voiture $voiture,Criteres $criteres,Request $request,ObjectManager $manager,UtilisateurRepository $repo){
         //$voiture = new voiture();
         //criteres= new Criteres();
         
