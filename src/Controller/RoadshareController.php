@@ -316,7 +316,7 @@ class RoadshareController extends AbstractController
         if(($form1->isSubmitted() && $form1->isValid())){
             $user = $this->getUser();
             $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
-            $utilisateur->setCritres($criteres);
+            $utilisateur->setCriteres($criteres);
 
             $manager->persist($criteres);
             $manager->flush();
