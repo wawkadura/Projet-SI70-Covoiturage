@@ -20,6 +20,7 @@ use App\Form\InscriptionFormType;
 use App\Form\UtilisateurType;
 use App\Form\TrajetType;
 use App\Repository\AdressePostaleRepository;
+use App\Repository\DescriptionRepository;
 use App\Repository\ReservationRepository;
 use App\Repository\TrajetRepository;
 use App\Repository\UtilisateurRepository;
@@ -131,7 +132,7 @@ class RoadshareController extends AbstractController
             $user = $this->getUser();
             $conducteur = $repo->findBy(array("compte" => $user->getId()));
             $trajet->setConducteur($conducteur[0]);
-            $trajet->setEtat('en cours');
+            $trajet->setEtat('En cours');
 
             $trajet->setAdresseDepart($adresseDepart);
             $trajet->setAdresseArrivee($adresseArrivee);    
@@ -151,15 +152,14 @@ class RoadshareController extends AbstractController
     /**
      * @Route("/recherche", name="roadshare_recherche")
      */
-    public function Recherche(Request $request, TrajetRepository $trajetRepo, AdressePostaleRepository $adresseRepo): Response
+    public function Recherche(Request $request, TrajetRepository $trajetRepo, UtilisateurRepository $utilisateurRepo, DescriptionRepository $descriptionRepo): Response
     {   
         $recherche = $request->request;
         $user = $this->getUser();
-
         if($recherche->count()>0){ 
             
             $infosEntrees = Array(); // [adresseDepart, adresseArrivee, dateDepart, heureDepart]
-            $trajetsExistants = $trajetRepo->findAll();
+            $trajetsExistants = $trajetRepo->findBy(array('etat'=>'En cours'));
             $infosEntrees[0] = new AdressePostale();
             $infosEntrees[0]->setRue($recherche->get('adresseDepart'))
                             ->setVille($recherche->get('villeDepart'))
@@ -170,9 +170,8 @@ class RoadshareController extends AbstractController
                             ->setCodePostale($recherche->get('codePostaleArrivee'));
             $infosEntrees[2] = $recherche->get('dateDepart');
             $infosEntrees[3]= $recherche->get('heureDepart');
-            $infosEntrees[4] = Array($recherche->get('fumeur'), $recherche->get('animaux'), $recherche->get('musique'));
-
-            $trajets = $this->Comparaison($infosEntrees,$trajetsExistants);
+            $infosEntrees[4] = Array($recherche->get('fumeur')=='on', $recherche->get('animaux')=='on', $recherche->get('musique')=='on');
+            $trajets = $this->Comparaison($infosEntrees,$trajetsExistants, $utilisateurRepo,$descriptionRepo);
 
 
             return $this->render('roadshare/recherche.html.twig', [
@@ -187,7 +186,8 @@ class RoadshareController extends AbstractController
             'recherche' => ($recherche->count()>0)
         ]);
     }
-    public function Comparaison($infosEntrees , $trajetsExistants ){
+    public function Comparaison($infosEntrees , $trajetsExistants, $utilisateurRepo, $descriptionRepo ){
+        dump($trajetsExistants);
         $adresseDepart = $infosEntrees[0];
         $adresseArrivee = $infosEntrees[1];
         $dateDepart = $infosEntrees[2];
@@ -195,17 +195,19 @@ class RoadshareController extends AbstractController
         
         $trajetNiv1= Array(); //correspondance faible
         $trajetNiv2= Array(); //correspondance moyenne
-        $trajetNiv3= Array(); //correspondance fort
         $niv1=0;
         $niv2=0;
         foreach ($trajetsExistants as $trajet) {
-
+            
+            $conducteur = $utilisateurRepo->findBy(array("id" => $trajet->getConducteur()->getId()))[0];
+            $description = $descriptionRepo->findBy(array("id" => $conducteur->getDescription()->getId()))[0];
             if($trajet->getDate()->format('Y-m-d')==$dateDepart 
             && $trajet->getHeureDepart()->format('H:i')>=$heureDepart 
             && strtolower($trajet->getAdresseDepart()->getVille())==strtolower($adresseDepart->getVille() )
             && strtolower($trajet->getAdresseArrivee()->getVille())==strtolower($adresseArrivee->getVille()
-            && $this->Criteres($trajet->getConducteur(),$infosEntrees[4]))
+            && $this->Criteres($description,$infosEntrees[4]))
             ){// niveau 1 
+                
                 if(strtolower($trajet->getAdresseDepart()->getRue())==strtolower($adresseDepart->getRue()) 
                 && strtolower($trajet->getAdresseArrivee()->getRue())==strtolower($adresseArrivee->getRue() )
                 ){// niveau 2
@@ -220,15 +222,11 @@ class RoadshareController extends AbstractController
             }
         }
         
-        return $this->Combine($trajetNiv1,$trajetNiv2,$trajetNiv3);
+        return $this->Combine($trajetNiv1,$trajetNiv2);
     }
-    public function Combine($trajetNiv1,$trajetNiv2,$trajetNiv3){
+    public function Combine($trajetNiv1,$trajetNiv2){ //à revoir
         $trajets = Array();
         $i = 0;
-        if(!empty($trajetNiv3)){
-            $trajets[$i] = $trajetNiv3;
-            $i = $i+1;
-        }
         if(!empty($trajetNiv2)){
             $trajets[$i] = $trajetNiv2;
             $i = $i+1;
@@ -240,14 +238,11 @@ class RoadshareController extends AbstractController
         return $trajets;
     }
 
-    public function Criteres($conducteur,$criteres){
-        $description = $conducteur->getDescription();
-        if(!isset($description)){
-            return False;
-        }
-        if($criteres[0] && $description->getFumeur()
-        || $criteres[1] && !$description->getMusique()
-        || $criteres[2] && !$description->getAnimaux()){
+    public function Criteres($description,$criteres){
+
+        if($criteres[0] && !$description->getVoyagerAvecFumeur() // si true et false
+        || $criteres[1] && !$description->getVoyagerAvecAnimaux() // si true et false
+        || $criteres[2] && !$description->getVoyagerAvecMusique()){ // si true et true
             return False;
         }
         return true;
@@ -358,7 +353,7 @@ class RoadshareController extends AbstractController
         }
 
         if(($formDescription->isSubmitted() && $formDescription->isValid())){
-            $utilisateur->setCriteres($description);
+            $utilisateur->setDescription($description);
 
             dump($formDescription);
             $manager->persist($description);

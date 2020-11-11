@@ -25,7 +25,7 @@ class Description
     /**
      * @ORM\Column(type="boolean", nullable=false)
      */
-    private $voyageAvecFumeur;
+    private $voyagerAvecFumeur;
 
     /**
      * @ORM\Column(type="boolean", nullable=false)
@@ -59,14 +59,14 @@ class Description
         return $this;
     }
 
-    public function getVoyageAvecFumeur(): ?bool
+    public function getVoyagerAvecFumeur(): ?bool
     {
-        return $this->voyageAvecFumeur;
+        return $this->voyagerAvecFumeur;
     }
 
-    public function setVoyageAvecFumeur(?bool $voyageAvecFumeur): self
+    public function setVoyagerAvecFumeur(?bool $voyagerAvecFumeur): self
     {
-        $this->voyageAvecFumeur = $voyageAvecFumeur;
+        $this->voyagerAvecFumeur = $voyagerAvecFumeur;
 
         return $this;
     }

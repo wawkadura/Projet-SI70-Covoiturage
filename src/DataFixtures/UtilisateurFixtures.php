@@ -16,17 +16,23 @@ class UtilisateurFixtures extends Fixture
     {
 
         for ($i=0; $i < 10; $i++) { 
-            $compte = new Compte();
-            $adressePostale = new AdressePostale();
+
             $description = new Description();
-            $description->setVoyageAvecFumeur(True)
-                        ->setVoyagerAvecAnimaux(True)
-                        ->setVoyagerAvecMusique(True);
+            $description->setVoyagerAvecFumeur(true)
+                        ->setVoyagerAvecAnimaux(true)
+                        ->setVoyagerAvecMusique(true);
+            $manager->persist($description);
+
+            $adressePostale = new AdressePostale();
             $adressePostale->setRue("rue$i")
                             ->setVille("ville$i")
                             ->setCodePostale(10000 +$i);
+            $manager->persist($adressePostale);
+
+            $compte = new Compte();
             $compte->setEmail("walid$i@yahoo.com")
                     ->setMotDePasse(password_hash("waw$i",PASSWORD_DEFAULT));
+            $manager->persist($compte);
             
             $utilisateur = new Utilisateur();
             $utilisateur->setNom("kadura$i");
@@ -36,10 +42,6 @@ class UtilisateurFixtures extends Fixture
             $utilisateur->setDescription($description);
             $utilisateur->setAdressePostale($adressePostale);
             $utilisateur->setCompte($compte);
-
-            $manager->persist($description);
-            $manager->persist($adressePostale);
-            $manager->persist($compte);
             $manager->persist($utilisateur);
         }
 
