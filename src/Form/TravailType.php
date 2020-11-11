@@ -11,8 +11,8 @@ class TravailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('entreprise',Entreprise::class)
-            ->add('informationTravail',InformationTravail::class)
+            ->add('entreprise',EntrepriseType::class)
+            ->add('informationTravail',InformationTravailType::class)
         ;
     }
 

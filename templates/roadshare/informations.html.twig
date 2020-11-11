@@ -4,24 +4,63 @@
 <br>
 <div class="jumbotron">
 
+  <h4> Informations Personnelles</h4>
+  {{form_start(formUtilsateur)}}
+  <fieldset>
+    
+    <div class="form-group">
+    {{form_row(formUtilisateur.utilisateur.nom, {'label':'Nom :', 'attr' : {
+            'placeholder': 'Entrée votre nom'
+          }})}}
+   {{form_row(formUtilisateur.utilisateur.prenom, {'label':'Prénom :', 'attr' : {
+            'placeholder': 'Entrée votre prénom'
+          }})}}
+         
+   {{form_row(formUtilisateur.utilisateur.dateDeNaissance, {'label':'Date de naissance :'})}}
+  
+   {{form_row(formUtilisateur.utilisateur.telephone, {'label':'Téléphone :', 'attr' : {
+            'placeholder': 'Entrée votre numéro de téléphone'
+          }})}}
+ 
+   {{form_row(formUtilisateur.compte.email, {'label':'Email :', 'attr' : {
+            'placeholder': 'Entrée votre adresse mail'
+          }})}}
+  
+   {{form_row(formUtilisateur.compte.motDePasse, {'label':'Mot de passe :', 'attr' : {
+            'placeholder': 'Entrée votre mot de passe'
+          }})}}
+  
+   {{form_row(formUtilisateur.compte.confirm_motDePasse, {'label':'Confirmer Mot de passe :', 'attr' : {
+            'placeholder': 'Confirmer votre mot de passe'
+          }})}}
+   </div>  
+  </fieldset>
+    <button type="submit" class="btn btn-primary">Valider</button>
+  
+{{form_end(form)}}
+
+
 <h4> Vos critères</h4>
 {{form_start(formDescription)}}
 <fieldset>
 <div class="card bg-secondary mb-3" >
   <div class="card-body">
-   {{form_row(formDescription.miniBio, {'label':'Fumeur:', 'attr' : {
+   {{form_row(formDescription.miniBio, {'label':'mini bio:', 'attr' : {
               'placeholder': 'Rediger une mini biographie'
             }})}}
         
-      {{form_row(formDescription.bavard, {'label':'bavard:', 'attr' : {
-              'placeholder': 'ête vous bavard ? '
+   {{form_row(formDescription.voyagerAvecMusique, {'label':'bavard:', 'attr' : {
+              'placeholder': 'Est vous d'accord pou de la music dans la voiture? '
             }})}}
+   {{form_row(formDescription.voyagerAvecFumeur, {'label':'bavard:', 'attr' : {
+              'placeholder': 'voyager avec un fumeur?'
+            }})}}      
         
-      {{form_row(formDescription.animaux, {'label':'Animax :','attr' : {
+  {{form_row(formDescription.voyagerAvecAnimaux, {'label':'Animax :','attr' : {
               'placeholder': 'Est vous dacord de faire un trajet avec des animaux a bord ?'
             }})}}
           
-      {{form_row(formDescription.centreInterets, {'label':'Vos centre d'interêts:', 'attr' : {
+  {{form_row(formDescription.centreInterets, {'label':'Vos centre d'interêts:', 'attr' : {
               'placeholder': 'vos centre d'interêts'
             }})}}
          
@@ -53,24 +92,26 @@
   </div>
 </fieldset>  
 <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
-
 {{form_end(formVoiture)}}
 
-{% endblock %}
 
 <h4> Travail</h4>
-{{form_start(formVoiture)}}
+{{form_start(formTravail)}}
 <fieldset>
 <div class="card bg-secondary mb-3" >
   <div class="card-body">
-      {{form_row(formEntreprise.non, {'label':'Marque:', 'attr' : {
-              'placeholder': 'Nom de l\'entreprise'
+      {{form_row(formTravail.entreprise.non, {'label':'Nom de l'entreprise:', 'attr' : {
+              'placeholder': 'Nom de l\'entreprise pour laquelle vous travaillez'
             }})}}
-             
+      {{form_row(formTravail.informationTravail.horaireDebut, {'label':'Horaire de debut:', 'attr' : {
+              'placeholder': 'Saisir a laquelle vous commencer'
+            }})}}   
+      {{form_row(formTravail.informationTravail.horaireFin, {'label':'Nom de l'entreprise:', 'attr' : {
+              'placeholder': 'Saisir a laquelle vous finissez'
+            }})}}                
   </div>
 </fieldset>  
 <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
-
-{{form_end(formtravail)}}
+{{form_end(formTravail)}}
 
 {% endblock %}
