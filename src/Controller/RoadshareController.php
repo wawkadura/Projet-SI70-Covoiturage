@@ -14,8 +14,10 @@ use App\Form\InscriptionFormType;
 use App\Form\UtilisateurType;
 use App\Form\TrajetType;
 use App\Repository\AdressePostaleRepository;
+use App\Repository\ReservationRepository;
 use App\Repository\TrajetRepository;
 use App\Repository\UtilisateurRepository;
+use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -134,25 +136,126 @@ class RoadshareController extends AbstractController
     {   
         $recherche = $request->request;
         $user = $this->getUser();
-        if($recherche->count()>0){
-            $adresseDepart = new AdressePostale();
-            $adresseDepart->setRue($recherche->get('adresseDepart'))
+
+        if($recherche->count()>0){ 
+            $infosEntrees = Array(); // [adresseDepart, adresseArrivee, dateDepart, heureDepart]
+            $trajetsExistants = $trajetRepo->findAll();
+            $infosEntrees[0] = new AdressePostale();
+            $infosEntrees[0]->setRue($recherche->get('adresseDepart'))
                             ->setVille($recherche->get('villeDepart'))
                             ->setCodePostale($recherche->get('codePostaleDepart')); 
-            $adresseArrivee = new AdressePostale();
-            $adresseArrivee->setRue($recherche->get('adresseArrivee'))
+            $infosEntrees[1] = new AdressePostale();
+            $infosEntrees[1]->setRue($recherche->get('adresseArrivee'))
                             ->setVille($recherche->get('villeArrivee'))
                             ->setCodePostale($recherche->get('codePostaleArrivee'));
-            $dateDepart = $recherche->get('dateDepart');
-            $heureDepart = $recherche->get('heureDepart');
-
-            $adressesTrouver = $adresseRepo->findBy(array('codePostale'=>$adresseDepart->getCodePostale()));
+            $infosEntrees[2] = $recherche->get('dateDepart');
+            $infosEntrees[3]= $recherche->get('heureDepart');
             
+            $trajets = $this->Comparaison($infosEntrees,$trajetsExistants);
+
+
+            return $this->render('roadshare/recherche.html.twig', [
+                'user' => $user,
+                'recherche' => ($recherche->count()>0),
+                'trajets' => $trajets,
+                'infosEntrees' => $infosEntrees
+            ]);
         }
         return $this->render('roadshare/recherche.html.twig', [
             'user' => $user,
             'recherche' => ($recherche->count()>0)
         ]);
+    }
+    public function Comparaison($infosEntrees , $trajetsExistants ){
+        $adresseDepart = $infosEntrees[0];
+        $adresseArrivee = $infosEntrees[1];
+        $dateDepart = $infosEntrees[2];
+        $heureDepart = $infosEntrees[3];
+        
+        $trajetNiv1= Array(); //correspondance faible
+        $trajetNiv2= Array(); //correspondance moyenne
+        $trajetNiv3= Array(); //correspondance fort
+        $niv1=0;
+        $niv2=0;
+        $niv3=0;
+        foreach ($trajetsExistants as $trajet) {
+
+            if($trajet->getDate()->format('Y-m-d')==$dateDepart 
+            && $trajet->getHeureDepart()->format('H:i')>=$heureDepart 
+            && strtolower($trajet->getAdresseDepart()->getVille())==strtolower($adresseDepart->getVille() )
+            && strtolower($trajet->getAdresseArrivee()->getVille())==strtolower($adresseArrivee->getVille() )
+            ){// niveau 1 
+                if($trajet->getAdresseDepart()->getCodePostale()==$adresseDepart->getCodePostale() 
+                && $trajet->getAdresseArrivee()->getCodePostale()==$adresseArrivee->getCodePostale() 
+                ){// niveau 2
+                    if(strtolower($trajet->getAdresseDepart()->getRue())==strtolower($adresseDepart->getRue()) 
+                    && strtolower($trajet->getAdresseArrivee()->getRue())==strtolower($adresseArrivee->getRue() )
+                    ){ // niveau 3
+                        $trajetNiv3[$niv3]=$trajet;
+                        $niv3 = $niv3 +1;
+                    }
+                    else{
+                        $trajetNiv2[$niv2]=$trajet;
+                        $niv2 = $niv2 +1;
+                    }
+                }
+                else{
+                    $trajetNiv1[$niv1]=$trajet;
+                    $niv1 = $niv1 +1;
+                }
+                
+            }
+        }
+        
+        return $this->Combine($trajetNiv1,$trajetNiv2,$trajetNiv3);
+    }
+    public function Combine($trajetNiv1,$trajetNiv2,$trajetNiv3){
+        $trajets = Array();
+        $i = 0;
+        if(!empty($trajetNiv3)){
+            $trajets[$i] = $trajetNiv3;
+            $i = $i+1;
+        }
+        if(!empty($trajetNiv2)){
+            $trajets[$i] = $trajetNiv2;
+            $i = $i+1;
+        }
+        if(!empty($trajetNiv1)){
+            $trajets[$i] = $trajetNiv1;
+            $i = $i+1;
+        }
+        return $trajets;
+    }
+
+    /**
+     * @Route("/trajet/{id}", name="roadshare_trajet")
+     */
+    public function Trajet($id,ReservationRepository $reservationRepo, TrajetRepository $trajetRepo, UtilisateurRepository $utilisateurRepo){
+        $user = $this->getUser();
+        $reservation = false;
+        $utilisateur = $utilisateurRepo->findBy(array("compte" => $user->getId()))[0];
+        $trajet = $trajetRepo->findBy(array('id'=>$id ))[0];
+        if(!empty($trajet->getReservations())){
+            foreach ($trajet->getReservations() as $res) {
+                if($res->getDemadeur()->getId()==$utilisateur->getId()){
+                    $reservation=true;
+                }
+            }
+        }
+        return $this->render('roadshare/trajet.html.twig', [
+            'user' => $user,
+            'trajet' => $trajet,
+            'reservation' => $reservation,
+            'owner' => $utilisateur->getId() == $trajet->getConducteur()->getId()
+        ]);
+    }
+    /**
+     * @Route("/reservation/{id}", name="roadshare_reservation")
+     */
+    public function Reservation($id): Response
+    {
+        // a faire
+        return $this->redirectToRoute('roadshare_trajet',array('id'=>$id ));
     }
 
     /**
@@ -175,16 +278,14 @@ class RoadshareController extends AbstractController
      */
     public function voiture(Request $request, ObjectManager $manager,UtilisateurRepository $repo){
         $voiture = new voiture();
-        $utilisateur = new Utilisateur;
 
         $form = $this->createForm(VoitureType::class, $voiture);
         $form->handleRequest($request);
 
         if(($form->isSubmitted() && $form->isValid())){
             $user = $this->getUser();
-            $car = $repo->findBy(array("compte" => $user->getId()));
-            $utilisateur->setVoiture($car[0]);
-            dump($car[0]);
+            $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
+            $utilisateur->setVoiture($voiture);
 
             $manager->persist($voiture);
             $manager->flush();

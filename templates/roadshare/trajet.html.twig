@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<br>
+<div class="card bg-secondary mb-3">
+    <div class="card-header">
+        <p class="card-link">Trajet proposé par <a class="text-primary" href="{{path('roadshare_profil',{'id':trajet.conducteur.id} )}}"> {{trajet.conducteur.nom}} {{trajet.conducteur.prenom}}</a> </p>
+    </div>
+    <div class=" justify-content-between card-body">
+        <small class="text-muted">Prix : {{trajet.prix}}€</small>
+        <h4 class="card-title"> {{trajet.heureDepart|date("H:i")}} - {{trajet.heureArrivee|date("H:i")}}</h4>
+        <div class="card bg-secondary mb-3" >
+            <p class="card-text">{{trajet.adresseDepart.rue}} {{trajet.adresseDepart.ville}} --> {{trajet.adresseArrivee.rue}} {{trajet.adresseArrivee.ville}}</p>
+        </div>
+        {% set placesReserver= 0 %}
+        {% if trajet.reservations|length >0 %}
+            <h6> Passagers acceptés : </h6>
+            
+            {% for res in trajet.reservations %}
+                {% if res.etat=="acceptée" %}
+                    {% set placesReserver = placesReserver + 1 %}
+                    <div class="card border-primary mb-3" style="max-width: 20rem;">
+                        <h4 class="card-title"> <a class="text-primary" href="{{path('roadshare_profil',{'id':res.demandeur.id} )}}"> {{res.demandeur.nom}} {{res.demandeur.prenom}}</a></h4>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <h6> Nombre de places restant : {{trajet.nbPlaces - placesReserver}}</h6>
+    </div>
+    <div class="modal-footer">
+        {% if reservation %}
+            <button type="button" class="btn btn-primary disabled" disabled>Envoyer une demande de réservation</button>
+        {% elseif  owner %}
+            <button type="button" class="btn btn-warning">Modifier le trajet</button>
+        {% else %}
+            <button onclick="window.location.href='{{path('roadshare_reservation',{'id':trajet.id})}}';" type="button" class="btn btn-primary">Envoyer une demande de réservation</button>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}
