@@ -1,14 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
 <br>
 <div class="jumbotron">
 <h6 class="display-4">Inscription</h6>
 {{form_start(form)}}
   <fieldset>
     <div class="card bg-secondary mb-3">
+      <div class="card-header"><h4 class="card-title">Informations personnelles</h4></div>
       <div class="card-body">
-        <h4 class="card-title">Informations personnelles</h4>
         <div class="form-group">
           {{form_row(form.utilisateur.nom, {'label':'Nom :', 'attr' : {
             'placeholder': 'Entrée votre nom'
@@ -33,8 +34,9 @@
       </div>
     </div>
     <div class="card bg-secondary mb-3">
+      <div class="card-header"><h4 class="card-title">Adresse du domicile</h4></div>
       <div class="card-body">
-        <h4 class="card-title">Adresse du domicile</h4>
+        
           {{form_row(form.adressePostale.rue, {'label':'Rue:', 'attr' : {
             'placeholder': 'Entrée l\'adresse de la rue'
           }})}}
@@ -46,23 +48,23 @@
           }})}} 
       </div>
     </div>
-        <div class="card bg-secondary mb-3">
+    <div class="card bg-secondary mb-3">
+      <div class="card-header"><h4 class="card-title">Description</h4></div>
       <div class="card-body">
-        <h4 class="card-title">Description</h4>
           {{form_row(form.description.miniBio, {'label':'MiniBio:', 'attr' : {
             'placeholder': 'Entrée une miniBio sur vous (facultatif)'
           }})}}
-          {{form_row(form.description.centreInterets, {'label':'Ville :','attr' : {
+          {{form_row(form.description.centreInterets, {'label':'Centre d\'intérêt :','attr' : {
             'placeholder': 'Entrée vos centre d\'intérêts (facultatif)'
           }})}}
-          {{form_row(form.description.voyageAvecFumeur, {'label':'pouvez vous voyager avec un fumeur ? :'})}} 
-          {{form_row(form.description.voyagerAvecMusique, {'label':'pouvez vous voyager avec de la musique ? :'})}} 
-          {{form_row(form.description.voyagerAvecAnimaux, {'label':'pouvez vous voyager avec des animaux ? :'})}} 
+          {{form_row(form.description.voyageAvecFumeur, {'label':'Pouvez vous voyager avec un fumeur ? :'})}} 
+          {{form_row(form.description.voyagerAvecMusique, {'label':'Pouvez vous voyager avec de la musique ? :'})}} 
+          {{form_row(form.description.voyagerAvecAnimaux, {'label':'Pouvez vous voyager avec des animaux ? :'})}} 
       </div>
     </div>
     <div class="card bg-secondary mb-3">
+      <div class="card-header"><h4 class="card-title">Compte</h4></div>
       <div class="card-body">
-        <h4 class="card-title">Compte</h4>
         <div class="form-group">
           {{form_row(form.compte.email, {'label':'Email :', 'attr' : {
             'placeholder': 'Entrée votre adresse mail'

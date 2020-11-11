@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20201111143507 extends AbstractMigration
+final class Version20201111155205 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -28,7 +28,7 @@ final class Version20201111143507 extends AbstractMigration
         $this->addSql('CREATE TABLE information_travail (id INT AUTO_INCREMENT NOT NULL, entreprise_id INT NOT NULL, horaire_debut TIME NOT NULL, horaire_fin TIME NOT NULL, INDEX IDX_8DB8DA2AA4AEAFEA (entreprise_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE reservation (id INT AUTO_INCREMENT NOT NULL, demandeur_id INT NOT NULL, trajet_id INT NOT NULL, etat VARCHAR(255) NOT NULL, INDEX IDX_42C8495595A6EE59 (demandeur_id), INDEX IDX_42C84955D12A823 (trajet_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE trajet (id INT AUTO_INCREMENT NOT NULL, conducteur_id INT NOT NULL, adresse_depart_id INT NOT NULL, adresse_arrivee_id INT NOT NULL, date DATE NOT NULL, heure_depart TIME NOT NULL, heure_arrivee TIME NOT NULL, nb_places INT NOT NULL, prix DOUBLE PRECISION NOT NULL, etat VARCHAR(255) NOT NULL, INDEX IDX_2B5BA98CF16F4AC6 (conducteur_id), INDEX IDX_2B5BA98C305689D (adresse_depart_id), INDEX IDX_2B5BA98C85ED0E35 (adresse_arrivee_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE utilisateur (id INT AUTO_INCREMENT NOT NULL, adresse_postale_id INT NOT NULL, description_id INT DEFAULT NULL, voiture_id INT DEFAULT NULL, compte_id INT NOT NULL, information_travail_id INT DEFAULT NULL, nom LONGTEXT NOT NULL, prenom LONGTEXT NOT NULL, date_de_naissance DATE NOT NULL, telephone LONGTEXT NOT NULL, UNIQUE INDEX UNIQ_1D1C63B3C96EEC07 (adresse_postale_id), UNIQUE INDEX UNIQ_1D1C63B3D9F966B (description_id), UNIQUE INDEX UNIQ_1D1C63B3181A8BA (voiture_id), UNIQUE INDEX UNIQ_1D1C63B3F2C56620 (compte_id), UNIQUE INDEX UNIQ_1D1C63B3EDF610A0 (information_travail_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE utilisateur (id INT AUTO_INCREMENT NOT NULL, adresse_postale_id INT NOT NULL, description_id INT NOT NULL, voiture_id INT DEFAULT NULL, compte_id INT NOT NULL, information_travail_id INT DEFAULT NULL, nom LONGTEXT NOT NULL, prenom LONGTEXT NOT NULL, date_de_naissance DATE NOT NULL, telephone LONGTEXT NOT NULL, UNIQUE INDEX UNIQ_1D1C63B3C96EEC07 (adresse_postale_id), UNIQUE INDEX UNIQ_1D1C63B3D9F966B (description_id), UNIQUE INDEX UNIQ_1D1C63B3181A8BA (voiture_id), UNIQUE INDEX UNIQ_1D1C63B3F2C56620 (compte_id), UNIQUE INDEX UNIQ_1D1C63B3EDF610A0 (information_travail_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE voiture (id INT AUTO_INCREMENT NOT NULL, marque VARCHAR(255) NOT NULL, couleur VARCHAR(255) NOT NULL, immatriculation VARCHAR(255) NOT NULL, model VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE avis ADD CONSTRAINT FK_8F91ABF0D12A823 FOREIGN KEY (trajet_id) REFERENCES trajet (id)');
         $this->addSql('ALTER TABLE avis ADD CONSTRAINT FK_8F91ABF0A4F84F6E FOREIGN KEY (destinataire_id) REFERENCES utilisateur (id)');

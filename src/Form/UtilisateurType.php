@@ -14,12 +14,18 @@ class UtilisateurType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $today =  new \DateTime("now"); 
+        
         $builder
             ->add('nom', TextType::class)
             ->add('prenom', TextType::class)
-            ->add('dateDeNaissance', DateType::class)
+            ->add('dateDeNaissance', DateType::class, array(
+                'widget' => 'choice',
+                'years' => range(date('Y'), date('Y')-100),
+                'months' => range(date('m'), 12),
+                'days' => range(date('d'), 31),
+              ))
             ->add('telephone',TextType::class)
-            
         ;
     }
 
