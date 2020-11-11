@@ -15,7 +15,7 @@ class DescriptionType extends AbstractType
     {
         $builder
             ->add('miniBio', TextareaType::class, array('required' => false) )
-            ->add('voyageAvecFumeur', ChoiceType::class, [
+            ->add('voyagerAvecFumeur', ChoiceType::class, [
                 'choices' => [
                   'Oui' => true,
                   'Non' => false,  
