@@ -6,41 +6,79 @@
 <h6 class="display-4">Inscription</h6>
 {{form_start(form)}}
   <fieldset>
-    <div class="form-group">
-      {{form_row(form.utilisateur.nom, {'label':'Nom :', 'attr' : {
-        'placeholder': 'Entrée votre nom'
-      }})}}
-      {# <input type="text" class="form-control" required name="nom" placeholder="Entrée votre nom"> #}
+    <div class="card bg-secondary mb-3">
+      <div class="card-body">
+        <h4 class="card-title">Informations personnelles</h4>
+        <div class="form-group">
+          {{form_row(form.utilisateur.nom, {'label':'Nom :', 'attr' : {
+            'placeholder': 'Entrée votre nom'
+          }})}}
+          {# <input type="text" class="form-control" required name="nom" placeholder="Entrée votre nom"> #}
+        </div>
+        <div class="form-group">
+          {{form_row(form.utilisateur.prenom, {'label':'Prénom :', 'attr' : {
+            'placeholder': 'Entrée votre prénom'
+          }})}}
+          {# <input type="text" class="form-control" required name="prenom" placeholder="Entrée votre prénom"> #}
+        </div>
+        <div class="form-group">
+          {{form_row(form.utilisateur.dateDeNaissance, {'label':'Date de naissance :'})}}
+        </div>
+        <div class="form-group">
+          {{form_row(form.utilisateur.telephone, {'label':'Téléphone :', 'attr' : {
+            'placeholder': 'Entrée votre numéro de téléphone'
+          }})}}
+          {# <input type="text" class="form-control" id="exampleInputPassword1" required name="telephone" placeholder="Entrée votre numéro de téléphone (format 0612345678)" > #}
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      {{form_row(form.utilisateur.prenom, {'label':'Prénom :', 'attr' : {
-        'placeholder': 'Entrée votre prénom'
-      }})}}
-      {# <input type="text" class="form-control" required name="prenom" placeholder="Entrée votre prénom"> #}
+    <div class="card bg-secondary mb-3">
+      <div class="card-body">
+        <h4 class="card-title">Adresse du domicile</h4>
+          {{form_row(form.adressePostale.rue, {'label':'Rue:', 'attr' : {
+            'placeholder': 'Entrée l\'adresse de la rue'
+          }})}}
+          {{form_row(form.adressePostale.ville, {'label':'Ville :','attr' : {
+            'placeholder': 'Entrée la ville'
+          }})}}
+          {{form_row(form.adressePostale.codePostale, {'label':'Code postale :', 'attr' : {
+            'placeholder': 'Entrée le code postale'
+          }})}} 
+      </div>
     </div>
-    <div class="form-group">
-      {{form_row(form.utilisateur.dateDeNaissance, {'label':'Date de naissance :'})}}
+        <div class="card bg-secondary mb-3">
+      <div class="card-body">
+        <h4 class="card-title">Description</h4>
+          {{form_row(form.description.miniBio, {'label':'MiniBio:', 'attr' : {
+            'placeholder': 'Entrée une miniBio sur vous (facultatif)'
+          }})}}
+          {{form_row(form.description.centreInterets, {'label':'Ville :','attr' : {
+            'placeholder': 'Entrée vos centre d\'intérêts (facultatif)'
+          }})}}
+          {{form_row(form.description.voyageAvecFumeur, {'label':'pouvez vous voyager avec un fumeur ? :'})}} 
+          {{form_row(form.description.voyagerAvecMusique, {'label':'pouvez vous voyager avec de la musique ? :'})}} 
+          {{form_row(form.description.voyagerAvecAnimaux, {'label':'pouvez vous voyager avec des animaux ? :'})}} 
+      </div>
     </div>
-    <div class="form-group">
-      {{form_row(form.utilisateur.telephone, {'label':'Téléphone :', 'attr' : {
-        'placeholder': 'Entrée votre numéro de téléphone'
-      }})}}
-      {# <input type="text" class="form-control" id="exampleInputPassword1" required name="telephone" placeholder="Entrée votre numéro de téléphone (format 0612345678)" > #}
-    </div>
-    <div class="form-group">
-      {{form_row(form.compte.email, {'label':'Email :', 'attr' : {
-        'placeholder': 'Entrée votre adresse mail'
-      }})}}
-    </div>
-    <div class="form-group">
-      {{form_row(form.compte.motDePasse, {'label':'Mot de passe :', 'attr' : {
-        'placeholder': 'Entrée votre mot de passe'
-      }})}}
-    </div>
-    <div class="form-group">
-      {{form_row(form.compte.confirm_motDePasse, {'label':'Confirmer Mot de passe :', 'attr' : {
-        'placeholder': 'Confirmer votre mot de passe'
-      }})}}
+    <div class="card bg-secondary mb-3">
+      <div class="card-body">
+        <h4 class="card-title">Compte</h4>
+        <div class="form-group">
+          {{form_row(form.compte.email, {'label':'Email :', 'attr' : {
+            'placeholder': 'Entrée votre adresse mail'
+          }})}}
+        </div>
+        <div class="form-group">
+          {{form_row(form.compte.motDePasse, {'label':'Mot de passe :', 'attr' : {
+            'placeholder': 'Entrée votre mot de passe'
+          }})}}
+        </div>
+        <div class="form-group">
+          {{form_row(form.compte.confirm_motDePasse, {'label':'Confirmer Mot de passe :', 'attr' : {
+            'placeholder': 'Confirmer votre mot de passe'
+          }})}}
+        </div>
+      </div>
     </div>
   </fieldset>
     <button type="submit" class="btn btn-primary">Valider</button>

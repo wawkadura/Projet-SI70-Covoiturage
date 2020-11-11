@@ -23,19 +23,19 @@ class Description
     private $miniBio;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $fumeur;
+    private $voyageAvecFumeur;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $bavard;
+    private $voyagerAvecMusique;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $animaux;
+    private $voyagerAvecAnimaux;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -59,38 +59,38 @@ class Description
         return $this;
     }
 
-    public function getFumeur(): ?bool
+    public function getVoyageAvecFumeur(): ?bool
     {
-        return $this->fumeur;
+        return $this->voyageAvecFumeur;
     }
 
-    public function setFumeur(?bool $fumeur): self
+    public function setVoyageAvecFumeur(?bool $voyageAvecFumeur): self
     {
-        $this->fumeur = $fumeur;
+        $this->voyageAvecFumeur = $voyageAvecFumeur;
 
         return $this;
     }
 
-    public function getBavard(): ?bool
+    public function getVoyagerAvecMusique(): ?bool
     {
-        return $this->bavard;
+        return $this->voyagerAvecMusique;
     }
 
-    public function setBavard(?bool $bavard): self
+    public function setVoyagerAvecMusique(?bool $voyagerAvecMusique): self
     {
-        $this->bavard = $bavard;
+        $this->voyagerAvecMusique = $voyagerAvecMusique;
 
         return $this;
     }
 
-    public function getAnimaux(): ?bool
+    public function getVoyagerAvecAnimaux(): ?bool
     {
-        return $this->animaux;
+        return $this->voyagerAvecAnimaux;
     }
 
-    public function setAnimaux(?bool $animaux): self
+    public function setVoyagerAvecAnimaux(?bool $voyagerAvecAnimaux): self
     {
-        $this->animaux = $animaux;
+        $this->voyagerAvecAnimaux = $voyagerAvecAnimaux;
 
         return $this;
     }

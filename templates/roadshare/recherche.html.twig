@@ -50,6 +50,56 @@
           </div>
         </div>
       </div>
+      <div class="card bg-secondary mb-3" >
+        <div class="card-body">
+          <h5 class="card-title">Critéres : </h5>
+          <div class="form">
+            {% if recherche %}
+                <div class="form-group">
+                  <div class="custom-control custom-checkbox mb-3">
+                    {% if infosEntrees[4][0] %}
+                      <input type="checkbox" name="fumeur" class="custom-control-input" id="fumeur" checked>
+                    {% else %}
+                      <input type="checkbox" name="fumeur" class="custom-control-input" id="fumeur">
+                    {% endif %}                    
+                    <label class="custom-control-label" for="fumeur">non fumeur</label>
+                  </div>
+                  <div class="custom-control custom-checkbox mb-3">
+                    {% if infosEntrees[4][1] %}
+                      <input type="checkbox" name="animaux" class="custom-control-input" id="animaux" checked>
+                    {% else %}
+                      <input type="checkbox" name="animaux" class="custom-control-input" id="animaux">
+                    {% endif %} 
+                    <label class="custom-control-label" for="customCheck2">animaux autorisés</label>
+                  </div>
+                  <div class="custom-control custom-checkbox mb-3">
+                    {% if infosEntrees[4][2] %}
+                      <input type="checkbox" name="musique" class="custom-control-input" id="musique" checked>
+                    {% else %}
+                      <input type="checkbox" name="musique" class="custom-control-input" id="musique">
+                    {% endif %}
+                    <label class="custom-control-label" for="musique">musique autorisée</label>
+                  </div>
+                </div>
+            {% else %}
+                <div class="form-group">
+                  <div class="custom-control custom-checkbox mb-3">
+                    <input type="checkbox" name="fumeur" class="custom-control-input" id="fumeur">
+                    <label class="custom-control-label" for="fumeur">non fumeur</label>
+                  </div>
+                  <div class="custom-control custom-checkbox mb-3">
+                    <input type="checkbox" name="animaux" class="custom-control-input" id="animaux">
+                    <label class="custom-control-label" for="customCheck2">animaux autorisés</label>
+                  </div>
+                  <div class="custom-control custom-checkbox mb-3">
+                    <input type="checkbox" name="musique" class="custom-control-input" id="musique">
+                    <label class="custom-control-label" for="musique">musique autorisée</label>
+                  </div>
+                </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
       <button type="submit" class="btn btn-primary btn-lg btn-block">Lancer la recherche</button>
     </form>
 
@@ -70,14 +120,15 @@
             <h5 class="mb-1">{{trajet.heureDepart|date("H:i")}} - {{trajet.heureArrivee|date("H:i")}}</h5>
             <h5 class="text-muted">{{trajet.prix}}€</h5>
           </div>
-          <p class="mb-1">{{trajet.adresseDepart.rue}} {{trajet.adresseDepart.ville}} --> {{trajet.adresseArrivee.rue}} {{trajet.adresseArrivee.ville}}</p>
+          <p class="mb-1">{{trajet.adresseDepart.ville}} --> {{trajet.adresseArrivee.ville}}</p>
           <small class="text-muted">Proposer par : {{trajet.conducteur.prenom}}</small>
         </a>
       {% endfor %}
+      
     {% endfor %}
 
   </div>
-
+{# 
     <div>
       <ul class="pagination pagination-lg">
         <li class="page-item disabled">
@@ -93,11 +144,11 @@
           <a class="page-link" href="#">&raquo;</a>
         </li>
       </ul>
-    </div>
+    </div> #}
   {% else %}
     <div class="alert alert-dismissible alert-warning">
-      <h4 class="alert-heading">Rien n'a été trouvée</h4>
-      <p class="mb-0">Nous somme désoler mais aucun trajet correspond à vos critéres de recherche</a>.</p>
+      <h4 class="alert-heading">Nous avons rien trouvée</h4>
+      <p class="mb-0">Nous somme désoler, aucun trajet correspond à vos critéres de recherche</a>.</p>
     </div>
   {% endif %}
 {% endif %}

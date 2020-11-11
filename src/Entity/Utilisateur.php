@@ -41,14 +41,20 @@ class Utilisateur
     private $telephone;
 
     /**
+     * @ORM\OneToOne(targetEntity=AdressePostale::class, mappedBy="id")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $adressePostale;
+    
+    /**
      * @ORM\OneToMany(targetEntity=Trajet::class, mappedBy="conducteur")
      * @ORM\JoinColumn(nullable=true)
      */
     private $trajetsProposer;
-
+    
     /**
      * @ORM\OneToOne(targetEntity=Description::class, mappedBy="id")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $description;
 
@@ -57,12 +63,6 @@ class Utilisateur
      * @ORM\JoinColumn(nullable=true)
      */
     private $voiture;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Criteres::class, mappedBy="id")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $criteres;
 
     /**
      * @ORM\OneToOne(targetEntity=Compte::class, mappedBy="id")
@@ -150,6 +150,16 @@ class Utilisateur
         $this->telephone = $telephone;
     }
 
+    public function getAdressePostale()
+    {
+        return $this->adressePostale;
+    }
+
+    public function setAdressePostale($adressePostale): void
+    {
+        $this->adressePostale = $adressePostale;
+    }
+
     public function getDescription()
     {
         return $this->description;
@@ -168,16 +178,6 @@ class Utilisateur
     public function setVoiture($voiture): void
     {
         $this->voiture = $voiture;
-    }
-
-    public function getCriteres()
-    {
-        return $this->criteres;
-    }
-
-    public function setCriteres($criteres): void
-    {
-        $this->criteres = $criteres;
     }
 
     public function getCompte()

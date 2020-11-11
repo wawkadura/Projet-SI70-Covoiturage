@@ -12,6 +12,8 @@ class InscriptionFormType extends AbstractType
     {
         $builder->add('compte', CompteType::class);
         $builder->add('utilisateur',  UtilisateurType::class);
+        $builder->add('adressePostale',  AdressePostaleType::class);
+        $builder->add('description', DescriptionType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
