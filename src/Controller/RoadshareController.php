@@ -195,7 +195,6 @@ class RoadshareController extends AbstractController
         $trajetNiv3= Array(); //correspondance fort
         $niv1=0;
         $niv2=0;
-        $niv3=0;
         foreach ($trajetsExistants as $trajet) {
 
             if($trajet->getDate()->format('Y-m-d')==$dateDepart 
@@ -288,69 +287,69 @@ class RoadshareController extends AbstractController
     public function Profil(UtilisateurRepository $repo){
         $user = $this->getUser();
         $utilisateur = $repo->findBy(array("compte" => $user->getId()));
-       
+        $voitures= $this->getDoctrine()->getRepository(Voiture::class)->findAll();
+        $criteres= $this->getDoctrine()->getRepository(Criteres::class)->findAll();
         return $this->render('roadshare/profil.html.twig', [
             'user' => $user,
             'utilisateur' => $utilisateur[0],
+            'voitures'=>$voitures[0],
+            'criteres'=>$criteres[0]
         ]);
     }
 
     /**
      * @Route("/modification", name="roadshare_get_modification")
      */
-    // public function getIformation(){
-    //     $user = $this->getUser();
-    //     $voitures= $this->getDoctrine()->getRepository(Voiture::class)->findBy(array("compte" => $user->getId()))[0];
-    //     $criteres= $this->getDoctrine()->getRepository(Voiture::class)->findBy(array("compte" => $user->getId()))[0];
+    public function getInformation(){
+        $user = $this->getUser();
+        $voitures= $this->getDoctrine()->getRepository(Voiture::class)->findBy(array("compte" => $user->getId()))[0];
+        $criteres= $this->getDoctrine()->getRepository(Criteres::class)->findBy(array("compte" => $user->getId()))[0];
+        return $this->render('roadshare/informations.html.twig', [
+            'voitures'=>$voitures,
+            'criteres'=>$criteres,
+            'user' => $user
+        ]);
+    }
 
-    //     return $this->render('roadshare/informations.html.twig', [
-    //         'voitures'=>$voitures,
-    //         'criteres'=>$criteres,
-    //         'user' => $user
-    //     ]);
-    // }
-
- 
-    // /**
-    //  * @Route("/edit/{id}", name="roadshare_set_information")
-    // */
-    // //  * @ParamConverter("id", class="Criteres" options={"id":"criteres"}) //il ya un erreur a ce niveau.
-
-    // public function setmodification(Criteres $criteres,Voiture $voiture,Request $request,ObjectManager $manager,UtilisateurRepository $repo){
-    //     //$voiture = new voiture();
-    //     //criteres= new Criteres();
+    /**
+     * @Route("/edit/{id}", name="roadshare_setinformation") 
+     * @ParamConverter("id", options={"id":"criteres"})
+    */
+    public function edit(Voiture $voitures,Criteres $criteres,Request $request,ObjectManager $manager,UtilisateurRepository $repo){
+        //$voitures = new voiture();
+        //criteres= new Criteres();
         
-    //     $form = $this->createForm(VoitureType::class, $voiture);
-    //     $form->handleRequest($request);
+        $form = $this->createForm(VoitureType::class, $voitures);
+        $form->handleRequest($request);
 
-    //     $form1 = $this->createForm(CriteresType::class, $criteres);
-    //     $form1->handleRequest($request);
+        $form1 = $this->createForm(CriteresType::class, $criteres);
+        $form1->handleRequest($request);
 
-    //     if(($form->isSubmitted() && $form->isValid())){
-    //         $user = $this->getUser();
-    //         $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
-    //         $utilisateur->setVoiture($voiture);
+        if(($form->isSubmitted() && $form->isValid())){
+            $user = $this->getUser();
+            $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
+            $utilisateur->setVoiture($voitures);
 
-    //         $manager->persist($voiture);
-    //         $manager->flush();
-    //     }
+            $manager->persist($voitures);
+            $manager->flush();
+        }
 
-    //     if(($form1->isSubmitted() && $form1->isValid())){
-    //         $user = $this->getUser();
-    //         $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
-    //         $utilisateur->setCriteres($criteres);
+        if(($form1->isSubmitted() && $form1->isValid())){
+            $user = $this->getUser();
+            $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
+            $utilisateur->setCriteres($criteres);
 
-    //         $manager->persist($criteres);
-    //         $manager->flush();
-    //     }
+            $manager->persist($criteres);
+            $manager->flush();
+        }
 
-    //     $user = $this->getUser();
-    //     return $this->render('roadshare/informations.html.twig', [
-    //         'form' => $form->createView(),
-    //         'form1' => $form1->createView(),
-    //         'user' => $user
-    //     ]);
-    // }
+        $user = $this->getUser();
+        return $this->render('roadshare/informations.html.twig', [
+            'form' => $form->createView(),
+            'form1' => $form1->createView(),
+            'user' => $user
+        ]);
+    }
 
 
 }

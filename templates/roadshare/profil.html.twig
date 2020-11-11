@@ -9,11 +9,17 @@
     {{ utilisateur.dateDeNaissance | date('d/m/Y')}}
 </div>
  
-
+<div class="jumbotron">
+  {{voitures.marque}}<br/>
+  {{ voitures.couleur}}<br/>
+  {{ voitures.model}}<br/>
+  {{ voitures.immatriculation}}
+</div>
 
 <div>
-  <a class="nav-link" href="{{path('roadshare_set_information',{'id':voiture.id, 'id':criteres.id})}}"> Modifier ses informations </a>
+  <a class="nav-link" href="{{path('roadshare_setinformation', {'id':voitures.id, 'id':criteres.id} )}}"> Modifier ses informations </a>
 </div>
+
 
 {% endblock %}
 
