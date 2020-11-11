@@ -8,8 +8,13 @@ use App\Entity\Trajet;
 use App\Entity\AdressePostale;
 use App\Entity\Voiture;
 use App\Entity\Criteres;
+use App\Entity\Entreprise;
 use App\Entity\Description;
+use App\Entity\InformationTravail;
+use App\Form\TravailType;
 use App\Form\VoitureType;
+use App\Form\DescriptionType;
+use App\Form\EntrepriseType;
 use App\Form\CriteresType;
 use App\Form\PropositionType;
 use App\Form\CompteType;
@@ -288,68 +293,93 @@ class RoadshareController extends AbstractController
         $user = $this->getUser();
         $utilisateur = $repo->findBy(array("compte" => $user->getId()));
         $voitures= $this->getDoctrine()->getRepository(Voiture::class)->findAll();
-        $criteres= $this->getDoctrine()->getRepository(Criteres::class)->findAll();
+        $description= $this->getDoctrine()->getRepository(Description::class)->findAll();
+
         return $this->render('roadshare/profil.html.twig', [
             'user' => $user,
             'utilisateur' => $utilisateur[0],
             'voitures'=>$voitures[0],
-            'criteres'=>$criteres[0]
+            'description'=>$description
+         
         ]);
+
+   
     }
 
-    /**
-     * @Route("/modification", name="roadshare_get_modification")
-     */
-    public function getInformation(){
-        $user = $this->getUser();
-        $voitures= $this->getDoctrine()->getRepository(Voiture::class)->findBy(array("compte" => $user->getId()))[0];
-        $criteres= $this->getDoctrine()->getRepository(Criteres::class)->findBy(array("compte" => $user->getId()))[0];
-        return $this->render('roadshare/informations.html.twig', [
-            'voitures'=>$voitures,
-            'criteres'=>$criteres,
-            'user' => $user
-        ]);
-    }
 
     /**
-     * @Route("/edit/{id}", name="roadshare_setinformation") 
-     * @ParamConverter("id", options={"id":"criteres"})
+     * @Route("/setinformation", name="roadshare_setinformation") 
     */
-    public function edit(Voiture $voitures,Criteres $criteres,Request $request,ObjectManager $manager,UtilisateurRepository $repo){
-        //$voitures = new voiture();
-        //criteres= new Criteres();
+    public function setInformation(Request $request,ObjectManager $manager,UtilisateurRepository $repo){
+    
         
-        $form = $this->createForm(VoitureType::class, $voitures);
-        $form->handleRequest($request);
-
-        $form1 = $this->createForm(CriteresType::class, $criteres);
-        $form1->handleRequest($request);
-
-        if(($form->isSubmitted() && $form->isValid())){
-            $user = $this->getUser();
-            $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
-            $utilisateur->setVoiture($voitures);
-
-            $manager->persist($voitures);
-            $manager->flush();
-        }
-
-        if(($form1->isSubmitted() && $form1->isValid())){
-            $user = $this->getUser();
-            $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
-            $utilisateur->setCriteres($criteres);
-
-            $manager->persist($criteres);
-            $manager->flush();
-        }
-
         $user = $this->getUser();
+        $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
+
+        $voiture= $utilisateur->getVoiture();
+        $description= $utilisateur->getDescription();
+
+
+        $entreprise = new Entreprise();
+        $informationTravail = new InformationTravail();
+        
+        $formData['informationTravail']  =  $informationTravail;
+        $formData['entreprise'] = $entreprise;
+
+        if(isset($voture))
+        {
+            $voiture = new Voiture();
+        }
+        if(isset($description))
+        {
+            $description= new Description();
+        }
+
+
+        $formVoiture = $this->createForm(VoitureType::class, $voiture);
+        $formVoiture->handleRequest($request);
+
+        $formDescription = $this->createForm(DescriptionType::class, $description);
+        $formDescription->handleRequest($request);
+
+        $formTravail = $this->createForm(TravailType::class, $formData);
+        $formTravail->handleRequest($request);
+
+        if(($formVoiture->isSubmitted() && $formVoiture->isValid())){
+            $utilisateur->setVoiture($voiture);
+
+            $manager->persist($voiture);
+            $manager->flush();
+           
+        }
+
+        if(($formDescription->isSubmitted() && $formDescription->isValid())){
+            $utilisateur->setCriteres($description);
+
+            dump($formDescription);
+            $manager->persist($description);
+            $manager->flush();
+
+        }
+        if(($formEntreprise->isSubmitted() &&  $formEntreprise->isValid())){
+        
+        if(($formTravail['entreprise']->isSubmitted() && $formTravail['entreprise']->isValid()) && 
+        ($formTravail['informationTravail']->isSubmitted() && $formTravail['informationTravail']->isValid()))
+
+        //fk et pK
+            
+        //
+            $manager->persist($entreprise);
+            $manager->persist($informationTravail);
+            $manager->flush();
+
+        }
         return $this->render('roadshare/informations.html.twig', [
-            'form' => $form->createView(),
-            'form1' => $form1->createView(),
+            'formVoiture' => $formVoiture->createView(),
+            'formDescription' => $formDescription->createView(),
+            'formtravail' => $formTravail->createView(),
             'user' => $user
         ]);
     }
-
 
 }
