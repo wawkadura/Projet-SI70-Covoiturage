@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20201111155205 extends AbstractMigration
+final class Version20201111165544 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -23,7 +23,7 @@ final class Version20201111155205 extends AbstractMigration
         $this->addSql('CREATE TABLE adresse_postale (id INT AUTO_INCREMENT NOT NULL, rue VARCHAR(255) NOT NULL, ville VARCHAR(255) NOT NULL, code_postale INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE avis (id INT AUTO_INCREMENT NOT NULL, trajet_id INT NOT NULL, destinataire_id INT NOT NULL, expediteur_id INT NOT NULL, message VARCHAR(255) NOT NULL, note DOUBLE PRECISION NOT NULL, INDEX IDX_8F91ABF0D12A823 (trajet_id), INDEX IDX_8F91ABF0A4F84F6E (destinataire_id), INDEX IDX_8F91ABF010335F61 (expediteur_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE compte (id INT AUTO_INCREMENT NOT NULL, email LONGTEXT NOT NULL, mot_de_passe LONGTEXT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE description (id INT AUTO_INCREMENT NOT NULL, mini_bio VARCHAR(255) DEFAULT NULL, voyage_avec_fumeur TINYINT(1) NOT NULL, voyager_avec_musique TINYINT(1) NOT NULL, voyager_avec_animaux TINYINT(1) NOT NULL, centre_interets VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE description (id INT AUTO_INCREMENT NOT NULL, mini_bio VARCHAR(255) DEFAULT NULL, voyager_avec_fumeur TINYINT(1) NOT NULL, voyager_avec_musique TINYINT(1) NOT NULL, voyager_avec_animaux TINYINT(1) NOT NULL, centre_interets VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE entreprise (id INT AUTO_INCREMENT NOT NULL, adresse_postale_id INT NOT NULL, nom VARCHAR(255) NOT NULL, UNIQUE INDEX UNIQ_D19FA60C96EEC07 (adresse_postale_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE information_travail (id INT AUTO_INCREMENT NOT NULL, entreprise_id INT NOT NULL, horaire_debut TIME NOT NULL, horaire_fin TIME NOT NULL, INDEX IDX_8DB8DA2AA4AEAFEA (entreprise_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE reservation (id INT AUTO_INCREMENT NOT NULL, demandeur_id INT NOT NULL, trajet_id INT NOT NULL, etat VARCHAR(255) NOT NULL, INDEX IDX_42C8495595A6EE59 (demandeur_id), INDEX IDX_42C84955D12A823 (trajet_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');

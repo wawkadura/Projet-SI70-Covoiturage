@@ -66,7 +66,7 @@ class Description
 
     public function setVoyagerAvecFumeur(?bool $voyagerAvecFumeur): self
     {
-        $this->voyageAvecFumeur = $voyagerAvecFumeur;
+        $this->voyagerAvecFumeur = $voyagerAvecFumeur;
 
         return $this;
     }
