@@ -62,7 +62,7 @@
                     {% else %}
                       <input type="checkbox" name="fumeur" class="custom-control-input" id="fumeur">
                     {% endif %}                    
-                    <label class="custom-control-label" for="fumeur">non fumeur</label>
+                    <label class="custom-control-label" for="fumeur">vous voulais fumer lors du trajet</label>
                   </div>
                   <div class="custom-control custom-checkbox mb-3">
                     {% if infosEntrees[4][1] %}
@@ -70,7 +70,7 @@
                     {% else %}
                       <input type="checkbox" name="animaux" class="custom-control-input" id="animaux">
                     {% endif %} 
-                    <label class="custom-control-label" for="customCheck2">animaux autorisés</label>
+                    <label class="custom-control-label" for="animaux">vous voulais amener un animale avec vous</label>
                   </div>
                   <div class="custom-control custom-checkbox mb-3">
                     {% if infosEntrees[4][2] %}
@@ -78,22 +78,22 @@
                     {% else %}
                       <input type="checkbox" name="musique" class="custom-control-input" id="musique">
                     {% endif %}
-                    <label class="custom-control-label" for="musique">musique autorisée</label>
+                    <label class="custom-control-label" for="musique">vous ne voulais pas de musique lors du trajet</label>
                   </div>
                 </div>
             {% else %}
                 <div class="form-group">
                   <div class="custom-control custom-checkbox mb-3">
                     <input type="checkbox" name="fumeur" class="custom-control-input" id="fumeur">
-                    <label class="custom-control-label" for="fumeur">non fumeur</label>
+                    <label class="custom-control-label" for="fumeur">vous voulais fumer lors du trajet</label>
                   </div>
                   <div class="custom-control custom-checkbox mb-3">
                     <input type="checkbox" name="animaux" class="custom-control-input" id="animaux">
-                    <label class="custom-control-label" for="customCheck2">animaux autorisés</label>
+                    <label class="custom-control-label" for="animaux">vous voulais amener un animale avec vous</label>
                   </div>
                   <div class="custom-control custom-checkbox mb-3">
                     <input type="checkbox" name="musique" class="custom-control-input" id="musique">
-                    <label class="custom-control-label" for="musique">musique autorisée</label>
+                    <label class="custom-control-label" for="musique">vous ne voulais pas de musique lors du trajet</label>
                   </div>
                 </div>
             {% endif %}
