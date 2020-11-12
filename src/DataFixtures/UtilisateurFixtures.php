@@ -14,7 +14,11 @@ class UtilisateurFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-
+        $adressePostale = new AdressePostale();
+        $adressePostale->setRue("RandomRue")
+                        ->setVille("RandomVille")
+                        ->setCodePostale(10000);
+        
         for ($i=0; $i < 10; $i++) { 
 
             $description = new Description();
@@ -23,28 +27,23 @@ class UtilisateurFixtures extends Fixture
                         ->setVoyagerAvecMusique(true);
             $manager->persist($description);
 
-            $adressePostale = new AdressePostale();
-            $adressePostale->setRue("rue$i")
-                            ->setVille("ville$i")
-                            ->setCodePostale(10000 +$i);
-            $manager->persist($adressePostale);
-
             $compte = new Compte();
             $compte->setEmail("walid$i@yahoo.com")
-                    ->setMotDePasse(password_hash("waw$i",PASSWORD_DEFAULT));
+                    ->setMotDePasse(password_hash("wawverycool",PASSWORD_DEFAULT));
             $manager->persist($compte);
             
             $utilisateur = new Utilisateur();
-            $utilisateur->setNom("kadura$i");
-            $utilisateur->setPrenom("walid$i");
+            $utilisateur->setNom("RANDOM$i");
+            $utilisateur->setPrenom("Number$i");
             $utilisateur->setTelephone('0612345678');
             $utilisateur->setDateDeNaissance(new \DateTime());
             $utilisateur->setDescription($description);
             $utilisateur->setAdressePostale($adressePostale);
             $utilisateur->setCompte($compte);
             $manager->persist($utilisateur);
+            
         }
-
+        $manager->persist($adressePostale);
         $manager->flush();
     }
 }

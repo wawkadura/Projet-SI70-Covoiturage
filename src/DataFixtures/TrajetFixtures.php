@@ -14,18 +14,21 @@ class TrajetFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
+        $adressePostalDepart = new AdressePostale();
+        $adressePostalDepart->setRue("10 rue jean jaurés");
+        $adressePostalDepart->setVille("Grenoble");
+        $adressePostalDepart->setCodePostale(38000);
+
+        $adressePostalArrivee = new AdressePostale();
+        $adressePostalArrivee->setRue("10 rue charles de gaules");
+        $adressePostalArrivee->setVille("Lyon");
+        $adressePostalArrivee->setCodePostale(69000);
         
+        $manager->persist($adressePostalDepart);
+        $manager->persist($adressePostalArrivee);
+
         for ($i=1; $i <= 10; $i++) {
             
-            $adressePostalDepart = new AdressePostale();
-            $adressePostalDepart->setRue("$i rue jean jaurés");
-            $adressePostalDepart->setVille("Grenoble");
-            $adressePostalDepart->setCodePostale(38000);
-
-            $adressePostalArrivee = new AdressePostale();
-            $adressePostalArrivee->setRue("$i rue charles de gaules");
-            $adressePostalArrivee->setVille("Lyon");
-            $adressePostalArrivee->setCodePostale(69000);
 
             $conducteur = $manager->getRepository(Utilisateur::class)
                                 ->findBy(array("id"=>$i))[0];
@@ -36,12 +39,32 @@ class TrajetFixtures extends Fixture implements DependentFixtureInterface
             $trajet->setHeureArrivee(new \DateTime());
             $trajet->setAdresseDepart($adressePostalDepart);
             $trajet->setAdresseArrivee($adressePostalArrivee);
-            $trajet->setNbPlaces($i);
+            $trajet->setNbPlaces(3);
             $trajet->setPrix(6+$i);
-            $trajet->setEtat("En cours");
+            $trajet->setEtat("EN COURS");
             
-            $manager->persist($adressePostalDepart);
-            $manager->persist($adressePostalArrivee);
+
+            $manager->persist($trajet);
+        }
+        for ($i=1; $i <= 10; $i++) {
+            
+
+            $conducteur = $manager->getRepository(Utilisateur::class)
+                                ->findBy(array("id"=>$i))[0];
+            $trajet = new Trajet();
+            $trajet->setDate(new \DateTime());
+            $trajet->setConducteur($conducteur);
+            $trajet->setHeureDepart(new \DateTime());
+            $trajet->setHeureArrivee(new \DateTime());
+            $trajet->setAdresseDepart($adressePostalDepart);
+            $trajet->setAdresseArrivee($adressePostalArrivee);
+            $trajet->setNbPlaces(3);
+            $trajet->setPrix(6+$i);
+            if($i==5 || $i==7){
+                $trajet->setEtat("ANNULER");
+            }else{
+                $trajet->setEtat("TERMINE");
+            }
             $manager->persist($trajet);
         }
 

@@ -193,19 +193,17 @@ class RoadshareController extends AbstractController
         $dateDepart = $infosEntrees[2];
         $heureDepart = $infosEntrees[3];
         
-        $trajetNiv1= Array(); //correspondance faible
-        $trajetNiv2= Array(); //correspondance moyenne
+        $trajetNiv1= Array(); //correspondance moyenne
+        $trajetNiv2= Array(); //correspondance fort
         $niv1=0;
         $niv2=0;
         foreach ($trajetsExistants as $trajet) {
             
-            $conducteur = $utilisateurRepo->findBy(array("id" => $trajet->getConducteur()->getId()))[0];
-            $description = $descriptionRepo->findBy(array("id" => $conducteur->getDescription()->getId()))[0];
             if($trajet->getDate()->format('Y-m-d')==$dateDepart 
             && $trajet->getHeureDepart()->format('H:i')>=$heureDepart 
             && strtolower($trajet->getAdresseDepart()->getVille())==strtolower($adresseDepart->getVille() )
-            && strtolower($trajet->getAdresseArrivee()->getVille())==strtolower($adresseArrivee->getVille()
-            && $this->Criteres($description,$infosEntrees[4]))
+            && strtolower($trajet->getAdresseArrivee()->getVille())==strtolower($adresseArrivee->getVille())
+            && $this->Criteres($trajet->getConducteur()->getDescription(),$infosEntrees[4])
             ){// niveau 1 
                 
                 if(strtolower($trajet->getAdresseDepart()->getRue())==strtolower($adresseDepart->getRue()) 
