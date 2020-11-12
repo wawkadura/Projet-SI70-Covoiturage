@@ -2,6 +2,10 @@
 
 {% block body %}
 <br>
+<form>
+  <input type="button" class="btn btn-secondary" value=" <- Retour" onclick="history.go(-1)">
+</form>
+<br>
 <div class="card bg-secondary mb-3">
     <div class="card-header">
         <p class="card-link">Trajet proposé par <a class="text-primary" href="{{path('roadshare_profil',{'id':trajet.conducteur.id} )}}"> {{trajet.conducteur.nom}} {{trajet.conducteur.prenom}}</a> </p>
