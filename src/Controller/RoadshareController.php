@@ -284,24 +284,36 @@ class RoadshareController extends AbstractController
      */
     public function Profil(UtilisateurRepository $repo){
         $user = $this->getUser();
-        $utilisateur = $repo->findBy(array("compte" => $user->getId()));
-        $description= $this->getDoctrine()->getRepository(Description::class)->findAll();
-        $voitures= $this->getDoctrine()->getRepository(Voiture::class)->findAll();
-        $entreprise= $this->getDoctrine()->getRepository(Entreprise::class)->findAll();
-        $informationTravail= $this->getDoctrine()->getRepository(InformationTravail::class)->findAll();
-        $compte= $this->getDoctrine()->getRepository(Compte::class)->findAll();
+        $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
+        $description= $utilisateur->getDescription();
 
-
-        dump($utilisateur);
-
-
-        return $this->render('roadshare/profil.html.twig', [
-            'user' => $user,
-            'utilisateur' => $utilisateur[0],
-            'description'=>$description[0],
-            'voitures'=>$voitures
-         
-        ]);
+        $voiture= $utilisateur->getVoiture();
+        $informationTravail= $utilisateur->getInformationTravail();
+        $compte=$utilisateur->getCompte();
+        
+        if (!isset($entreprise)){
+            return $this->render('roadshare/profil.html.twig', [
+                'user' => $user,
+                'utilisateur' => $utilisateur,
+                'description'=>$description,
+                'voiture'=>$voiture,
+                'informationTravail'=>$informationTravail,
+                'compte'=>$compte
+            ]);
+        }
+        else {
+            $entreprise= $informationTravail->getEntreprise();
+            return $this->render('roadshare/profil.html.twig', [
+                'user' => $user,
+                'utilisateur' => $utilisateur,
+                'description'=>$description,
+                'voiture'=>$voiture,
+                'informationTravail'=>$informationTravail,
+                'compte'=>$compte,
+                'entreprise'=>$entreprise
+            
+            ]);
+        }    
 
    
     }
@@ -319,28 +331,27 @@ class RoadshareController extends AbstractController
         $voiture= $utilisateur->getVoiture();
         $description= $utilisateur->getDescription();
         $informationTravail= $utilisateur->getInformationTravail();
-
-        //key
-        $entreprise=$informationTravail->getEntreprise();
-        $adressePostale=$entreprise->getAdressePostale();
-
-        if(isset($voiture)){
-            $voiture = new Voiture();
-        }
-        if(isset($entreprise)){
-            $entreprise = new Entreprise();
-        }
-        if(isset($informationTravail )){
+        $compte= $utilisateur->getCompte();
+        
+        if(!isset($informationTravail )){
             $informationTravail = new InformationTravail();
         }
-       
+        else   $entreprise=$informationTravail->getEntreprise();
+
+        if(!isset($entreprise)){
+            $entreprise = new Entreprise();
+            $adressePostaleEntreprise= new AdressePostale;
+        }
+        else $adressePostaleEntreprise= $entreprise->getAdressePostale();
+
+        if(!isset($voiture)){
+            $voiture = new Voiture();
+        }
+        else $voiture= $utilisateur->getVoiture();
+
+
         $formData['informationTravail']  =  $informationTravail;
         $formData['entreprise'] = $entreprise;
-
-        $formInfo['utilisateur'] = $utilisateur;
-        $formInfo['compte']  = $compte;
-
-     
 
         $formVoiture = $this->createForm(VoitureType::class, $voiture);
         $formVoiture->handleRequest($request);
@@ -351,8 +362,11 @@ class RoadshareController extends AbstractController
         $formTravail = $this->createForm(TravailType::class, $formData);
         $formTravail->handleRequest($request);
 
-        $formUtilisateur=$this->creatFfrom(IncriptionFomType::class,$formInfo);
+        $formUtilisateur=$this->createForm(utilisateurType::class,$utilisateur);
         $formUtilisateur->handleRequest($request);
+
+        $formCompte=$this->createForm(CompteType::class,$compte);
+        $formCompte->handleRequest($request);
 
         if(($formVoiture->isSubmitted() && $formVoiture->isValid())){
             $utilisateur->setVoiture($voiture);
@@ -361,7 +375,6 @@ class RoadshareController extends AbstractController
             $manager->flush();
            
         }
-
         if(($formDescription->isSubmitted() && $formDescription->isValid())){
             $utilisateur->setDescription($description);
 
@@ -370,34 +383,36 @@ class RoadshareController extends AbstractController
             $manager->flush();
 
         }
-        
         if(($formTravail['entreprise']->isSubmitted() && $formTravail['entreprise']->isValid()) && 
         ($formTravail['informationTravail']->isSubmitted() && $formTravail['informationTravail']->isValid())){
 
-        //fk et pK
-           
-            $informationTravail=$this->setEntreprise($entreprise);
-            $entreprise=$this->setetAdressePostale();
-            $utilisateur=$this->setInformationTravail($informationTravail);
+            $informationTravail->setEntreprise($entreprise);
+            $entreprise->setAdressePostale($adressePostaleEntreprise);
+            $utilisateur->setInformationTravail($informationTravail);
 
             $manager->persist($entreprise);
             $manager->persist($informationTravail);
+            $manager->persist($utilisateur);
             $manager->flush();
 
         }
-        if(($formUtilisateur['utilisateur']->isSubmitted() && $formUtilisateur['utilisateur']->isValid()) && 
-        ($formUtilisateur['compte']->isSubmitted() && $formUtilisateur['compte']->isValid())){
+        if(($formUtilisateur->isSubmitted() && $formUtilisateur->isValid())){
 
-            $manager->persist($compte);
             $manager->persist($utilisateur);
             $manager->flush();
         }
-
+        if(($formCompte->isSubmitted() && $formCompte->isValid())){
+            $utilisateur->setCompte($compte);
+            
+            $manager->persist($compte);
+            $manager->flush();
+        }
         return $this->render('roadshare/informations.html.twig', [
             'formVoiture' => $formVoiture->createView(),
             'formDescription' => $formDescription->createView(),
-            'formtravail' => $formTravail->createView(),
+            'formTravail' => $formTravail->createView(),
             'formUtilisateur' => $formUtilisateur->createView(),
+            'formCompte' => $formCompte->createView(),
             'user' => $user
         ]);
     }
