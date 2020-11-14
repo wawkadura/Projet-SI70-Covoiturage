@@ -354,17 +354,17 @@ class RoadshareController extends AbstractController
 
         if(!isset($informationTravail )){
             $informationTravail = new InformationTravail();
-            $formData['informationTravail']  =  $informationTravail;
             $entreprise = new Entreprise();
             $adressePostaleEntreprise= new AdressePostale();
-            $formData['entreprise'] = $entreprise;
         }
         else {
             $entreprise=$informationTravail->getEntreprise();
             $adressePostaleEntreprise= $entreprise->getAdressePostale();
         }
-        
+        $formData['entreprise'] = $entreprise;
         $formData['adressepostale'] = $adressePostaleEntreprise;
+        $formData['informationTravail']  =  $informationTravail;
+
 
         if(!isset($voiture)){
             $voiture = new Voiture();
