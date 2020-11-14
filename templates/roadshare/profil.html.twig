@@ -84,8 +84,9 @@
             <p> Horaire de début : {{ informationTravail.horaireDebut|date("H:i")  }}</p>
             <p> Horaire de fin : {{ informationTravail.horaireFin|date("H:i")}}</p>
             <p> {{entreprise.adressePostale.rue}} {{entreprise.adressePostale.codePostale}} {{entreprise.adressePostale.ville}} 
-            <a class="nav-link" href="{{path('roadshare_setinformation')}}"> Ajouter des informations par rapport à votre lieu de travail </a>
           {% endif %}
+          {% elseif owner %}
+          <a class="nav-link" href="{{path('roadshare_setinformation')}}"> Ajouter des informations par rapport à votre lieu de travail </a>
         {% endif %}
   </div>
 </div>
