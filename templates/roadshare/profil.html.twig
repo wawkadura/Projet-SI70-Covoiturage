@@ -1,34 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block body %}</br></br>
 
-<table cellspacing="1" cellpadding="0" width="500" bgcolor="gray">
-    <tr>
-        <td width="768" bgcolor="white">
-       
-        <span style="position: absolute; top: 140px; left: 450px; width: 500px; heigth: 84px;">
-
-          <div class="jumbotron">
-            <h4> Informations personnelles</h4><br/>
-                <img
-                    src="https://cdn.discordapp.com/attachments/759864377767100477/776891983858892880/profile-icon-png-1.png" 
-                    height="95px" 
-                    width="95px" 
-                />
-                <p>Nom : {{ utilisateur.nom |upper }}</p>
-                <p>Prenom : {{ utilisateur.prenom |upper }}</p>
-                <p>Speudo : {{ user.email}} </p>
-                <p>Date de naissance : {{ utilisateur.dateDeNaissance | date('d/m/Y')}}</p>
-                {% if owner %}
-                  <p>Numéro : {{ utilisateur.telephone}}</p>
-                  <a class="nav-link" href="{{path('roadshare_setinformation')}}"> Modifier vos informations personnelles</a>
-                {% endif %}
-          </div>
-        </span>
-
-        <span style="position: absolute; top: 600px; left: 450px; width: 500px; heigth: 84px;">
-          <div class="jumbotron">
-          <h4> Description </h4></p>
+<div class="card text-blue bg-secondary mb-3" style="max-width: 55rem;">
+      <div class="card-body">
+      <h4> Informations personnelles </h4>
+           <img
+              src="https://cdn.discordapp.com/attachments/759864377767100477/776891983858892880/profile-icon-png-1.png" 
+               height="95px" 
+               width="95px" 
+            />
+            <p>Nom : {{ utilisateur.nom |upper }}</p>
+            <p>Prenom : {{ utilisateur.prenom |upper }}</p>
+            <p>Speudo : {{ user.email}} </p>
+            <p>Date de naissance : {{ utilisateur.dateDeNaissance | date('d/m/Y')}}</p>
+            {% if owner %}
+            <p>Numéro : {{ utilisateur.telephone}}</p>
+            <a class="nav-link" href="{{path('roadshare_setinformation')}}"> Modifier vos informations personnelles</a>
+            {% endif %}
+      </div>
+</div>  
+<div class="card text-blue bg-secondary mb-3" style="max-width: 55rem;">
+  <div class="card-body">
+     <h4> Description  </h4>
           {% if description.miniBio %}
             <p> {{description.miniBio}}</p>
           {% elseif owner %}
@@ -61,12 +55,12 @@
           {% if owner %}
              <a class="nav-link" href="{{path('roadshare_setinformation')}}"> Modifier votre description</a>
           {% endif %}
-          </div>
-       </span>
+  </div>
+</div>
 
-       <span style="position: absolute; top: 600px; left: 960px; width: 500px; heigth: 84px;">
-         {% if voiture %}
-              <div class="jumbotron">
+<div class="card text-blue bg-secondary mb-3" style="max-width: 55rem;">
+  <div class="card-body">
+     {% if voiture %}
                 <h4> Voiture </h4>
                 <p>Marque : {{ (voiture.marque)}}</p>
                 <p>Couleur : {{ voiture.couleur}}</p>
@@ -79,11 +73,10 @@
             {% elseif owner %}
                 <a class="nav-link" href="{{path('roadshare_setinformation')}}"> Ajouter votre voiture à votre compte</a>
          {% endif %}
-        </span>
-
-      <span style="position: absolute; top: 284px; left: 960px; width: 500px; heigth: 84px;">    
-        {% if informationTravail %}
-          <div class="jumbotron">
+  </div>
+  <div class="card text-blue bg-secondary mb-3" style="max-width: 55rem;">
+  <div class="card-body">
+      {% if informationTravail %}
           <h4> Infomations Travail </h4>
           <p> Nom de l'entreprise : {{entreprise.nom}}
           {% if owner %}
@@ -93,11 +86,11 @@
             <a class="nav-link" href="{{path('roadshare_setinformation')}}"> Ajouter des informations par rapport à votre lieu de travail </a>
           {% endif %}
         {% endif %}
-      </span>
+  </div>
+</div>
+</div>
 
-        </span>
-      </td>  
-    </tr>
-</table>
+
+
 {% endblock %}
 
