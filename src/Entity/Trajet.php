@@ -73,11 +73,6 @@ class Trajet
     private $etat;
 
     /**
-     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="trajet")
-     */
-    private $reservations;
-
-    /**
      * @ORM\OneToMany(targetEntity=Avis::class, mappedBy="trajet", orphanRemoval=true)
      */
     private $avis;
@@ -198,36 +193,6 @@ class Trajet
     public function setEtat(string $etat): self
     {
         $this->etat = $etat;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Reservation[]
-     */
-    public function getReservations(): Collection
-    {
-        return $this->reservations;
-    }
-
-    public function addReservation(Reservation $reservation): self
-    {
-        if (!$this->reservations->contains($reservation)) {
-            $this->reservations[] = $reservation;
-            $reservation->setTrajet($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReservation(Reservation $reservation): self
-    {
-        if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
-            if ($reservation->getTrajet() === $this) {
-                $reservation->setTrajet(null);
-            }
-        }
 
         return $this;
     }

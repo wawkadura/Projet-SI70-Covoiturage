@@ -41,7 +41,7 @@ class Utilisateur
     private $telephone;
 
     /**
-     * @ORM\OneToOne(targetEntity=AdressePostale::class, mappedBy="id")
+     * @ORM\ManyToOne(targetEntity=AdressePostale::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $adressePostale;
@@ -81,19 +81,6 @@ class Utilisateur
      * @ORM\JoinColumn(nullable=true)
      */
     private $reservations;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Avis::class, mappedBy="id", orphanRemoval=true)
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $avisRecu;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Avis::class, mappedBy="id", orphanRemoval=true)
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $avisPoste;
-
 
     public function __construct()
     {
@@ -253,66 +240,6 @@ class Utilisateur
             // set the owning side to null (unless already changed)
             if ($reservation->getDemandeur() === $this) {
                 $reservation->setDemandeur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Avis[]
-     */
-    public function getAvisRecu(): Collection
-    {
-        return $this->avisRecu;
-    }
-
-    public function addAvisRecu(Avis $avisRecu): self
-    {
-        if (!$this->avisRecu->contains($avisRecu)) {
-            $this->avisRecu[] = $avisRecu;
-            $avisRecu->setDestinataire($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAvisRecu(Avis $avisRecu): self
-    {
-        if ($this->avisRecu->removeElement($avisRecu)) {
-            // set the owning side to null (unless already changed)
-            if ($avisRecu->getDestinataire() === $this) {
-                $avisRecu->setDestinataire(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Avis[]
-     */
-    public function getAvisPoste(): Collection
-    {
-        return $this->avisPoste;
-    }
-
-    public function addAvisPoste(Avis $avisPoste): self
-    {
-        if (!$this->avisPoste->contains($avisPoste)) {
-            $this->avisPoste[] = $avisPoste;
-            $avisPoste->setExpediteur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAvisPoste(Avis $avisPoste): self
-    {
-        if ($this->avisPoste->removeElement($avisPoste)) {
-            // set the owning side to null (unless already changed)
-            if ($avisPoste->getExpediteur() === $this) {
-                $avisPoste->setExpediteur(null);
             }
         }
 

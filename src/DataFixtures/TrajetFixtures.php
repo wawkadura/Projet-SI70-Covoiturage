@@ -26,12 +26,12 @@ class TrajetFixtures extends Fixture implements DependentFixtureInterface
         
         $manager->persist($adressePostalDepart);
         $manager->persist($adressePostalArrivee);
-
-        for ($i=1; $i <= 10; $i++) {
+        $utilisateurs = $manager->getRepository(Utilisateur::class)->findAll();
+        $i=1;
+        foreach( $utilisateurs as $conducteur ) {
             
 
-            $conducteur = $manager->getRepository(Utilisateur::class)
-                                ->findBy(array("id"=>$i))[0];
+
             $trajet = new Trajet();
             $trajet->setDate(new \DateTime());
             $trajet->setConducteur($conducteur);
@@ -45,12 +45,11 @@ class TrajetFixtures extends Fixture implements DependentFixtureInterface
             
 
             $manager->persist($trajet);
+            $i++;
         }
-        for ($i=1; $i <= 10; $i++) {
+        $i=0;
+        foreach( $utilisateurs as $conducteur ) {
             
-
-            $conducteur = $manager->getRepository(Utilisateur::class)
-                                ->findBy(array("id"=>$i))[0];
             $trajet = new Trajet();
             $trajet->setDate(new \DateTime());
             $trajet->setConducteur($conducteur);
@@ -65,10 +64,13 @@ class TrajetFixtures extends Fixture implements DependentFixtureInterface
             }else{
                 $trajet->setEtat("TERMINE");
             }
+            $i++;
+
             $manager->persist($trajet);
         }
 
         $manager->flush();
+        
     }
     public function getDependencies()
     {

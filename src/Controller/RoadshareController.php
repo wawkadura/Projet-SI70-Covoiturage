@@ -253,10 +253,11 @@ class RoadshareController extends AbstractController
         $user = $this->getUser();
         $reservation = false;
         $utilisateur = $utilisateurRepo->findBy(array("compte" => $user->getId()))[0];
-        $trajet = $trajetRepo->findBy(array('id'=>$id ))[0];
-        if(!empty($trajet->getReservations())){
-            foreach ($trajet->getReservations() as $res) {
-                if($res->getDemadeur()->getId()==$utilisateur->getId()){
+        $trajet = $trajetRepo->findOneBy(array('id'=>$id ));
+        $reservations = $reservationRepo->findBy(array('trajet'=>$trajet->getId()));
+        if(!empty($reservations)){
+            foreach ($reservations as  $res) {
+                if($res->getDemandeur()->getId()==$utilisateur->getId()){
                     $reservation=true;
                 }
             }
@@ -316,7 +317,6 @@ class RoadshareController extends AbstractController
    
     }
 
-
     /**
      * @Route("/setinformation", name="roadshare_setinformation") 
     */
@@ -333,19 +333,18 @@ class RoadshareController extends AbstractController
         
         if(!isset($informationTravail )){
             $informationTravail = new InformationTravail();
-        }
-        else   $entreprise=$informationTravail->getEntreprise();
-
-        if(!isset($entreprise)){
             $entreprise = new Entreprise();
             $adressePostaleEntreprise= new AdressePostale;
         }
-        else $adressePostaleEntreprise= $entreprise->getAdressePostale();
+        else   {
+            $entreprise=$informationTravail->getEntreprise();
+            $adressePostaleEntreprise= $entreprise->getAdressePostale();
+        }
 
         if(!isset($voiture)){
             $voiture = new Voiture();
         }
-        else $voiture= $utilisateur->getVoiture();
+        else {$voiture= $utilisateur->getVoiture();}
 
 
         $formData['informationTravail']  =  $informationTravail;

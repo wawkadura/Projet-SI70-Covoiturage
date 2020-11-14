@@ -28,12 +28,6 @@ class Avis
     private $note;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Trajet::class, inversedBy="avis")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $trajet;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="avisRecu")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -70,18 +64,6 @@ class Avis
     public function setNote(float $note): self
     {
         $this->note = $note;
-
-        return $this;
-    }
-
-    public function getTrajet(): ?Trajet
-    {
-        return $this->trajet;
-    }
-
-    public function setTrajet(?Trajet $trajet): self
-    {
-        $this->trajet = $trajet;
 
         return $this;
     }

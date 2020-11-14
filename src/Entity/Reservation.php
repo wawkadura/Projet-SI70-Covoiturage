@@ -32,7 +32,7 @@ class Reservation
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $etat;
+    private $etat; // [ACCEPTER,REFUSER,EN ATTENTE]
 
     public function getId(): ?int
     {
