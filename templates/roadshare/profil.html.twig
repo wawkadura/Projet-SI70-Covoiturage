@@ -69,13 +69,14 @@
                   <p>Immatriculation : {{ voiture.immatriculation}}</p>
                   <a class="nav-link" href="{{path('roadshare_setinformation')}}"> Modifier informations voiture</a>
                 {% endif %}
-              </div>
             {% elseif owner %}
                 <a class="nav-link" href="{{path('roadshare_setinformation')}}"> Ajouter votre voiture à votre compte</a>
          {% endif %}
   </div>
-  <div class="card text-blue bg-secondary mb-3" style="max-width: 55rem;">
-  <div class="card-body">
+</div>
+
+<div class="card text-blue bg-secondary mb-3" style="max-width: 55rem;">
+   <div class="card-body">
       {% if informationTravail %}
           <h4> Infomations Travail </h4>
           <p> Nom de l'entreprise : {{entreprise.nom}}
@@ -88,9 +89,6 @@
         {% endif %}
   </div>
 </div>
-</div>
-
-
 
 {% endblock %}
 
