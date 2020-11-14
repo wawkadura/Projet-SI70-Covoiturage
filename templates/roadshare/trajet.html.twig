@@ -17,7 +17,7 @@
             <p class="card-text">{{trajet.adresseDepart.rue}} {{trajet.adresseDepart.ville}} --> {{trajet.adresseArrivee.rue}} {{trajet.adresseArrivee.ville}}</p>
         </div>
         {% set placesReserver= 0 %}
-        {% if trajet.reservations|length >0 %}
+        {# {% if trajet.reservations|length >0 %}
             <h6> Passagers acceptés : </h6>
             
             {% for res in trajet.reservations %}
@@ -28,7 +28,7 @@
                     </div>
                 {% endif %}
             {% endfor %}
-        {% endif %}
+        {% endif %} #}
         <h6> Nombre de places restant : {{trajet.nbPlaces - placesReserver}}</h6>
     </div>
     <div class="modal-footer">

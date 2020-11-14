@@ -284,6 +284,7 @@ class RoadshareController extends AbstractController
      * @Route("/profil/{id}", name="roadshare_profil_public")
      */
     public function ProfilPublic($id,UtilisateurRepository $repo){
+        $user = $this->getUser();
         $utilisateur = $repo->findOneBy(array("id" => $id));
         $description= $utilisateur->getDescription();
         $voiture= $utilisateur->getVoiture();
@@ -354,21 +355,16 @@ class RoadshareController extends AbstractController
         if(!isset($informationTravail )){
             $informationTravail = new InformationTravail();
             $formData['informationTravail']  =  $informationTravail;
-        }
-        else $entreprise=$informationTravail->getEntreprise();
-
-        if(!isset($entreprise)){
             $entreprise = new Entreprise();
             $adressePostaleEntreprise= new AdressePostale();
-            
             $formData['entreprise'] = $entreprise;
         }
-        else{
+        else {
             $entreprise=$informationTravail->getEntreprise();
             $adressePostaleEntreprise= $entreprise->getAdressePostale();
         }
+        
         $formData['adressepostale'] = $adressePostaleEntreprise;
-        dump($adressePostaleEntreprise);
 
         if(!isset($voiture)){
             $voiture = new Voiture();
@@ -407,9 +403,6 @@ class RoadshareController extends AbstractController
             $entreprise->setAdressePostale($adressePostaleEntreprise);
             $informationTravail->setEntreprise($entreprise);
             $utilisateur->setInformationTravail($informationTravail);
-            dump($informationTravail);
-            dump($entreprise);
-            dump($adressePostaleEntreprise);
 
             $manager->persist($adressePostaleEntreprise);
             $manager->persist($entreprise);
