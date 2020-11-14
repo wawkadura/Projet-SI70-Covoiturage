@@ -10,6 +10,7 @@ use App\Entity\Voiture;
 use App\Entity\Entreprise;
 use App\Entity\Description;
 use App\Entity\InformationTravail;
+use App\Entity\Reservation;
 use App\Form\TravailType;
 use App\Form\VoitureType;
 use App\Form\DescriptionType;
@@ -38,7 +39,17 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class RoadshareController extends AbstractController
 {
-   
+   // Etats pour les reservations 
+   public const ACCEPTEE = 'ACCEPTER';
+   public const EN_ATTENTE = 'EN_ATTENTE';
+   public const REFUSER = 'REFUSER';
+
+   // Etats pour les trajets 
+   public const ANNULER = 'ANNULER';
+   public const EN_COURS = 'EN_COURS';
+   public const COMPLET = 'COMPLET';
+   public const EFFECTUE = 'EFFECTUE';
+
     /**
      * @Route("/", name="roadshare_home")
      */
@@ -133,7 +144,7 @@ class RoadshareController extends AbstractController
             $user = $this->getUser();
             $conducteur = $repo->findBy(array("compte" => $user->getId()));
             $trajet->setConducteur($conducteur[0]);
-            $trajet->setEtat('En cours');
+            $trajet->setEtat(self::EN_COURS);
 
             $trajet->setAdresseDepart($adresseDepart);
             $trajet->setAdresseArrivee($adresseArrivee);    
@@ -146,6 +157,7 @@ class RoadshareController extends AbstractController
         $user = $this->getUser();
         return $this->render('roadshare/proposition.html.twig', [
             'form' => $form->createView(),
+            'modification' => false,
             'user' => $user
         ]);
     }
@@ -157,10 +169,13 @@ class RoadshareController extends AbstractController
     {   
         $recherche = $request->request;
         $user = $this->getUser();
+        // $adresseDepart = new AdressePostale();
+        // $adresseArrivee = new AdressePostale();
+
         if($recherche->count()>0){ 
             
             $infosEntrees = Array(); // [adresseDepart, adresseArrivee, dateDepart, heureDepart]
-            $trajetsExistants = $trajetRepo->findBy(array('etat'=>'En cours'));
+            $trajetsExistants = $trajetRepo->findBy(array('etat'=>self::EN_COURS));
             $infosEntrees[0] = new AdressePostale();
             $infosEntrees[0]->setRue($recherche->get('adresseDepart'))
                             ->setVille($recherche->get('villeDepart'))
@@ -252,33 +267,108 @@ class RoadshareController extends AbstractController
      */
     public function Trajet($id,ReservationRepository $reservationRepo, TrajetRepository $trajetRepo, UtilisateurRepository $utilisateurRepo){
         $user = $this->getUser();
-        $reservation = false;
-        $utilisateur = $utilisateurRepo->findBy(array("compte" => $user->getId()))[0];
+        $dejaReserver = false;
+        $utilisateur = $utilisateurRepo->findOneBy(array("compte" => $user->getId()));
         $trajet = $trajetRepo->findOneBy(array('id'=>$id ));
-        $reservations = $reservationRepo->findBy(array('trajet'=>$trajet->getId()));
+        $reservationsAcceptee = $reservationRepo->findBy(array('trajet'=>$trajet->getId(), 'etat' => self::ACCEPTEE));        
+        $reservationsEnAttente = $reservationRepo->findBy(array('trajet'=>$trajet->getId(), 'etat' =>self::EN_ATTENTE));        
+        $reservations = $reservationRepo->findBy(array('trajet'=>$trajet->getId()));        
         if(!empty($reservations)){
             foreach ($reservations as  $res) {
                 if($res->getDemandeur()->getId()==$utilisateur->getId()){
-                    $reservation=true;
+                    $dejaReserver=true;
                 }
             }
         }
         return $this->render('roadshare/trajet.html.twig', [
             'user' => $user,
             'trajet' => $trajet,
-            'reservation' => $reservation,
+            'dejaReserver' => $dejaReserver,
+            'reservationsAcceptee' =>$reservationsAcceptee,
+            'reservationsEnAttente' =>$reservationsEnAttente,
             'owner' => $utilisateur->getId() == $trajet->getConducteur()->getId()
         ]);
     }
     /**
      * @Route("/reservation/{id}", name="roadshare_reservation")
      */
-    public function Reservation($id): Response
+    public function Reservation($id,ReservationRepository $reservationRepo, UtilisateurRepository $utilisateurRepo, TrajetRepository $trajetRepo, ObjectManager $manager): Response
     {
-        // a faire
+        $user = $this->getUser();
+        $utilisateur = $utilisateurRepo->findOneBy(array("compte" => $user->getId()));
+        $trajet = $trajetRepo->findOneBy(array("id" => $id));
+        $reservation = new Reservation;
+        $reservation->setDemandeur($utilisateur)
+                    ->setTrajet($trajet)
+                    ->setEtat(self::EN_ATTENTE);
+        $manager->persist($reservation);
+        $manager->flush();
+        $totaleReservations = $reservationRepo->findBy(array('trajet'=>$id, 'etat'=>self::ACCEPTEE));
+        if(count($totaleReservations)>= $trajet->getNbPlaces()){
+            $trajet->setEtat(self::COMPLET);
+            $manager->persist($trajet);
+            $manager->flush();
+        }
+
         return $this->redirectToRoute('roadshare_trajet',array('id'=>$id ));
     }
+    /**
+     * @Route("/reponseDemande/{id}/{accepte}", name="roadshare_reponse_demande")
+     */
+    public function ReponseDemande($id,$accepte,ReservationRepository $reservationRepo, UtilisateurRepository $utilisateurRepo, TrajetRepository $trajetRepo, ObjectManager $manager): Response
+    {
+        $reservation = $reservationRepo->findOneBy(array('id'=>$id));
+        if($accepte){
+            $reservation->setEtat(self::ACCEPTEE);
+        }else{
+            $reservation->setEtat(self::REFUSER);
+        }
+        $manager->persist($reservation);
+        $manager->flush();
 
+        return $this->redirectToRoute('roadshare_trajet',array('id'=>$reservation->getTrajet()->getId() ));
+    }
+
+    /**
+     * @Route("/modiftrajet/{id}", name="roadshare_modifierTrajet")
+     */
+    public function ModifierTrajet($id,TrajetRepository $repo, Request $request, ObjectManager $manager){
+        $user = $this->getUser();
+        $trajet = $repo->findOneBy(array("id" => $id));
+
+        $adresseDepart = $trajet->getAdresseDepart();
+        $adresseArrivee = $trajet->getAdresseArrivee();
+        
+        $formData['adresseDepart']  = $adresseDepart;
+        $formData['adresseArrivee']  =  $adresseArrivee;
+        $formData['trajet'] = $trajet;
+      
+
+        $form = $this->createForm(PropositionType::class, $formData);
+        $form->handleRequest($request);
+
+        $datenow = new \DateTime("now");
+        sleep(2);
+        $date=$trajet->getDate();
+
+        if(($form['trajet']->isSubmitted() && $form['trajet']->isValid()) && 
+            ($form['adresseDepart']->isSubmitted() && $form['adresseDepart']->isValid()) && 
+            ($form['adresseArrivee']->isSubmitted() && $form['adresseArrivee']->isValid()) &&($date>$datenow)){
+            
+            $trajet->setAdresseDepart($adresseDepart);
+            $trajet->setAdresseArrivee($adresseArrivee);    
+            $manager->persist($trajet);
+            $manager->persist($adresseDepart);
+            $manager->persist($adresseArrivee);
+            $manager->flush();
+            return $this->redirectToRoute('roadshare_home');
+        }
+        return $this->render('roadshare/proposition.html.twig', [
+            'form' => $form->createView(),
+            'modification' => true,
+            'user' => $user
+        ]);
+    }
 
     /**
      * @Route("/profil/{id}", name="roadshare_profil_public")
@@ -334,8 +424,6 @@ class RoadshareController extends AbstractController
             'compte'=>$compte,
             'entreprise'=>$entreprise
         ]);
-
-
     }
 
     /**

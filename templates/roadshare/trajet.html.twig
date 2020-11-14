@@ -6,41 +6,67 @@
   <input type="button" class="btn btn-secondary" value=" <- Retour" onclick="history.go(-1)">
 </form>
 <br>
-<div class="card bg-secondary mb-3">
+<div class="card text-white bg-info mb-3">
     <div class="card-header">
-        <p class="card-link">Trajet proposé par <a class="text-primary" href="{{path('roadshare_profil_public',{'id':trajet.conducteur.id} )}}"> {{trajet.conducteur.nom}} {{trajet.conducteur.prenom}}</a> </p>
+        {% if owner %}
+            <p class="card-link">Trajet proposé par {{trajet.conducteur.nom}} {{trajet.conducteur.prenom}}</p>
+        {% else %}
+            <p class="card-link">Trajet proposé par <a class="text-primary" href="{{path('roadshare_profil_public',{'id':trajet.conducteur.id} )}}"> {{trajet.conducteur.nom}} {{trajet.conducteur.prenom}}</a> </p>
+        {% endif %}
     </div>
     <div class=" justify-content-between card-body">
         <small class="text-muted">Prix : {{trajet.prix}}€</small>
         <h4 class="card-title"> {{trajet.heureDepart|date("H:i")}} - {{trajet.heureArrivee|date("H:i")}}</h4>
-        <div class="card bg-secondary mb-3" >
             <p class="card-text">{{trajet.adresseDepart.rue}} {{trajet.adresseDepart.ville}} --> {{trajet.adresseArrivee.rue}} {{trajet.adresseArrivee.ville}}</p>
-        </div>
         {% set placesReserver= 0 %}
-        {# {% if trajet.reservations|length >0 %}
+        {% if reservationsAcceptee|length >0 %}
             <h6> Passagers acceptés : </h6>
+            <div class="list-group">
+                {% for res in reservationsAcceptee %}
+                        <a href="{{path('roadshare_profil',{'id':res.demandeur.id} )}}" class="list-group-item list-group-item-action active" style="max-width: 18em;">
+                            {{res.demandeur.nom}} {{res.demandeur.prenom}}
+                        </a>
+                        {% set placesReserver = placesReserver + 1 %}
+                {% endfor %}
+            </div>
+        {% endif %}
             
-            {% for res in trajet.reservations %}
-                {% if res.etat=="acceptée" %}
-                    {% set placesReserver = placesReserver + 1 %}
-                    <div class="card border-primary mb-3" style="max-width: 20rem;">
-                        <h4 class="card-title"> <a class="text-primary" href="{{path('roadshare_profil',{'id':res.demandeur.id} )}}"> {{res.demandeur.nom}} {{res.demandeur.prenom}}</a></h4>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% endif %} #}
         <h6> Nombre de places restant : {{trajet.nbPlaces - placesReserver}}</h6>
     </div>
     <div class="modal-footer">
-        {% if reservation %}
+        {% if dejaReserver %}
+            <p class="text-success">Vous avez envoyer une demande de réservation</p>
             <button type="button" class="btn btn-primary disabled" disabled>Envoyer une demande de réservation</button>
         {% elseif  owner %}
-            <button type="button" class="btn btn-warning">Modifier le trajet</button>
+            {% if reservationsAcceptee|length >0 %}
+                <button onclick="window.location.href='{{path('roadshare_modifierTrajet',{'id':trajet.id})}}';" type="button" class="btn btn-warning" disabled>Modifier le trajet</button>
+                <p class="text-warning">Vous ne pouvez plus modifier votre trajet puisque vous avez accpetée une ou plusieurs reservations</p>
+            {% else %}
+                <button onclick="window.location.href='{{path('roadshare_modifierTrajet',{'id':trajet.id})}}';" type="button" class="btn btn-warning">Modifier le trajet</button>
+            {% endif %}
         {% else %}
             <button onclick="window.location.href='{{path('roadshare_reservation',{'id':trajet.id})}}';" type="button" class="btn btn-primary">Envoyer une demande de réservation</button>
         {% endif %}
     </div>
 
 </div>
+{% if owner and placesReserver < trajet.nbPlaces and reservationsEnAttente|length >0 %}
+<div class="card text-white bg-warning mb-3">
+  <div class="card-header">Demandes de reservations</div>
+  <div class="card-body">
+            {% if reservationsEnAttente|length >0 %}
+            <div class="list-group">
+                {% for res in reservationsEnAttente %}
+                        <div class="alert alert-primary">
+                            <button type="button" onclick="window.location.href='{{path('roadshare_reponse_demande',{'id':res.id,'accepte': 0})}}';" class="close btn btn-danger" data-dismiss="alert">REFUSER</button>
+                            <button type="button" onclick="window.location.href='{{path('roadshare_reponse_demande',{'id':res.id,'accepte': 1})}}';" class="close btn btn-success" data-dismiss="alert">ACCEPTER</button>
+                            <a href="{{path('roadshare_profil',{'id':res.demandeur.id} )}}" class="alert-link"><strong>{{res.demandeur.nom}} {{res.demandeur.prenom}}</strong>  </a>
+                        </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+  </div>
+</div>
+{% endif %}
 
 {% endblock %}

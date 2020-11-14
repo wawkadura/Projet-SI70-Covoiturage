@@ -3,11 +3,7 @@
 {% block body %}
 <br>
 <div class="jumbotron">
-{% if modification %}
-  <h6 class="display-4">Modification de trajet</h6>
-{% else %}
-  <h6 class="display-4">Proposition de trajet</h6>
-{% endif %}
+<h6 class="display-4">Modifier votre trajet</h6>
 {{form_start(form)}}
  <fieldset>
 {{ form_row(form.trajet.date, {'label':'Date du trajet : '})}}
@@ -57,11 +53,7 @@
         'placeholder': 'Entrée le prix du trajet'
       }})}}
  </fieldset>
- {% if modification %}
-  <button type="submit" class="btn btn-primary">Enregistrer vos modifications</button>
- {% else %}
-  <button type="submit" class="btn btn-primary">Valider</button>
- {% endif %}
+ <button type="submit" class="btn btn-primary">Valider</button>
 {{form_end(form)}}
 </div>
 
