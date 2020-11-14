@@ -50,7 +50,7 @@ class Entreprise
         return $this->adressePostale;
     }
 
-    public function setAdressePostale(adressePostale $adressePostale): self
+    public function setAdressePostale($adressePostale): self
     {
         $this->adressePostale = $adressePostale;
 

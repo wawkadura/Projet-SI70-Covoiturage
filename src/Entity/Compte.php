@@ -9,7 +9,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\CompteType;
 
-
 /**
  * @ORM\Entity(repositoryClass=CompteRepository::class)
  * @UniqueEntity(
@@ -40,10 +39,14 @@ class Compte implements UserInterface
      */
     private $motDePasse;
 
+
     /**
      * @Assert\EqualTo(propertyPath = "motDePasse", message="Vos mot de passes ne sont pas identiques")
      */
     private $confirm_motDePasse;
+
+ 
+
   
     public function getId(): ?int
     {

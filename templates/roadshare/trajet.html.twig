@@ -8,7 +8,7 @@
 <br>
 <div class="card bg-secondary mb-3">
     <div class="card-header">
-        <p class="card-link">Trajet proposé par <a class="text-primary" href="{{path('roadshare_profil',{'id':trajet.conducteur.id} )}}"> {{trajet.conducteur.nom}} {{trajet.conducteur.prenom}}</a> </p>
+        <p class="card-link">Trajet proposé par <a class="text-primary" href="{{path('roadshare_profil_public',{'id':trajet.conducteur.id} )}}"> {{trajet.conducteur.nom}} {{trajet.conducteur.prenom}}</a> </p>
     </div>
     <div class=" justify-content-between card-body">
         <small class="text-muted">Prix : {{trajet.prix}}€</small>
