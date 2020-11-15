@@ -203,7 +203,6 @@ class RoadshareController extends AbstractController
         ]);
     }
     public function Comparaison($infosEntrees , $trajetsExistants, $utilisateurRepo, $descriptionRepo ){
-        dump($trajetsExistants);
         $adresseDepart = $infosEntrees[0];
         $adresseArrivee = $infosEntrees[1];
         $dateDepart = $infosEntrees[2];
@@ -491,7 +490,19 @@ class RoadshareController extends AbstractController
             'reservationsEnAttente' => $reservationsEnAttente
         ]);
     }
+        /**
+     * @Route("/vosAvis", name="roadshare_vos_avis")
+     */
+    public function VosAvis(ReservationRepository $reservationRepo, UtilisateurRepository $utilisateurRepo, TrajetRepository $trajetRepo): Response
+    {
+        $user = $this->getUser();
+        $utilisateur = $utilisateurRepo->findOneBy(array("compte" => $user->getId()));
 
+        return $this->render('roadshare/vosAvis.html.twig', [
+            'user' => $user
+        ]);
+    }
+    
     /**
      * @Route("/setinformation", name="roadshare_setinformation") 
     */

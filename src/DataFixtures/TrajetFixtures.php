@@ -41,7 +41,7 @@ class TrajetFixtures extends Fixture implements DependentFixtureInterface
             $trajet->setAdresseArrivee($adressePostalArrivee);
             $trajet->setNbPlaces(3);
             $trajet->setPrix(6+$i);
-            $trajet->setEtat("EN COURS");
+            $trajet->setEtat("EN_COURS");
             
 
             $manager->persist($trajet);
@@ -62,7 +62,7 @@ class TrajetFixtures extends Fixture implements DependentFixtureInterface
             if($i==5 || $i==7){
                 $trajet->setEtat("ANNULER");
             }else{
-                $trajet->setEtat("TERMINE");
+                $trajet->setEtat("EFFECTUE");
             }
             $i++;
 

@@ -12,16 +12,9 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#historique">Historiques</a>
         </li>
-        {# <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Historiques</a>
-            <div class="dropdown-menu" style="">
-                <a class="dropdown-item" data-toggle="tab" href="#dropdown1">Historique de reservations</a>
-                <a class="dropdown-item" data-toggle="tab" href="#dropdown1">Historique de propositions</a>
-            </div>
-        </li> #}
     </ul>
     <div id="myTabContent" class="tab-content">
-        <div class="tab-pane fade " id="enCours">
+        <div class="tab-pane fade active show" id="enCours">
     
             
             {% if trajetsEnCours|length >0 %}
@@ -32,7 +25,7 @@
                             <div class="alert alert-primary">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1">{{trajet.heureDepart|date("H:i")}} - {{trajet.heureArrivee|date("H:i")}}</h5>
-                                    <h5 class="text-muted">{{trajet.date}}</h5>
+                                    <h5 class="text-muted">{{trajet.date|date("d/m/Y")}}</h5>
                                 </div>
                                 <p class="mb-1">{{trajet.adresseDepart.ville}} --> {{trajet.adresseArrivee.ville}}</p>  
                                 Proposé par <strong>{{trajet.conducteur.nom}} {{trajet.conducteur.prenom}}</strong></a> 
@@ -52,7 +45,7 @@
                     <div class="card-header"><h4>Demandes de reservations Accepter</h4></div>
                     <div class="card-body">
                         {% for res in reservationsAcceptee  %}
-                            {% if res.trajet.etat == 'EN COURS' or res.trajet.etat == 'COMPLET' %}
+                            {% if res.trajet.etat == 'EN_COURS' or res.trajet.etat == 'COMPLET' %}
                                 <div class="alert alert-info">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h5 class="mb-1">{{res.trajet.heureDepart|date("H:i")}} - {{res.trajet.heureArrivee|date("H:i")}}</h5>
@@ -77,7 +70,7 @@
                     <div class="card-header"><h4>Demandes de reservations en attentes</h4></div>
                     <div class="card-body">
                         {% for res in reservationsEnAttente  %}
-                            {% if res.trajet.etat == 'EN COURS' %}
+                            {% if res.trajet.etat == 'EN_COURS' %}
                                 <div class="alert alert-warning">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h5 class="mb-1">{{res.trajet.heureDepart|date("H:i")}} - {{res.trajet.heureArrivee|date("H:i")}}</h5>
@@ -99,7 +92,7 @@
             
 
         </div>
-        <div class="tab-pane fade active show" id="historique">
+        <div class="tab-pane fade" id="historique">
                         
             {% if trajetsEffectuer|length >0 %}
                 <div class="card border-secondary mb-3">
@@ -109,7 +102,7 @@
                             <div class="alert alert-success">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1">{{trajet.heureDepart|date("H:i")}} - {{trajet.heureArrivee|date("H:i")}}</h5>
-                                    <h5 class="text-muted">{{trajet.date}}</h5>
+                                    <h5 class="text-muted">{{trajet.date|date("d/m/Y")}}</h5>
                                 </div>
                                 <p class="mb-1">{{trajet.adresseDepart.ville}} --> {{trajet.adresseArrivee.ville}}</p>  
                                 <div class="modal-footer">
@@ -121,6 +114,13 @@
                 </div>
             {% endif %}
             {% if reservationsAcceptee|length >0 %}
+                {% set resAccepEffectue = false %}
+                {% for res in reservationsAcceptee  %}
+                    {% if res.trajet.etat=='EFFECTUE'%}
+                        {% set resAccepEffectue = true %}
+                    {% endif %}
+                {% endfor %}
+                {% if resAccepEffectue %}
                 <div class="card border-secondary mb-3">
                     <div class="card-header"><h4>Trajets avec reservation effectué</h4></div>
                     <div class="card-body">
@@ -129,7 +129,7 @@
                                 <div class="alert alert-success">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h5 class="mb-1">{{res.trajet.heureDepart|date("H:i")}} - {{res.trajet.heureArrivee|date("H:i")}}</h5>
-                                        <h5 class="text-muted">{{res.trajet.date}}</h5>
+                                        <h5 class="text-muted">{{res.trajet.date|date("d/m/Y")}}</h5>
                                     </div>
                                     <p class="mb-1">{{res.trajet.adresseDepart.ville}} --> {{res.trajet.adresseArrivee.ville}}</p>  
                                     Proposé par <a href="{{path('roadshare_profil_public',{'id':res.trajet.conducteur.id} )}}" class="alert-link"><strong>{{res.trajet.conducteur.nom}} {{res.trajet.conducteur.prenom}}</strong></a> 
@@ -141,6 +141,7 @@
                         {% endfor %}
                     </div>
                 </div>
+                {% endif %}
             {% endif %}
             {% if trajetsAnnuler|length >0 %}
                 <div class="card border-secondary mb-3">
@@ -150,7 +151,7 @@
                             <div class="alert alert-danger">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1">{{trajet.heureDepart|date("H:i")}} - {{trajet.heureArrivee|date("H:i")}}</h5>
-                                    <h5 class="text-muted">{{trajet.date}}</h5>
+                                    <h5 class="text-muted">{{trajet.date|date("d/m/Y")}}</h5>
                                 </div>
                                 <p class="mb-1">{{trajet.adresseDepart.ville}} --> {{trajet.adresseArrivee.ville}}</p>  
                             </div>
@@ -166,7 +167,7 @@
                                 <div class="alert alert-danger">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h5 class="mb-1">{{res.trajet.heureDepart|date("H:i")}} - {{res.trajet.heureArrivee|date("H:i")}}</h5>
-                                        <h5 class="text-muted">{{res.trajet.date}}</h5>
+                                        <h5 class="text-muted">{{res.trajet.date|date("d/m/Y")}}</h5>
                                     </div>
                                     <p class="mb-1">{{res.trajet.adresseDepart.ville}} --> {{res.trajet.adresseArrivee.ville}}</p>  
                                     Proposé par <a href="{{path('roadshare_profil_public',{'id':res.trajet.conducteur.id} )}}" class="alert-link"><strong>{{res.trajet.conducteur.nom}} {{res.trajet.conducteur.prenom}}</strong></a> 
