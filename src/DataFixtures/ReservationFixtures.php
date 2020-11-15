@@ -17,6 +17,7 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
         $trajets = $manager->getRepository(Trajet::class)->findAll();
 
         for($i=0;$i<10;$i++){
+
             $reservation = new Reservation();
             $reservation->setDemandeur($utilisateurs[$i]);
             $reservation->setTrajet($trajets[9-$i]);
@@ -29,10 +30,22 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
             }
             $manager->persist($reservation);
         }
+        
         for($i=1;$i<10;$i++){
             $reservation = new Reservation();
             $reservation->setDemandeur($utilisateurs[$i]);
             $reservation->setTrajet($trajets[0]);
+            if($i%3==1){
+                $reservation->setEtat("REFUSER");
+            }else{
+                $reservation->setEtat("EN_ATTENTE");
+            }
+            $manager->persist($reservation);
+        }
+        for($i=1;$i<10;$i++){
+            $reservation = new Reservation();
+            $reservation->setDemandeur($utilisateurs[0]);
+            $reservation->setTrajet($trajets[$i]);
             if($i%3==1){
                 $reservation->setEtat("REFUSER");
             }else{

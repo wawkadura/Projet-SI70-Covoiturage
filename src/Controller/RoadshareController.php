@@ -6,11 +6,13 @@ use App\Entity\Compte;
 use App\Entity\Utilisateur;
 use App\Entity\Trajet;
 use App\Entity\AdressePostale;
+use App\Entity\Avis;
 use App\Entity\Voiture;
 use App\Entity\Entreprise;
 use App\Entity\Description;
 use App\Entity\InformationTravail;
 use App\Entity\Reservation;
+use App\Form\AvisType;
 use App\Form\TravailType;
 use App\Form\VoitureType;
 use App\Form\DescriptionType;
@@ -22,6 +24,7 @@ use App\Form\InscriptionFormType;
 use App\Form\UtilisateurType;
 use App\Form\TrajetType;
 use App\Repository\AdressePostaleRepository;
+use App\Repository\AvisRepository;
 use App\Repository\DescriptionRepository;
 use App\Repository\ReservationRepository;
 use App\Repository\TrajetRepository;
@@ -250,7 +253,6 @@ class RoadshareController extends AbstractController
         }
         return $trajets;
     }
-
     public function Criteres($description,$criteres){
 
         if($criteres[0] && !$description->getVoyagerAvecFumeur() // si true et false
@@ -493,14 +495,87 @@ class RoadshareController extends AbstractController
         /**
      * @Route("/vosAvis", name="roadshare_vos_avis")
      */
-    public function VosAvis(ReservationRepository $reservationRepo, UtilisateurRepository $utilisateurRepo, TrajetRepository $trajetRepo): Response
-    {
+    public function VosAvis(ObjectManager $manager, Request $request, AvisRepository $avisRepo,ReservationRepository $reservationRepo, UtilisateurRepository $utilisateurRepo, TrajetRepository $trajetRepo): Response
+    {// pas fini
         $user = $this->getUser();
         $utilisateur = $utilisateurRepo->findOneBy(array("compte" => $user->getId()));
+        $avisPoster = $avisRepo->findBy(array('expediteur' => $utilisateur->getId()));
+        $avisRecu = $avisRepo->findBy(array('destinataire' => $utilisateur->getId()));
+        $trajetsProposes = $trajetRepo->findBy(array('conducteur'=>$utilisateur->getId(), 'etat'=>self::EFFECTUE));
+        $reservations = $reservationRepo->findBy(array('demandeur'=>$utilisateur->getId(), 'etat'=> self::ACCEPTEE));
 
+        $avisARedigerPassagers = $this->getAvisARedigerPassagers($trajetsProposes, $avisPoster, $reservationRepo);
+        $avisARedigerConducteur = $this->getAvisARedigerConducteur($reservations, $avisPoster);
+        $avis = new Avis();
+        $form = $this->createForm(AvisType::class, $avis);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $avis->setExpediteur($utilisateur);
+            // $avis->setDestinataire(utilisateur);
+            $manager->persist($avis);
+            $manager->flush();
+        }
         return $this->render('roadshare/vosAvis.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'avisPoster' => $avisPoster,
+            'avisRecu' => $avisRecu,
+            'avisARedigerPassagers' => $avisARedigerPassagers,
+            'avisARedigerConducteur' => $avisARedigerConducteur,
+            'form' => $form->createView()
         ]);
+    }
+    public function getAvisARedigerPassagers($trajetsProposes, $avisPoster, $reservationRepo){
+        $i=0;
+        $avisARediger = array();
+        if(!empty($trajetsProposes)){
+            foreach($trajetsProposes as $trajet){
+                $reservations = $reservationRepo->findBy(array('trajet'=>$trajet->getId(),'etat'=>self::ACCEPTEE));
+                dump($reservations);
+                if(!empty($reservations)){
+                    foreach($reservations as $res){
+                        $dejaPoster = false;
+                        if(!empty($avisPoster)){
+                            foreach($avisPoster as $avis){
+                                if($res->getDemandeur()->getId()!=$avis->getDestinataire()->getId()){
+                                    $dejaPoster = true;
+                                }
+                            }
+                        }
+                        if(!$dejaPoster){
+                            $avisARediger[$i]= $res;
+                            $i++;
+                        }
+    
+                    }
+                }
+            }
+        }
+        return $avisARediger;
+    }
+    public function getAvisARedigerConducteur($reservations, $avisPoster){
+        $i=0;
+        $avisARediger = array();
+        if(!empty($reservations)){
+            foreach($reservations as $res){
+                if($res->getTrajet()->getEtat()==self::EFFECTUE){
+                    $dejaPoster = false;
+                    if(!empty($avisPoster)){
+                        foreach($avisPoster as $avis){
+                            if($res->getTrajet()->getConducteur()->getId()!=$avis->getDestinataire()->getId()){
+                                $dejaPoster = true;
+                            }
+                        }
+                    }
+                    if(!$dejaPoster){
+                        $avisARediger[$i]= $res;
+                        $i++;
+                    }
+                }
+            }
+        }
+        return $avisARediger;
     }
     
     /**
