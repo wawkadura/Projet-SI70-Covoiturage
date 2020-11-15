@@ -290,6 +290,47 @@ class RoadshareController extends AbstractController
         ]);
     }
     /**
+     * @Route("/annulation/{id}", name="roadshare_annulation")
+     */
+    public function Annulation($id,ReservationRepository $reservationRepo, UtilisateurRepository $utilisateurRepo, TrajetRepository $trajetRepo, ObjectManager $manager): Response
+    {
+        $user = $this->getUser();
+        $utilisateur = $utilisateurRepo->findOneBy(array("compte" => $user->getId()));
+        $trajet = $trajetRepo->findOneBy(array("id" => $id));
+
+        if($utilisateur->getId()==$trajet->getConducteur()->getId()){
+            $trajet->setEtat(self::ANNULER);
+        }
+        $manager->persist($trajet);
+        $manager->flush();
+
+        return $this->redirectToRoute('roadshare_vos_trajets');
+    }
+
+    /**
+     * @Route("/trajetEffectue/{id}", name="roadshare_trajet_effectue")
+     */
+    public function TrajetEffectue($id,ReservationRepository $reservationRepo, UtilisateurRepository $utilisateurRepo, TrajetRepository $trajetRepo, ObjectManager $manager): Response
+    {
+        $trajet = $trajetRepo->findOneBy(array("id" => $id));
+        $trajet->setEtat(self::EFFECTUE);
+        $manager->persist($trajet);
+        $manager->flush();
+
+        return $this->redirectToRoute('roadshare_vos_trajets');
+    }
+    /**
+     * @Route("/annulReservation/{id}", name="roadshare_annulation_reservation")
+     */
+    public function AnnulationReservation($id,ReservationRepository $reservationRepo, ObjectManager $manager): Response
+    {
+        $manager->remove($reservationRepo->findOneBy(array("id" => $id)));
+        $manager->flush();
+
+        return $this->redirectToRoute('roadshare_vos_trajets');
+    }
+    
+    /**
      * @Route("/reservation/{id}", name="roadshare_reservation")
      */
     public function Reservation($id,ReservationRepository $reservationRepo, UtilisateurRepository $utilisateurRepo, TrajetRepository $trajetRepo, ObjectManager $manager): Response
@@ -423,6 +464,31 @@ class RoadshareController extends AbstractController
             'informationTravail'=>$informationTravail,
             'compte'=>$compte,
             'entreprise'=>$entreprise
+        ]);
+    }
+    /**
+     * @Route("/vosTrajet", name="roadshare_vos_trajets")
+     */
+    public function VosTrajet(ReservationRepository $reservationRepo, UtilisateurRepository $utilisateurRepo, TrajetRepository $trajetRepo): Response
+    {
+        $user = $this->getUser();
+        $utilisateur = $utilisateurRepo->findOneBy(array("compte" => $user->getId()));
+        $id = $utilisateur->getId();
+        $trajetsEffectuer = $trajetRepo->findBy(array("conducteur" => $id,"etat"=>self::EFFECTUE));
+        $trajetsEnCours = $trajetRepo->findBy(array("conducteur" => $id,"etat"=>array(self::EN_COURS,self::COMPLET)));
+        $trajetsAnnuler = $trajetRepo->findBy(array("conducteur" => $id,"etat"=>self::ANNULER));
+        $reservationsRefuser = $reservationRepo->findBy(array("demandeur" => $id,"etat"=>self::REFUSER));
+        $reservationsAcceptee = $reservationRepo->findBy(array("demandeur" => $id,"etat"=>self::ACCEPTEE));
+        $reservationsEnAttente = $reservationRepo->findBy(array("demandeur" => $id,"etat"=>self::EN_ATTENTE));
+
+        return $this->render('roadshare/vosTrajets.html.twig', [
+            'user' => $user,
+            'trajetsEffectuer' =>$trajetsEffectuer,
+            'trajetsEnCours' => $trajetsEnCours,
+            'trajetsAnnuler' => $trajetsAnnuler,
+            'reservationsRefuser' => $reservationsRefuser,
+            'reservationsAcceptee' => $reservationsAcceptee,
+            'reservationsEnAttente' => $reservationsEnAttente
         ]);
     }
 

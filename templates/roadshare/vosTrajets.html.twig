@@ -1,0 +1,189 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<br>
+<div class="card border-primary mb-3" >
+  <div class="card-header"><h2>Vos trajets</h2></div>
+  <div class="card-body">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#enCours">Vos trajets en cours</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#historique">Historiques</a>
+        </li>
+        {# <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Historiques</a>
+            <div class="dropdown-menu" style="">
+                <a class="dropdown-item" data-toggle="tab" href="#dropdown1">Historique de reservations</a>
+                <a class="dropdown-item" data-toggle="tab" href="#dropdown1">Historique de propositions</a>
+            </div>
+        </li> #}
+    </ul>
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade " id="enCours">
+    
+            
+            {% if trajetsEnCours|length >0 %}
+                <div class="card border-secondary mb-3">
+                    <div class="card-header"><h4>Trajets proposés en cours</h4></div>
+                    <div class="card-body">
+                        {% for trajet in trajetsEnCours  %}
+                            <div class="alert alert-primary">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">{{trajet.heureDepart|date("H:i")}} - {{trajet.heureArrivee|date("H:i")}}</h5>
+                                    <h5 class="text-muted">{{trajet.date}}</h5>
+                                </div>
+                                <p class="mb-1">{{trajet.adresseDepart.ville}} --> {{trajet.adresseArrivee.ville}}</p>  
+                                Proposé par <strong>{{trajet.conducteur.nom}} {{trajet.conducteur.prenom}}</strong></a> 
+                                <div class="modal-footer">
+                                    <button type="button" onclick="window.location.href='{{path('roadshare_trajet_effectue',{'id':trajet.id})}}';" class="btn btn-success">Trajet effectué</button>
+                                    <button type="button" onclick="window.location.href='{{path('roadshare_trajet',{'id':trajet.id})}}';" class="btn btn-info">Consulter</button>
+                                    <button type="button" onclick="window.location.href='{{path('roadshare_annulation',{'id':trajet.id})}}';" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if reservationsAcceptee|length >0 %}
+                <div class="card border-secondary mb-3">
+                    <div class="card-header"><h4>Demandes de reservations Accepter</h4></div>
+                    <div class="card-body">
+                        {% for res in reservationsAcceptee  %}
+                            {% if res.trajet.etat == 'EN COURS' or res.trajet.etat == 'COMPLET' %}
+                                <div class="alert alert-info">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">{{res.trajet.heureDepart|date("H:i")}} - {{res.trajet.heureArrivee|date("H:i")}}</h5>
+                                        <h5 class="text-muted">{{res.trajet.date|date("d/m/Y")}}</h5>
+                                    </div>
+                                    <p class="mb-1">{{res.trajet.adresseDepart.ville}} --> {{res.trajet.adresseArrivee.ville}}</p>  
+                                    <h5 class="mb-1">{{res.trajet.prix}}€</h5> 
+                                    Proposé par <a href="{{path('roadshare_profil_public',{'id':res.trajet.conducteur.id} )}}" class="alert-link"><strong>{{res.trajet.conducteur.nom}} {{res.trajet.conducteur.prenom}}</strong></a> 
+                                    <div class="modal-footer">
+                                        <button type="button" onclick="window.location.href='{{path('roadshare_trajet',{'id':res.trajet.id})}}';" class="btn btn-info">Consulter</button>
+                                        <button type="button" onclick="window.location.href='{{path('roadshare_annulation_reservation',{'id':res.trajet.id})}}';" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if reservationsEnAttente|length >0 %}
+                <div class="card border-secondary mb-3">
+                    <div class="card-header"><h4>Demandes de reservations en attentes</h4></div>
+                    <div class="card-body">
+                        {% for res in reservationsEnAttente  %}
+                            {% if res.trajet.etat == 'EN COURS' %}
+                                <div class="alert alert-warning">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">{{res.trajet.heureDepart|date("H:i")}} - {{res.trajet.heureArrivee|date("H:i")}}</h5>
+                                        <h5 class="text-muted">{{res.trajet.date|date("d/m/Y")}}</h5>
+                                    </div>
+                                    <p class="mb-1">{{res.trajet.adresseDepart.ville}} --> {{res.trajet.adresseArrivee.ville}}</p>  
+                                    <h5 class="mb-1">{{res.trajet.prix}}€</h5>  
+                                    Proposé par <a href="{{path('roadshare_profil_public',{'id':res.trajet.conducteur.id} )}}" class="alert-link"><strong>{{res.trajet.conducteur.nom}} {{res.trajet.conducteur.prenom}}</strong></a> 
+                                    <div class="modal-footer">
+                                        <button type="button" onclick="window.location.href='{{path('roadshare_trajet',{'id':res.trajet.id})}}';" class="btn btn-info">Consulter</button>
+                                        <button type="button" onclick="window.location.href='{{path('roadshare_annulation_reservation',{'id':res.trajet.id})}}';" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+            
+
+        </div>
+        <div class="tab-pane fade active show" id="historique">
+                        
+            {% if trajetsEffectuer|length >0 %}
+                <div class="card border-secondary mb-3">
+                    <div class="card-header"><h4>Trajets proposés effectué</h4></div>
+                    <div class="card-body">
+                        {% for trajet in trajetsEffectuer  %}
+                            <div class="alert alert-success">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">{{trajet.heureDepart|date("H:i")}} - {{trajet.heureArrivee|date("H:i")}}</h5>
+                                    <h5 class="text-muted">{{trajet.date}}</h5>
+                                </div>
+                                <p class="mb-1">{{trajet.adresseDepart.ville}} --> {{trajet.adresseArrivee.ville}}</p>  
+                                <div class="modal-footer">
+                                        <button type="button" onclick="window.location.href='{{path('roadshare_trajet',{'id':trajet.id})}}';" class="btn btn-info">Consulter</button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+            {% if reservationsAcceptee|length >0 %}
+                <div class="card border-secondary mb-3">
+                    <div class="card-header"><h4>Trajets avec reservation effectué</h4></div>
+                    <div class="card-body">
+                        {% for res in reservationsAcceptee  %}
+                            {% if res.trajet.etat=='EFFECTUE' %}
+                                <div class="alert alert-success">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">{{res.trajet.heureDepart|date("H:i")}} - {{res.trajet.heureArrivee|date("H:i")}}</h5>
+                                        <h5 class="text-muted">{{res.trajet.date}}</h5>
+                                    </div>
+                                    <p class="mb-1">{{res.trajet.adresseDepart.ville}} --> {{res.trajet.adresseArrivee.ville}}</p>  
+                                    Proposé par <a href="{{path('roadshare_profil_public',{'id':res.trajet.conducteur.id} )}}" class="alert-link"><strong>{{res.trajet.conducteur.nom}} {{res.trajet.conducteur.prenom}}</strong></a> 
+                                    <div class="modal-footer">
+                                        <button type="button" onclick="window.location.href='{{path('roadshare_trajet',{'id':res.trajet.id})}}';" class="btn btn-info">Consulter</button>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+            {% if trajetsAnnuler|length >0 %}
+                <div class="card border-secondary mb-3">
+                    <div class="card-header"><h4>Trajets proposés annulés</h4></div>
+                    <div class="card-body">
+                        {% for trajet in trajetsAnnuler  %}
+                            <div class="alert alert-danger">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">{{trajet.heureDepart|date("H:i")}} - {{trajet.heureArrivee|date("H:i")}}</h5>
+                                    <h5 class="text-muted">{{trajet.date}}</h5>
+                                </div>
+                                <p class="mb-1">{{trajet.adresseDepart.ville}} --> {{trajet.adresseArrivee.ville}}</p>  
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+            {% if reservationsRefuser|length >0 %}
+                <div class="card border-secondary mb-3">
+                    <div class="card-header"><h4>Reservations de trajets refusées</h4></div>
+                    <div class="card-body">
+                        {% for res in reservationsRefuser  %}
+                                <div class="alert alert-danger">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">{{res.trajet.heureDepart|date("H:i")}} - {{res.trajet.heureArrivee|date("H:i")}}</h5>
+                                        <h5 class="text-muted">{{res.trajet.date}}</h5>
+                                    </div>
+                                    <p class="mb-1">{{res.trajet.adresseDepart.ville}} --> {{res.trajet.adresseArrivee.ville}}</p>  
+                                    Proposé par <a href="{{path('roadshare_profil_public',{'id':res.trajet.conducteur.id} )}}" class="alert-link"><strong>{{res.trajet.conducteur.nom}} {{res.trajet.conducteur.prenom}}</strong></a> 
+                                </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+
+        </div>
+        {# <div class="tab-pane fade" id="dropdown2">
+            <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.</p>
+        </div> #}
+    </div>
+  </div>
+</div>
+   
+
+{% endblock %}
