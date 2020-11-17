@@ -25,16 +25,11 @@
                         {% for res in avisARedigerPassagers %}
                             <div class="alert alert-warning">
                                 <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">Avis pour <a href="{{path('roadshare_profil_public',{'id':res.demandeur.id} )}}" class="alert-link" ><strong>{{res.demandeur.nom}} {{res.demandeur.prenom}}</strong></a> </h5>
-                                <br>
+                                    <h5 class="mb-1">Rédiger un avis sur votre passager <a href="{{path('roadshare_profil_public',{'id':res.demandeur.id} )}}" class="alert-link" ><strong>{{res.demandeur.nom}} {{res.demandeur.prenom}}</strong></a> </h5>
+                                    <button type="button" onclick="window.location.href='{{path('roadshare_avis',{'id':res.demandeur.id})}}';" class="btn btn-info">Rédiger un avis</button>
                                 </div>
-                                {{form_start(form)}}
-                                    {{form_row(form.note, {'label':'Note sur 5 : '})}}                                    
-                                    {{form_row(form.message, {'label':'Message : ', 'attr' : {
-                                        'placeholder': 'Entrée votre message'
-                                    }})}}
-                                      <button type="submit" class="btn btn-primary">Poster</button>
-                                {{form_end(form)}}
+                                <p class="mb-1">{{res.trajet.date|date("d/m/Y")}}</p> 
+                                <p class="mb-1">{{res.trajet.adresseDepart.ville}} --> {{res.trajet.adresseArrivee.ville}}</p> 
                             </div>
                         {% endfor %}
                     </div>

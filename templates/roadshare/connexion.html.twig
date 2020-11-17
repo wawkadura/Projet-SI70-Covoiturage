@@ -3,17 +3,23 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
-<form action="{{path('roadshare_connexion')}}" method="post">
+<br>
+<div class="card border-primary mb-3">
+  <div class="card-header"><h1 class="h3 mb-3 font-weight-normal">Connexion</h1></div>
+  <div class="card-body">
+    <form action="{{path('roadshare_connexion')}}" method="post">
 
-    <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
-    <label for="inputEmail">Email : </label>
-    <input type="email" name="_username" class="form-control" required autofocus>
-    <label for="inputPassword">Mot de passe :</label>
-    <input type="password" name="_password" class="form-control" required>
-    <br>
-    <p>Pas encore membre ? <a href="{{path('roadshare_inscription')}}"> inscrivez-vous</a></p>
-    <br>
-    
-    <button class="btn btn-lg btn-primary" type="submit">Connexion</button>
-</form>
+        <label for="inputEmail">Email : </label>
+        <input type="email" name="_username" class="form-control" required autofocus>
+        <label for="inputPassword">Mot de passe :</label>
+        <input type="password" name="_password" class="form-control" required>
+        <br>
+        <p>Pas encore membre ? <a href="{{path('roadshare_inscription')}}"> inscrivez-vous</a></p>
+        <br>
+        <div class="modal-footer">
+            <button class="btn btn-lg btn-primary" type="submit">Connexion</button>
+        </div>
+    </form>
+  </div>
+</div>
 {% endblock %}

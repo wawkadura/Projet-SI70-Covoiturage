@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<br>
+<div class="jumbotron">
+  <h6 class="display-4">Rediger un Avis</h6>
+  {{form_start(form)}}
+      {{form_row(form.note, {'label':'Note sur 5 : '})}}                                    
+      {{form_row(form.message, {'label':'Message : ', 'attr' : {
+          'placeholder': 'Entrée votre message'
+      }})}}
+        <button type="submit" class="btn btn-primary">Poster</button>
+  {{form_end(form)}}
+</div>
+
+{% endblock %}

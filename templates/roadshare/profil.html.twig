@@ -3,8 +3,11 @@
 {% block body %}</br></br>
 
 <div class="card text-blue bg-secondary mb-3" style="max-width: 55rem;">
+      <div class="card-header">
+        <h4> Informations personnelles </h4>
+      </div>
       <div class="card-body">
-      <h4> Informations personnelles </h4>
+      
            <img
               src="https://cdn.discordapp.com/attachments/759864377767100477/776891983858892880/profile-icon-png-1.png" 
                height="95px" 
@@ -16,17 +19,22 @@
             <p>Date de naissance : {{ utilisateur.dateDeNaissance | date('d/m/Y')}}</p>
             {% if owner %}
             <p>Numéro : {{ utilisateur.telephone}}</p>
-            <a class="nav-link" href="{{path('roadshare_setinformation')}}"> Modifier vos informations personnelles</a>
+            <div class="modal-footer">
+                <button type="button" onclick="window.location.href='{{path('roadshare_setinformation')}}';" class="btn btn-primary">Modifier vos informations personnelles</button>
+            </div>
             {% endif %}
       </div>
 </div>  
 <div class="card text-blue bg-secondary mb-3" style="max-width: 55rem;">
+  <div class="card-header">
+    <h4> Description </h4>
+  </div>
   <div class="card-body">
-     <h4> Description  </h4>
           {% if description.miniBio %}
             <p> {{description.miniBio}}</p>
           {% elseif owner %}
-            <a class="nav-link" href="{{path('roadshare_setinformation')}}"> Ajouter une miniBio</a>
+            <a class="nav-link" href="{{path('roadshare_setinformation')}}"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="kirk-icon sc-bZQynM jLitmr" width="24" height="24" aria-hidden="true"><g fill="none" stroke="#00AFF5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><circle cx="12" cy="12" r="11"></circle><path d="M12 7v10M17 12H7"></path></g></svg>
+            Ajouter une miniBio</a>
           {% endif %}
 
           {% if description.voyagerAvecAnimaux %}
@@ -50,44 +58,60 @@
           {% if description.centreInterets %}
             <p>Centre interêts: {{ description.centreInterets}} </p>
           {% elseif owner %}
-            <a class="nav-link" href="{{path('roadshare_setinformation')}}"> Ajouter vos centre d'interêts </a>
+          
+            <a class="nav-link" href="{{path('roadshare_setinformation')}}"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="kirk-icon sc-bZQynM jLitmr" width="24" height="24" aria-hidden="true"><g fill="none" stroke="#00AFF5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><circle cx="12" cy="12" r="11"></circle><path d="M12 7v10M17 12H7"></path></g></svg>
+              Ajouter vos centre d'interêts </a>
           {% endif %}
           {% if owner %}
-             <a class="nav-link" href="{{path('roadshare_setinformation')}}"> Modifier votre description</a>
+             <div class="modal-footer">
+                <button type="button" onclick="window.location.href='{{path('roadshare_setinformation')}}';" class="btn btn-primary">Modifier votre description</button>
+            </div>
           {% endif %}
   </div>
 </div>
 
 <div class="card text-blue bg-secondary mb-3" style="max-width: 55rem;">
+  <div class="card-header">
+    <h4> Voiture </h4>
+  </div>
   <div class="card-body">
      {% if voiture %}
-                <h4> Voiture </h4>
                 <p>Marque : {{ (voiture.marque)}}</p>
                 <p>Couleur : {{ voiture.couleur}}</p>
                 <p>Model : {{ voiture.model}}</p>
                 {% if owner %}
                   <p>Immatriculation : {{ voiture.immatriculation}}</p>
-                  <a class="nav-link" href="{{path('roadshare_setinformation')}}"> Modifier informations voiture</a>
+                  <div class="modal-footer">
+                    <button type="button" onclick="window.location.href='{{path('roadshare_setinformation')}}';" class="btn btn-primary">Modifier informations voiture</button>
+                  </div>
                 {% endif %}
-            {% elseif owner %}
-                <a class="nav-link" href="{{path('roadshare_setinformation')}}"> Ajouter votre voiture à votre compte</a>
-         {% endif %}
+      {% elseif owner %}
+              <a class="nav-link" href="{{path('roadshare_setinformation')}}"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="kirk-icon sc-bZQynM jLitmr" width="24" height="24" aria-hidden="true"><g fill="none" stroke="#00AFF5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><circle cx="12" cy="12" r="11"></circle><path d="M12 7v10M17 12H7"></path></g></svg>
+                Ajouter votre voiture à votre compte</a>
+
+      {% endif %}
   </div>
 </div>
 
 <div class="card text-blue bg-secondary mb-3" style="max-width: 55rem;">
+  <div class="card-header">
+    <h4> Infomations Travail  </h4>
+  </div>
    <div class="card-body">
       {% if informationTravail %}
-          <h4> Infomations Travail </h4>
           <p> Nom de l'entreprise : {{entreprise.nom}}
           {% if owner %}
             <p> Horaire de début : {{ informationTravail.horaireDebut|date("H:i")  }}</p>
             <p> Horaire de fin : {{ informationTravail.horaireFin|date("H:i")}}</p>
             <p> {{entreprise.adressePostale.rue}} {{entreprise.adressePostale.codePostale}} {{entreprise.adressePostale.ville}} 
+            <div class="modal-footer">
+              <button type="button" onclick="window.location.href='{{path('roadshare_setinformation')}}';" class="btn btn-primary">Modifier informations de travail</button>
+            </div>
           {% endif %}
-          {% elseif owner %}
-          <a class="nav-link" href="{{path('roadshare_setinformation')}}"> Ajouter des informations par rapport à votre lieu de travail </a>
-        {% endif %}
+      {% elseif owner %}
+            <a class="nav-link" href="{{path('roadshare_setinformation')}}"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="kirk-icon sc-bZQynM jLitmr" width="24" height="24" aria-hidden="true"><g fill="none" stroke="#00AFF5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><circle cx="12" cy="12" r="11"></circle><path d="M12 7v10M17 12H7"></path></g></svg>
+          Ajouter des informations par rapport à votre lieu de travail </a>
+      {% endif %}
   </div>
 </div>
 

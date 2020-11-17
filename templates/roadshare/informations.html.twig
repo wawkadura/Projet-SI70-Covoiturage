@@ -1,126 +1,149 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<br>
-<div class="jumbotron">
- <span style="position: absolute; top: 140px; left: 1150px; width: 270px; heigth: 84px;">
-    <a class="nav-link" href="{{path('roadshare_profil')}}"><h4>  Quitter </h4> </a>
- </span>
-  {{form_start(formUtilisateur)}}
-  <h4> Informations Personnelles</h4>
-  <fieldset>
-    <div class="card bg-secondary mb-3">
-      {{form_row(formUtilisateur.nom, {'label':'Nom :', 'attr' : {
-        'placeholder': 'Entrée votre nom'
-      }})}}
-{{form_row(formUtilisateur.prenom, {'label':'Prénom :', 'attr' : {
-        'placeholder': 'Entrée votre prénom'
-      }})}}
-     
-{{form_row(formUtilisateur.dateDeNaissance, {'label':'Date de naissance :'})}}
 
-{{form_row(formUtilisateur.telephone, {'label':'Téléphone :', 'attr' : {
-        'placeholder': 'Entrée votre numéro de téléphone'
-      }})}}
-</fieldset>
-  <button type="submit" class="btn btn-primary">Enregistrer</button>
-   </div>  
-{{form_end(formUtilisateur)}}
-
-<div class="card bg-secondary mb-3">
-<h4> Changer votre mot de passe</h4>
- {{form_start(formpassword)}}
- 
- <span style="position: absolute; top: 210px; left: 0px; width: 500px; heigth: 84px;"> 
-  <button type="submit" class="btn btn-primary">Enregistrer</button>
-</span>
-{{form_end(formpassword)}}
-</div> </br> 
-
-
-{{form_start(formDescription)}}
-<fieldset>
-<h4> Votre description</h4>
-<div class="card bg-secondary mb-3" >
-  <div class="card-body">
-    {{form_row(formDescription.miniBio, {'label':'mini bio:', 'attr' : {
-      'placeholder': 'Rediger une mini biographie'
-    }})}}
-
-{{form_row(formDescription.voyagerAvecMusique, {'label':'Voyager avec de la music:', 'attr' : {
-      'placeholder': 'Est vous d\'accord pou de la music dans la voiture? '
-    }})}}
-{{form_row(formDescription.voyagerAvecFumeur, {'label':'Voyager avec un fumeur:', 'attr' : {
-      'placeholder': 'voyager avec un fumeur?'
-    }})}}      
-
-{{form_row(formDescription.voyagerAvecAnimaux, {'label':'Animax :','attr' : {
-      'placeholder': 'Est vous dacord de faire un trajet avec des animaux a bord ?'
-    }})}}
-  
-{{form_row(formDescription.centreInterets, {'label':'Vos centre d\'interêts:', 'attr' : {
-      'placeholder': 'vos centre d\'interêts'
-    }})}}
-  </div>
-</fieldset> 
-<button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
-{{form_end(formDescription)}}
-
-
-
-{{form_start(formVoiture)}}
-<fieldset>
-<h4> Voiture</h4>
-<div class="card bg-secondary mb-3" >
-  <div class="card-body">
-      {{form_row(formVoiture.marque, {'label':'Marque:', 'attr' : {
-              'placeholder': 'marque du véhicule'
-            }})}}
+  <br>
+  <form>
+    <input onclick="window.location.href='{{path('roadshare_profil')}}';" type="button" class="btn btn-secondary" value="Retour">
+  </form>
+  <br>
+  <div class="card text-white bg-dark mb-3">
+      <div class="card-header">
+        <h4> Informations personnelles </h4>
+      </div>
+      <div class="card-body">
+      {{form_start(formUtilisateur)}}
+          {{form_row(formUtilisateur.nom, {'label':'Nom :', 'attr' : {
+            'placeholder': 'Entrée votre nom'
+          }})}}
+          {{form_row(formUtilisateur.prenom, {'label':'Prénom :', 'attr' : {
+                  'placeholder': 'Entrée votre prénom'
+                }})}}
         
-      {{form_row(formVoiture.couleur, {'label':'Couleur :','attr' : {
-              'placeholder': 'Couleur du véhicule'
+          {{form_row(formUtilisateur.dateDeNaissance, {'label':'Date de naissance :'})}}
+
+          {{form_row(formUtilisateur.telephone, {'label':'Téléphone :', 'attr' : {
+                  'placeholder': 'Entrée votre numéro de téléphone'
+                }})}}
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
+        </div>
+      {{form_end(formUtilisateur)}}
+      </div>
+  </div>  
+
+
+  <div class="card text-white bg-dark mb-3">
+      <div class="card-header">
+        <h4> Changer votre mot de passe</h4>
+      </div>
+      <div class="card-body">
+        {{form_start(formpassword)}}
+          {{form_row(formpassword.MotDePasse)}}
+          {{form_row(formpassword.confirm_motDePasse)}}
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
+          </div>
+        {{form_end(formpassword)}}
+        
+      </div>
+    </div>
+
+  <div class="card text-white bg-dark mb-3">
+      <div class="card-header">
+        <h4> Modifier votre description</h4>
+      </div>
+      <div class="card-body">
+        {{form_start(formDescription)}}
+            {{form_row(formDescription.miniBio, {'label':'Mini bio:', 'attr' : {
+              'placeholder': 'Rediger une mini biographie'
             }})}}
+
+            {{form_row(formDescription.voyagerAvecMusique, {'label':'Voyager avec de la music:', 'attr' : {
+                  'placeholder': 'Est vous d\'accord pou de la music dans la voiture? '
+                }})}}
+            {{form_row(formDescription.voyagerAvecFumeur, {'label':'Voyager avec un fumeur:', 'attr' : {
+                  'placeholder': 'voyager avec un fumeur?'
+                }})}}      
+
+            {{form_row(formDescription.voyagerAvecAnimaux, {'label':'Animax :','attr' : {
+                  'placeholder': 'Est vous dacord de faire un trajet avec des animaux a bord ?'
+                }})}}
+              
+            {{form_row(formDescription.centreInterets, {'label':'Vos centre d\'interêts:', 'attr' : {
+                  'placeholder': 'vos centre d\'interêts'
+                }})}}
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
+            </div>
+        {{form_end(formDescription)}}
+    </div>
+  </div>
+
+
+
+  <div class="card text-white bg-dark mb-3">
+      <div class="card-header">
+        <h4> Modifier votre Voiture</h4>
+      </div>
+      <div class="card-body">
+      {{form_start(formVoiture)}}
+
+        {{form_row(formVoiture.marque, {'label':'Marque:', 'attr' : {
+                'placeholder': 'marque du véhicule'
+              }})}}
           
-      {{form_row(formVoiture.immatriculation, {'label':'Immatriculation:', 'attr' : {
-              'placeholder': 'Immatriculation du véhicule'
-            }})}}
-      {{form_row(formVoiture.model, {'label':'Model:', 'attr' : {
-              'placeholder': 'Model du véhicule'
-            }})}}      
+        {{form_row(formVoiture.couleur, {'label':'Couleur :','attr' : {
+                'placeholder': 'Couleur du véhicule'
+              }})}}
+            
+        {{form_row(formVoiture.immatriculation, {'label':'Immatriculation:', 'attr' : {
+                'placeholder': 'Immatriculation du véhicule'
+              }})}}
+        {{form_row(formVoiture.model, {'label':'Model:', 'attr' : {
+                'placeholder': 'Model du véhicule'
+              }})}}      
+    
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
+        </div>
+      {{form_end(formVoiture)}}
+    </div>
+  </div>  
+
+  <div class="card text-white bg-dark mb-3">
+      <div class="card-header">
+        <h4> Modifier vos informations de travail</h4>
+      </div>
+      <div class="card-body">
+        {{form_start(formTravail)}}
+
+          {{form_row(formTravail.entreprise.nom, {'label':'Nom de l\'entreprise:', 'attr' : {
+                  'placeholder': 'Nom de l\'entreprise pour laquelle vous travaillez'
+                }})}}
+
+          {{form_row(formTravail.adressepostale.rue, {'label':'Rue:', 'attr' : {
+                  'placeholder': 'Entrer la rue de votre lieu de travail'
+                }})}}
+          {{form_row(formTravail.adressepostale.ville, {'label':'ville:', 'attr' : {
+                  'placeholder': 'Saisir le ville où vous travaillez'
+                }})}}   
+          {{form_row(formTravail.adressepostale.codePostale, {'label':'Code postale:', 'attr' : {
+                  'placeholder': 'Saisir le code postale'
+                }})}}    
+
+          {{form_row(formTravail.informationTravail.horaireDebut, {'label':'Horaire de debut:', 'attr' : {
+                  'placeholder': 'Saisir a laquelle vous commencer'
+                }})}}   
+          {{form_row(formTravail.informationTravail.horaireFin, {'label':'Heure fin de journée', 'attr' : {
+                  'placeholder': 'Saisir a laquelle vous finissez'
+                }})}}                
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
+          </div>
+
+        {{form_end(formTravail)}}
+    </div>
   </div>
-</fieldset>  
-<button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
-{{form_end(formVoiture)}}
-
-
-{{form_start(formTravail)}}
-<fieldset>
-<h4> Travail</h4>
-<div class="card bg-secondary mb-3" >
-  <div class="card-body">
-      {{form_row(formTravail.entreprise.nom, {'label':'Nom de l\'entreprise:', 'attr' : {
-              'placeholder': 'Nom de l\'entreprise pour laquelle vous travaillez'
-            }})}}
-
-      {{form_row(formTravail.adressepostale.rue, {'label':'Rue:', 'attr' : {
-              'placeholder': 'Entrer la rue de votre lieu de travail'
-            }})}}
-      {{form_row(formTravail.adressepostale.ville, {'label':'ville:', 'attr' : {
-              'placeholder': 'Saisir le ville où vous travaillez'
-            }})}}   
-      {{form_row(formTravail.adressepostale.codePostale, {'label':'Code postale:', 'attr' : {
-              'placeholder': 'Saisir le code postale'
-            }})}}    
-
-      {{form_row(formTravail.informationTravail.horaireDebut, {'label':'Horaire de debut:', 'attr' : {
-              'placeholder': 'Saisir a laquelle vous commencer'
-            }})}}   
-      {{form_row(formTravail.informationTravail.horaireFin, {'label':'Heure fin de journée', 'attr' : {
-              'placeholder': 'Saisir a laquelle vous finissez'
-            }})}}                
-  </div>
-</fieldset>  
-<button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
-{{form_end(formTravail)}}
-
 {% endblock %}

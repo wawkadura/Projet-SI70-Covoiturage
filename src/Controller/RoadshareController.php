@@ -70,7 +70,10 @@ class RoadshareController extends AbstractController
      */
     public function Connexion(): Response
     {
-        return $this->render('roadshare/connexion.html.twig');
+        $user = $this->getUser();
+        return $this->render('roadshare/connexion.html.twig', [
+            'user' => $user
+        ]);
     }
     /**
      * @Route("/deconnexion", name="roadshare_deconnexion")
@@ -82,6 +85,7 @@ class RoadshareController extends AbstractController
      */
     public function Inscription(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder): Response
     {
+        $user = $this->getUser();
         $utilisateur = new Utilisateur;
         $compte = new Compte;
         $adressePostale = new AdressePostale;
@@ -116,7 +120,8 @@ class RoadshareController extends AbstractController
             return $this->redirectToRoute('roadshare_connexion');
         }
         return $this->render('roadshare/inscription.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'user' => $user
         ]);
     }
 
@@ -324,8 +329,11 @@ class RoadshareController extends AbstractController
      * @Route("/annulReservation/{id}", name="roadshare_annulation_reservation")
      */
     public function AnnulationReservation($id,ReservationRepository $reservationRepo, ObjectManager $manager): Response
-    {
-        $manager->remove($reservationRepo->findOneBy(array("id" => $id)));
+    {   
+        $reservation = $reservationRepo->findOneBy(array("id" => $id));
+        dump($reservation);
+        dump($id);
+        $manager->remove($reservation);
         $manager->flush();
 
         return $this->redirectToRoute('roadshare_vos_trajets');
@@ -493,9 +501,35 @@ class RoadshareController extends AbstractController
         ]);
     }
         /**
+     * @Route("/avis/{id}", name="roadshare_avis")
+     */
+    public function Avis($id,ObjectManager $manager, Request $request, AvisRepository $avisRepo,ReservationRepository $reservationRepo, UtilisateurRepository $utilisateurRepo, TrajetRepository $trajetRepo): Response
+    {
+        $user = $this->getUser();
+        $expediteur = $utilisateurRepo->findOneBy(array("compte" => $user->getId()));
+        $destinataire = $utilisateurRepo->findOneBy(array("id" => $id));
+
+        $avis = new Avis();
+        $form = $this->createForm(AvisType::class, $avis);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $avis->setExpediteur($expediteur);
+            $avis->setDestinataire($destinataire);
+            $manager->persist($avis);
+            $manager->flush();
+            return $this->redirectToRoute('roadshare_vos_avis');
+        }
+        return $this->render('roadshare/redigerAvis.html.twig', [
+            'user' => $user,
+            'form' => $form->createView()
+        ]);
+    }
+    /**
      * @Route("/vosAvis", name="roadshare_vos_avis")
      */
-    public function VosAvis(ObjectManager $manager, Request $request, AvisRepository $avisRepo,ReservationRepository $reservationRepo, UtilisateurRepository $utilisateurRepo, TrajetRepository $trajetRepo): Response
+    public function VosAvis(AvisRepository $avisRepo,ReservationRepository $reservationRepo, UtilisateurRepository $utilisateurRepo, TrajetRepository $trajetRepo): Response
     {// pas fini
         $user = $this->getUser();
         $utilisateur = $utilisateurRepo->findOneBy(array("compte" => $user->getId()));
@@ -506,26 +540,16 @@ class RoadshareController extends AbstractController
 
         $avisARedigerPassagers = $this->getAvisARedigerPassagers($trajetsProposes, $avisPoster, $reservationRepo);
         $avisARedigerConducteur = $this->getAvisARedigerConducteur($reservations, $avisPoster);
-        $avis = new Avis();
-        $form = $this->createForm(AvisType::class, $avis);
-        $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-
-            $avis->setExpediteur($utilisateur);
-            // $avis->setDestinataire(utilisateur);
-            $manager->persist($avis);
-            $manager->flush();
-        }
         return $this->render('roadshare/vosAvis.html.twig', [
             'user' => $user,
             'avisPoster' => $avisPoster,
             'avisRecu' => $avisRecu,
             'avisARedigerPassagers' => $avisARedigerPassagers,
-            'avisARedigerConducteur' => $avisARedigerConducteur,
-            'form' => $form->createView()
+            'avisARedigerConducteur' => $avisARedigerConducteur
         ]);
     }
+
     public function getAvisARedigerPassagers($trajetsProposes, $avisPoster, $reservationRepo){
         $i=0;
         $avisARediger = array();
@@ -538,7 +562,7 @@ class RoadshareController extends AbstractController
                         $dejaPoster = false;
                         if(!empty($avisPoster)){
                             foreach($avisPoster as $avis){
-                                if($res->getDemandeur()->getId()!=$avis->getDestinataire()->getId()){
+                                if($res->getDemandeur()->getId()==$avis->getDestinataire()->getId()){
                                     $dejaPoster = true;
                                 }
                             }
@@ -552,6 +576,7 @@ class RoadshareController extends AbstractController
                 }
             }
         }
+        dump($avisARediger);
         return $avisARediger;
     }
     public function getAvisARedigerConducteur($reservations, $avisPoster){

@@ -41,28 +41,36 @@
             {% endif %}
 
             {% if reservationsAcceptee|length >0 %}
-                <div class="card border-secondary mb-3">
-                    <div class="card-header"><h4>Demandes de reservations Accepter</h4></div>
-                    <div class="card-body">
-                        {% for res in reservationsAcceptee  %}
-                            {% if res.trajet.etat == 'EN_COURS' or res.trajet.etat == 'COMPLET' %}
-                                <div class="alert alert-info">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">{{res.trajet.heureDepart|date("H:i")}} - {{res.trajet.heureArrivee|date("H:i")}}</h5>
-                                        <h5 class="text-muted">{{res.trajet.date|date("d/m/Y")}}</h5>
+                {% set afficher = false %}
+                {% for res in reservationsAcceptee  %}
+                    {% if res.trajet.etat == 'EN_COURS' or res.trajet.etat == 'COMPLET' %}
+                        {% set afficher = true %}
+                    {% endif %}
+                {% endfor %}
+                {% if afficher %}
+                    <div class="card border-secondary mb-3">
+                        <div class="card-header"><h4>Demandes de reservations Accepter</h4></div>
+                        <div class="card-body">
+                            {% for res in reservationsAcceptee  %}
+                                {% if res.trajet.etat == 'EN_COURS' or res.trajet.etat == 'COMPLET' %}
+                                    <div class="alert alert-info">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">{{res.trajet.heureDepart|date("H:i")}} - {{res.trajet.heureArrivee|date("H:i")}}</h5>
+                                            <h5 class="text-muted">{{res.trajet.date|date("d/m/Y")}}</h5>
+                                        </div>
+                                        <p class="mb-1">{{res.trajet.adresseDepart.ville}} --> {{res.trajet.adresseArrivee.ville}}</p>  
+                                        <h5 class="mb-1">{{res.trajet.prix}}€</h5> 
+                                        Proposé par <a href="{{path('roadshare_profil_public',{'id':res.trajet.conducteur.id} )}}" class="alert-link"><strong>{{res.trajet.conducteur.nom}} {{res.trajet.conducteur.prenom}}</strong></a> 
+                                        <div class="modal-footer">
+                                            <button type="button" onclick="window.location.href='{{path('roadshare_trajet',{'id':res.trajet.id})}}';" class="btn btn-info">Consulter</button>
+                                            <button type="button" onclick="window.location.href='{{path('roadshare_annulation_reservation',{'id':res.trajet.id})}}';" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+                                        </div>
                                     </div>
-                                    <p class="mb-1">{{res.trajet.adresseDepart.ville}} --> {{res.trajet.adresseArrivee.ville}}</p>  
-                                    <h5 class="mb-1">{{res.trajet.prix}}€</h5> 
-                                    Proposé par <a href="{{path('roadshare_profil_public',{'id':res.trajet.conducteur.id} )}}" class="alert-link"><strong>{{res.trajet.conducteur.nom}} {{res.trajet.conducteur.prenom}}</strong></a> 
-                                    <div class="modal-footer">
-                                        <button type="button" onclick="window.location.href='{{path('roadshare_trajet',{'id':res.trajet.id})}}';" class="btn btn-info">Consulter</button>
-                                        <button type="button" onclick="window.location.href='{{path('roadshare_annulation_reservation',{'id':res.trajet.id})}}';" class="btn btn-danger" data-dismiss="modal">Annuler</button>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
+                {% endif %}
             {% endif %}
 
             {% if reservationsEnAttente|length >0 %}
@@ -81,7 +89,7 @@
                                     Proposé par <a href="{{path('roadshare_profil_public',{'id':res.trajet.conducteur.id} )}}" class="alert-link"><strong>{{res.trajet.conducteur.nom}} {{res.trajet.conducteur.prenom}}</strong></a> 
                                     <div class="modal-footer">
                                         <button type="button" onclick="window.location.href='{{path('roadshare_trajet',{'id':res.trajet.id})}}';" class="btn btn-info">Consulter</button>
-                                        <button type="button" onclick="window.location.href='{{path('roadshare_annulation_reservation',{'id':res.trajet.id})}}';" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+                                        <button type="button" onclick="window.location.href='{{path('roadshare_annulation_reservation',{'id':res.id})}}';" class="btn btn-danger" data-dismiss="modal">Annuler</button>
                                     </div>
                                 </div>
                             {% endif %}
