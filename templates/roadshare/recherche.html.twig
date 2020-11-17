@@ -8,14 +8,34 @@
         <div class="card-body">
           <h5 class="card-title">Départ : </h5>
           <div class="form-inline">
+            <datalist id="listNumeorRue">
+              {% if adresseDomicile.numeroRue != null %}
+                <option value="{{adresseDomicile.numeroRue}}">
+              {% endif %}
+              {% if adresseEntreprise != null  and adresseEntreprise.numeroRue != null %}
+                <option value="{{adresseEntreprise.numeroRue}}">
+              {% endif %}
+            </datalist>
+            <datalist id="listRue">
+                <option value="{{adresseDomicile.rue}}">
+              {% if adresseEntreprise != null %}
+                <option value="{{adresseEntreprise.rue}}">
+              {% endif %}
+            </datalist>
+            <datalist id="listVille">
+                <option value="{{adresseDomicile.ville}}">
+              {% if adresseEntreprise != null %}
+                <option value="{{adresseEntreprise.ville}}">
+              {% endif %}
+            </datalist>
             {% if recherche %}
-              <input class="form-control mr-sm-2" name="numeroRueDepart" value="{{infosEntrees[0].numeroRue}}" type="Number" placeholder="N° (facultatif)">
-              <input class="form-control mr-sm-2" name="rueDepart" value="{{infosEntrees[0].rue}}" type="text" placeholder="Rue" required>
-              <input class="form-control mr-sm-2" name="villeDepart" value="{{infosEntrees[0].ville}}" type="text" placeholder="Ville" required>
+              <input list="listNumeroRue" class="form-control mr-sm-2" name="numeroRueDepart" value="{{infosEntrees[0].numeroRue}}" type="Number" placeholder="N° (facultatif)">
+              <input list="listRue" class="form-control mr-sm-2" name="rueDepart" value="{{infosEntrees[0].rue}}" type="text" placeholder="Rue" required>
+              <input list="listVille" class="form-control mr-sm-2" name="villeDepart" value="{{infosEntrees[0].ville}}" type="text" placeholder="Ville" required>
             {% else %}
-              <input class="form-control mr-sm-2" name="numeroRueDepart" type="Number" placeholder="N° (facultatif)">
-              <input class="form-control mr-sm-2" name="rueDepart" type="text" placeholder="Rue" required>
-              <input class="form-control mr-sm-2" name="villeDepart" type="text" placeholder="Ville" required>
+              <input list="listNumeroRue" class="form-control mr-sm-2" name="numeroRueDepart" type="Number" placeholder="N° (facultatif)">
+              <input list="listRue" class="form-control mr-sm-2" name="rueDepart" type="text" placeholder="Rue" required>
+              <input list="listVille" class="form-control mr-sm-2" name="villeDepart" type="text" placeholder="Ville" required>
             {% endif %}
           </div>
         </div>
@@ -25,13 +45,13 @@
           <h5 class="card-title">Arrivée : </h5>
           <div class="form-inline">
             {% if recherche %}
-              <input class="form-control mr-sm-2" name="numeroRueArrivee" value="{{infosEntrees[1].numeroRue}}" type="Number" placeholder="N° (facultatif)">
-              <input class="form-control mr-sm-2" name="rueArrivee" value="{{infosEntrees[1].rue}}" type="text" placeholder="Rue" required>
-              <input class="form-control mr-sm-2" name="villeArrivee" value="{{infosEntrees[1].ville}}" type="text" placeholder="Ville" required>
+              <input list="listNumeroRue" class="form-control mr-sm-2" name="numeroRueArrivee" value="{{infosEntrees[1].numeroRue}}" type="Number" placeholder="N° (facultatif)">
+              <input list="listRue" class="form-control mr-sm-2" name="rueArrivee" value="{{infosEntrees[1].rue}}" type="text" placeholder="Rue" required>
+              <input list="listVille" class="form-control mr-sm-2" name="villeArrivee" value="{{infosEntrees[1].ville}}" type="text" placeholder="Ville" required>
             {% else %}
-              <input class="form-control mr-sm-2" name="numeroRueArrivee" type="Number" placeholder="N° (facultatif)">
-              <input class="form-control mr-sm-2" name="rueArrivee" type="text" placeholder="Rue" required>
-              <input class="form-control mr-sm-2" name="villeArrivee" type="text" placeholder="Ville" required>
+              <input list="listNumeroRue" class="form-control mr-sm-2" name="numeroRueArrivee" type="Number" placeholder="N° (facultatif)">
+              <input list="listRue" class="form-control mr-sm-2" name="rueArrivee" type="text" placeholder="Rue" required>
+              <input list="listVille" class="form-control mr-sm-2" name="villeArrivee" type="text" placeholder="Ville" required>
             {% endif %}
           </div>
         </div>
@@ -107,24 +127,31 @@
 
 {% if recherche %}
   {% if trajets|length >0 %}
-    {% set i = 0 %}
-    {% for list in trajets %}
-      {% set i = i + list|length %}
-    {% endfor %}
-    Nous avons trouver {{i}} trajets
+    Nous avons trouver {{trajets|length}} trajets
     <div class="list-group">
-    {% for niveau in trajets %}
-      {% for trajet in niveau %}
+    {% for index in trajets %}
+      {% for niv,trajet in index %}
+
         <a href="{{path('roadshare_trajet',{'id':trajet.id})}}" class="list-group-item list-group-item-action flex-column align-items-start">
+          {% if niv == 3 %}
+            <span class="badge badge-pill badge-success">+</span>
+            <span class="badge badge-pill badge-success">+</span>
+            <span class="badge badge-pill badge-success">+</span>
+          {% elseif niv == 2 %}
+            <span class="badge badge-pill badge-primary">+</span>
+            <span class="badge badge-pill badge-primary">+</span>
+          {% else %}
+            <span class="badge badge-pill badge-warning">+</span>
+          {% endif %}
           <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1">{{trajet.heureDepart|date("H:i")}} - {{trajet.heureArrivee|date("H:i")}}</h5>
             <h5 class="text-muted">{{trajet.prix}}€</h5>
+            
           </div>
           <p class="mb-1">{{trajet.adresseDepart.ville}} --> {{trajet.adresseArrivee.ville}}</p>
           <small class="text-muted">Proposer par : {{trajet.conducteur.prenom}}</small>
         </a>
       {% endfor %}
-      
     {% endfor %}
 
   </div>

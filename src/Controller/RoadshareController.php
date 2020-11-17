@@ -188,34 +188,53 @@ class RoadshareController extends AbstractController
             'user' => $user
         ]);
     }
+
     /**
      * @Route("/recherche", name="roadshare_recherche")
      */
-    public function Recherche(Request $request, TrajetRepository $trajetRepo, UtilisateurRepository $utilisateurRepo, DescriptionRepository $descriptionRepo): Response
+    public function Recherche(Request $request, TrajetRepository $trajetRepo, UtilisateurRepository $utilisateurRepo): Response
     {   
         $recherche = $request->request;
         $user = $this->getUser();
+        $utilisateur = $utilisateurRepo->findOneBy(array("compte"=>$user->getId()));
+        if( $utilisateur->getInformationTravail() != null){
+            $adresseEntreprise= $utilisateur->getInformationTravail()->getEntreprise()->getAdressePostale();
+        }else{
+            $adresseEntreprise = new AdressePostale();
+        }
+        $adresseDomicile = $utilisateur->getAdressePostale();
 
         if($recherche->count()>0){ 
             
             $infosEntrees = Array(); // [adresseDepart, adresseArrivee, dateDepart, heureDepart]
-            $trajetsExistants = $trajetRepo->findBy(array('etat'=>self::EN_COURS));
+            $trajetsExistants = $trajetRepo->findBy(array('etat'=>self::EN_COURS), array('heureDepart' => 'ASC'));
+            dump($trajetsExistants);
             $infosEntrees[0] = new AdressePostale();
             $infosEntrees[0]->setRue($recherche->get('rueDepart'))
-                            ->setVille($recherche->get('villeDepart'))
-                            ->setNumeroRue($recherche->get('numeroRueDepart')); 
+                            ->setVille($recherche->get('villeDepart'));
+            if($recherche->get('numeroRueDepart')!="")
+            {
+                $infosEntrees[0]->setNumeroRue($recherche->get('numeroRueDepart')); 
+            }
+                            
             $infosEntrees[1] = new AdressePostale();
             $infosEntrees[1]->setRue($recherche->get('rueArrivee'))
-                            ->setVille($recherche->get('villeArrivee'))
-                            ->setNumeroRue($recherche->get('numeroRueArrivee'));
+                            ->setVille($recherche->get('villeArrivee'));      
+            if($recherche->get('numeroRueArrivee')!="")
+            {
+                $infosEntrees[1]->setNumeroRue($recherche->get('numeroRueArrivee')); 
+            }
+
             $infosEntrees[2] = $recherche->get('dateDepart');
             $infosEntrees[3]= $recherche->get('heureDepart');
             $infosEntrees[4] = Array($recherche->get('fumeur')=='on', $recherche->get('animaux')=='on', $recherche->get('musique')=='on');
-            $trajets = $this->Comparaison($infosEntrees,$trajetsExistants, $utilisateurRepo,$descriptionRepo);
-
+            $trajets = $this->Comparaison($infosEntrees, $trajetsExistants);
+            dump($trajets);
 
             return $this->render('roadshare/recherche.html.twig', [
                 'user' => $user,
+                'adresseDomicile' =>$adresseDomicile,
+                'adresseEntreprise' => $adresseEntreprise,
                 'recherche' => ($recherche->count()>0),
                 'trajets' => $trajets,
                 'infosEntrees' => $infosEntrees
@@ -223,56 +242,52 @@ class RoadshareController extends AbstractController
         }
         return $this->render('roadshare/recherche.html.twig', [
             'user' => $user,
+            'adresseDomicile' =>$adresseDomicile,
+            'adresseEntreprise' => $adresseEntreprise,
             'recherche' => ($recherche->count()>0)
         ]);
     }
-    public function Comparaison($infosEntrees , $trajetsExistants, $utilisateurRepo, $descriptionRepo ){
+    public function Comparaison($infosEntrees , $trajetsExistants){
         $adresseDepart = $infosEntrees[0];
         $adresseArrivee = $infosEntrees[1];
         $dateDepart = $infosEntrees[2];
         $heureDepart = $infosEntrees[3];
         
-        $trajetNiv1= Array(); //correspondance moyenne
-        $trajetNiv2= Array(); //correspondance fort
-        $niv1=0;
-        $niv2=0;
+        $trajetsAvecNiv= Array(); 
+        // trajetsAvecNiv[cleNiv => (ObjectTrajet) ]  ex: [ 1 => ObjetTrajet,  2 => ObjetTrajet, ...] 
+        // les clés (1,2,3) permettant de connaitre le niveau de correspondance
+        // niveau 1 : correspondance faible
+        // niveau 2 : correspondance moyenne
+        // niveau 3 : correspondance fort
+
+        $i=0;
         foreach ($trajetsExistants as $trajet) {
             
-            if($trajet->getDate()->format('Y-m-d')==$dateDepart 
-            && $trajet->getHeureDepart()->format('H:i')>=$heureDepart 
+            if($trajet->getDate()->format('Y-m-d')==$dateDepart
+            && $trajet->getHeureDepart()->format('H:i')>=$heureDepart
             && strtolower($trajet->getAdresseDepart()->getVille())==strtolower($adresseDepart->getVille() )
             && strtolower($trajet->getAdresseArrivee()->getVille())==strtolower($adresseArrivee->getVille())
             && $this->Criteres($trajet->getConducteur()->getDescription(),$infosEntrees[4])
-            ){// niveau 1 
-                
+            ){// niveau 1
                 if(strtolower($trajet->getAdresseDepart()->getRue())==strtolower($adresseDepart->getRue()) 
-                && strtolower($trajet->getAdresseArrivee()->getRue())==strtolower($adresseArrivee->getRue() )
+                || strtolower($trajet->getAdresseArrivee()->getRue())==strtolower($adresseArrivee->getRue() )
                 ){// niveau 2
-                    $trajetNiv2[$niv2]=$trajet;
-                    $niv2 = $niv2 +1;
+                    if($trajet->getAdresseDepart()->getNumeroRue()==$adresseDepart->getNumeroRue()
+                    || $trajet->getAdresseArrivee()->getNumeroRue()==$adresseArrivee->getNumeroRue()
+                    ){// niveau 3
+                        $trajetsAvecNiv[$i]=array( '3' => $trajet );
+                    }else{
+                        $trajetsAvecNiv[$i]=array( '2' => $trajet );
+                    }
                 }
                 else{
-                    $trajetNiv1[$niv1]=$trajet;
-                    $niv1 = $niv1 +1;
+                    $trajetsAvecNiv[$i]=array( '1' => $trajet );
                 }
-                
             }
+            $i++;
         }
         
-        return $this->Combine($trajetNiv1,$trajetNiv2);
-    }
-    public function Combine($trajetNiv1,$trajetNiv2){ //à revoir
-        $trajets = Array();
-        $i = 0;
-        if(!empty($trajetNiv2)){
-            $trajets[$i] = $trajetNiv2;
-            $i = $i+1;
-        }
-        if(!empty($trajetNiv1)){
-            $trajets[$i] = $trajetNiv1;
-            $i = $i+1;
-        }
-        return $trajets;
+        return $trajetsAvecNiv;
     }
     public function Criteres($description,$criteres){
 
