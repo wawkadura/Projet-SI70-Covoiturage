@@ -26,6 +26,7 @@ use App\Form\TrajetType;
 use App\Repository\AdressePostaleRepository;
 use App\Repository\AvisRepository;
 use App\Repository\DescriptionRepository;
+use App\Repository\InformationTravailRepository;
 use App\Repository\ReservationRepository;
 use App\Repository\TrajetRepository;
 use App\Repository\UtilisateurRepository;
@@ -192,7 +193,7 @@ class RoadshareController extends AbstractController
     /**
      * @Route("/recherche", name="roadshare_recherche")
      */
-    public function Recherche(Request $request, TrajetRepository $trajetRepo, UtilisateurRepository $utilisateurRepo): Response
+    public function Recherche(Request $request, TrajetRepository $trajetRepo, UtilisateurRepository $utilisateurRepo, InformationTravailRepository $informationTravailRepo ): Response
     {   
         $recherche = $request->request;
         $user = $this->getUser();
@@ -204,11 +205,12 @@ class RoadshareController extends AbstractController
         }
         $adresseDomicile = $utilisateur->getAdressePostale();
 
+        $trajetsEntreprise = $this->getTrajetsEntreprise($utilisateur,$utilisateurRepo,$trajetRepo,$informationTravailRepo);
+
         if($recherche->count()>0){ 
             
             $infosEntrees = Array(); // [adresseDepart, adresseArrivee, dateDepart, heureDepart]
             $trajetsExistants = $trajetRepo->findBy(array('etat'=>self::EN_COURS), array('heureDepart' => 'ASC'));
-            dump($trajetsExistants);
             $infosEntrees[0] = new AdressePostale();
             $infosEntrees[0]->setRue($recherche->get('rueDepart'))
                             ->setVille($recherche->get('villeDepart'));
@@ -229,12 +231,11 @@ class RoadshareController extends AbstractController
             $infosEntrees[3]= $recherche->get('heureDepart');
             $infosEntrees[4] = Array($recherche->get('fumeur')=='on', $recherche->get('animaux')=='on', $recherche->get('musique')=='on');
             $trajets = $this->Comparaison($infosEntrees, $trajetsExistants);
-            dump($trajets);
-
             return $this->render('roadshare/recherche.html.twig', [
                 'user' => $user,
                 'adresseDomicile' =>$adresseDomicile,
                 'adresseEntreprise' => $adresseEntreprise,
+                'trajetsEntreprise' => $trajetsEntreprise,
                 'recherche' => ($recherche->count()>0),
                 'trajets' => $trajets,
                 'infosEntrees' => $infosEntrees
@@ -297,6 +298,34 @@ class RoadshareController extends AbstractController
             return False;
         }
         return true;
+    }
+    public function getTrajetsEntreprise($utilisateur, $utilisateurRepo, $trajetRepo, $informationTravailRepo){
+        
+        $informationTravail= $utilisateur->getInformationTravail();
+        $trajetsEntreprise = array();
+      
+        if(isset($informationTravail)){ 
+            
+            $allInfoTravail= $informationTravailRepo->findBy(array('horaireDebut'=> $informationTravail->getHoraireDebut(),'horaireFin'=>$informationTravail->getHoraireDebut()));
+            $i=0;
+            foreach($allInfoTravail as $info){
+
+                if($informationTravail->getEntreprise()->getNom()==$info->getEntreprise()->getNom())
+                {
+                    $conducteur = $utilisateurRepo->findOneBy(array("informationTravail" => $info->getId()));
+                    $trajets = $trajetRepo->findBy(array("heureArrivee" => $info->getHoraireDebut(), 'conducteur' => $conducteur->getId()));
+                    foreach($trajets as $trajet){
+                        $adresseDepart = $trajet->getAdresseDepart();
+                        if($adresseDepart->getVille()==$informationTravail->getEntreprise()->getAdressePostale()->getVille()){
+                            $trajetsEntreprise[$i]= $trajet;
+                            $i++;
+                        }
+                    }
+                }
+            }
+        }
+        return $trajetsEntreprise;
+       
     }
 
     /**
