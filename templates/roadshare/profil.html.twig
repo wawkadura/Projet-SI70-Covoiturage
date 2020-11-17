@@ -103,7 +103,12 @@
           {% if owner %}
             <p> Horaire de début : {{ informationTravail.horaireDebut|date("H:i")  }}</p>
             <p> Horaire de fin : {{ informationTravail.horaireFin|date("H:i")}}</p>
-            <p> {{entreprise.adressePostale.rue}} {{entreprise.adressePostale.codePostale}} {{entreprise.adressePostale.ville}} 
+            {% if entreprise.adressePostale.numeroRue == null %}
+              <p>{{entreprise.adressePostale.rue}} {{entreprise.adressePostale.ville}} 
+            {% else %}
+              <p> {{entreprise.adressePostale.numeroRue}} {{entreprise.adressePostale.rue}} {{entreprise.adressePostale.ville}} 
+            {% endif %}
+            
             <div class="modal-footer">
               <button type="button" onclick="window.location.href='{{path('roadshare_setinformation')}}';" class="btn btn-primary">Modifier informations de travail</button>
             </div>

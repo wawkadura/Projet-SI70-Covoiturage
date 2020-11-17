@@ -19,9 +19,10 @@ class UtilisateurFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $adressePostale = new AdressePostale();
-        $adressePostale->setRue("RandomRue")
-                        ->setVille("RandomVille")
-                        ->setCodePostale(10000);
+        $adressePostale->setNumeroRue(99)
+                        ->setRue("RandomRue")
+                        ->setVille("RandomVille");
+                        
         $manager->persist($adressePostale);
         $entreprises = $manager->getRepository(Entreprise::class)->findAll();
 

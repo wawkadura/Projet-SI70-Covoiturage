@@ -21,16 +21,16 @@
 <div class="card bg-secondary mb-3" >
   <div class="card-body">
     <h4 class="card-title">Adresse départ</h4>
+      {{form_row(form.adresseDepart.numeroRue, {'label':'N° :', 'attr' : {
+              'placeholder': 'Entrée le numero de rue (facultatif)'
+            }})}}
+
       {{form_row(form.adresseDepart.rue, {'label':'Rue:', 'attr' : {
-              'placeholder': 'Entrée l\'adresse de la rue'
+              'placeholder': 'Entrée la rue'
             }})}}
         
       {{form_row(form.adresseDepart.ville, {'label':'Ville :','attr' : {
               'placeholder': 'Entrée la ville'
-            }})}}
-          
-      {{form_row(form.adresseDepart.codePostale, {'label':'Code postale :', 'attr' : {
-              'placeholder': 'Entrée le code postale'
             }})}}
 
   </div>
@@ -38,15 +38,16 @@
 <div class="card bg-secondary mb-3">
   <div class="card-body">
     <h4 class="card-title">Adresse de destination</h4>
+      {{form_row(form.adresseArrivee.numeroRue, {'label':'N° :', 'attr' : {
+        'placeholder': 'Entrée le numero de rue (facultatif)'
+      }})}} 
       {{form_row(form.adresseArrivee.rue, {'label':'Rue:', 'attr' : {
-        'placeholder': 'Entrée l\'adresse de la rue'
+        'placeholder': 'Entrée la rue'
       }})}}
       {{form_row(form.adresseArrivee.ville, {'label':'Ville :','attr' : {
         'placeholder': 'Entrée la ville'
        }})}}
-      {{form_row(form.adresseArrivee.codePostale, {'label':'Code postale :', 'attr' : {
-        'placeholder': 'Entrée le code postale'
-      }})}} 
+
   </div>
 </div>
 

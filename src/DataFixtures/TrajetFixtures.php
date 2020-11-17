@@ -15,14 +15,14 @@ class TrajetFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $adressePostalDepart = new AdressePostale();
-        $adressePostalDepart->setRue("10 rue jean jaurés");
+        $adressePostalDepart->setRue("Rue jean jaurés");
         $adressePostalDepart->setVille("Grenoble");
-        $adressePostalDepart->setCodePostale(38000);
+        $adressePostalDepart->setNumeroRue(99);
 
         $adressePostalArrivee = new AdressePostale();
-        $adressePostalArrivee->setRue("10 rue charles de gaules");
+        $adressePostalArrivee->setRue("Rue charles de gaules");
         $adressePostalArrivee->setVille("Lyon");
-        $adressePostalArrivee->setCodePostale(69000);
+        $adressePostalArrivee->setNumeroRue(99);
         
         $manager->persist($adressePostalDepart);
         $manager->persist($adressePostalArrivee);

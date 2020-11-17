@@ -15,9 +15,9 @@ class AdressePostaleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('numeroRue',IntegerType::class, array('required' => false) )
             ->add('rue',TextType::class)
             ->add('ville',TextType::class)
-            ->add('codePostale',IntegerType::class)
         ;
     }
 

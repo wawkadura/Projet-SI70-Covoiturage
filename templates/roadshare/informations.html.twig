@@ -121,16 +121,16 @@
           {{form_row(formTravail.entreprise.nom, {'label':'Nom de l\'entreprise:', 'attr' : {
                   'placeholder': 'Nom de l\'entreprise pour laquelle vous travaillez'
                 }})}}
-
+          {{form_row(formTravail.adressepostale.numeroRue, {'label':'N° :', 'attr' : {
+                  'placeholder': 'Entrer le numero rue'
+                }})}}    
           {{form_row(formTravail.adressepostale.rue, {'label':'Rue:', 'attr' : {
                   'placeholder': 'Entrer la rue de votre lieu de travail'
                 }})}}
           {{form_row(formTravail.adressepostale.ville, {'label':'ville:', 'attr' : {
                   'placeholder': 'Saisir le ville où vous travaillez'
                 }})}}   
-          {{form_row(formTravail.adressepostale.codePostale, {'label':'Code postale:', 'attr' : {
-                  'placeholder': 'Saisir le code postale'
-                }})}}    
+
 
           {{form_row(formTravail.informationTravail.horaireDebut, {'label':'Horaire de debut:', 'attr' : {
                   'placeholder': 'Saisir a laquelle vous commencer'

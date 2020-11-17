@@ -13,9 +13,9 @@ class EntrepriseFixtures extends Fixture
     {
         for ($i=0; $i < 10; $i++) {
             $adressePostale = new AdressePostale();
-            $adressePostale->setRue("$i RueEntreprise")
-                            ->setVille("VilleEntreprise$1")
-                            ->setCodePostale(99999);
+            $adressePostale->setRue("RueEntreprise$i")
+                            ->setVille("VilleEntreprise$i")
+                            ->setNumeroRue($i);
             $manager->persist($adressePostale);
             $entreprise = new Entreprise();
             $entreprise->setNom("Google $i");

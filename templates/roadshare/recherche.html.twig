@@ -9,12 +9,12 @@
           <h5 class="card-title">Départ : </h5>
           <div class="form-inline">
             {% if recherche %}
-              <input class="form-control mr-sm-2" name="adresseDepart" value="{{infosEntrees[0].rue}}" type="text" placeholder="Adresse" required>
-              <input class="form-control mr-sm-2" name="codePostaleDepart" value="{{infosEntrees[0].codePostale}}" type="Number" placeholder="Code Postale" required>
+              <input class="form-control mr-sm-2" name="numeroRueDepart" value="{{infosEntrees[0].numeroRue}}" type="Number" placeholder="N° (facultatif)">
+              <input class="form-control mr-sm-2" name="rueDepart" value="{{infosEntrees[0].rue}}" type="text" placeholder="Rue" required>
               <input class="form-control mr-sm-2" name="villeDepart" value="{{infosEntrees[0].ville}}" type="text" placeholder="Ville" required>
             {% else %}
-              <input class="form-control mr-sm-2" name="adresseDepart" type="text" placeholder="Adresse" required>
-              <input class="form-control mr-sm-2" name="codePostaleDepart" type="Number" placeholder="Code Postale" required>
+              <input class="form-control mr-sm-2" name="numeroRueDepart" type="Number" placeholder="N° (facultatif)">
+              <input class="form-control mr-sm-2" name="rueDepart" type="text" placeholder="Rue" required>
               <input class="form-control mr-sm-2" name="villeDepart" type="text" placeholder="Ville" required>
             {% endif %}
           </div>
@@ -25,12 +25,12 @@
           <h5 class="card-title">Arrivée : </h5>
           <div class="form-inline">
             {% if recherche %}
-              <input class="form-control mr-sm-2" name="adresseArrivee" value="{{infosEntrees[1].rue}}" type="text" placeholder="Adresse" required>
-              <input class="form-control mr-sm-2" name="codePostaleArrivee" value="{{infosEntrees[1].codePostale}}" type="Number" placeholder="Code Postale" required>
+              <input class="form-control mr-sm-2" name="numeroRueArrivee" value="{{infosEntrees[1].numeroRue}}" type="Number" placeholder="N° (facultatif)">
+              <input class="form-control mr-sm-2" name="rueArrivee" value="{{infosEntrees[1].rue}}" type="text" placeholder="Rue" required>
               <input class="form-control mr-sm-2" name="villeArrivee" value="{{infosEntrees[1].ville}}" type="text" placeholder="Ville" required>
             {% else %}
-              <input class="form-control mr-sm-2" name="adresseArrivee" type="text" placeholder="Adresse" required>
-              <input class="form-control mr-sm-2" name="codePostaleArrivee" type="Number" placeholder="Code Postale" required>
+              <input class="form-control mr-sm-2" name="numeroRueArrivee" type="Number" placeholder="N° (facultatif)">
+              <input class="form-control mr-sm-2" name="rueArrivee" type="text" placeholder="Rue" required>
               <input class="form-control mr-sm-2" name="villeArrivee" type="text" placeholder="Ville" required>
             {% endif %}
           </div>

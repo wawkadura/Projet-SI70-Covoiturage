@@ -36,16 +36,16 @@
     <div class="card bg-secondary mb-3">
       <div class="card-header"><h4 class="card-title">Adresse du domicile</h4></div>
       <div class="card-body">
-        
+          {{form_row(form.adressePostale.numeroRue, {'label':'N° :', 'attr' : {
+            'placeholder': 'Entrée le numéro de rue (facultatif)'
+          }})}} 
           {{form_row(form.adressePostale.rue, {'label':'Rue:', 'attr' : {
-            'placeholder': 'Entrée l\'adresse de la rue'
+            'placeholder': 'Entrée la rue'
           }})}}
           {{form_row(form.adressePostale.ville, {'label':'Ville :','attr' : {
             'placeholder': 'Entrée la ville'
           }})}}
-          {{form_row(form.adressePostale.codePostale, {'label':'Code postale :', 'attr' : {
-            'placeholder': 'Entrée le code postale'
-          }})}} 
+
       </div>
     </div>
     <div class="card bg-secondary mb-3">

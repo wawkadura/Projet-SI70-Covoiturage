@@ -64,7 +64,6 @@ class RoadshareController extends AbstractController
             'user' => $user
         ]);
     }
-
     /**
      * @Route("/connexion", name="roadshare_connexion")
      */
@@ -79,11 +78,10 @@ class RoadshareController extends AbstractController
      * @Route("/deconnexion", name="roadshare_deconnexion")
      */
     public function Deconnexion(){}
-
     /**
      * @Route("/inscription", name="roadshare_inscription")
      */
-    public function Inscription(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder): Response
+    public function Inscription(AdressePostaleRepository $adresseRepo, Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder): Response
     {
         $user = $this->getUser();
         $utilisateur = new Utilisateur;
@@ -109,9 +107,15 @@ class RoadshareController extends AbstractController
             $manager->persist($compte);
             $utilisateur->setCompte($compte);
 
-            $manager->persist($adressePostale);
-            $utilisateur->setAdressePostale($adressePostale);
-
+            $adressePostale->setRue(strtolower($adressePostale->getRue()));
+            $adressePostale->setVille(strtolower($adressePostale->getVille()));
+            $adresseExistante = $adresseRepo->findOneBy(array('numeroRue'=>$adressePostale->getNumeroRue(),'rue'=>$adressePostale->getRue(), 'ville'=> $adressePostale->getVille()));
+            if(isset($adresseExistante)){
+                $utilisateur->setAdressePostale($adresseExistante);
+            }else{
+                $manager->persist($adressePostale);
+                $utilisateur->setAdressePostale($adressePostale);
+            }
             $manager->persist($description);
             $utilisateur->setDescription($description);
 
@@ -124,11 +128,10 @@ class RoadshareController extends AbstractController
             'user' => $user
         ]);
     }
-
     /**
      * @Route("/proposition", name="roadshare_proposition")
      */
-    public function Proposition(Request $request, ObjectManager $manager,UtilisateurRepository $repo): Response
+    public function Proposition(AdressePostaleRepository $adresseRepo, Request $request, ObjectManager $manager,UtilisateurRepository $repo): Response
     {
         $trajet = new Trajet();
         $adresseDepart = new AdressePostale();
@@ -153,12 +156,28 @@ class RoadshareController extends AbstractController
             $conducteur = $repo->findBy(array("compte" => $user->getId()));
             $trajet->setConducteur($conducteur[0]);
             $trajet->setEtat(self::EN_COURS);
+            
+            $adresseDepart->setRue(strtolower($adresseDepart->getRue()));
+            $adresseDepart->setVille(strtolower($adresseDepart->getVille()));
 
-            $trajet->setAdresseDepart($adresseDepart);
-            $trajet->setAdresseArrivee($adresseArrivee);    
+            $adresseArrivee->setRue(strtolower($adresseArrivee->getRue()));
+            $adresseArrivee->setVille(strtolower($adresseArrivee->getVille()));
+
+            $adresseDepartExistante = $adresseRepo->findOneBy(array('numeroRue'=>$adresseDepart->getNumeroRue(),'rue'=>$adresseDepart->getRue(), 'ville'=> $adresseDepart->getVille()));
+            $adresseArriveeExistante = $adresseRepo->findOneBy(array('numeroRue'=>$adresseArrivee->getNumeroRue(),'rue'=>$adresseArrivee->getRue(), 'ville'=> $adresseArrivee->getVille()));
+            if(isset($adresseDepartExistante)){
+                $trajet->setAdresseDepart($adresseDepartExistante);
+            }else{
+                $manager->persist($adresseDepart);
+                $trajet->setAdresseDepart($adresseDepart);
+            }
+            if(isset($adresseArriveeExistante)){
+                $trajet->setAdresseArrivee($adresseArriveeExistante);
+            }else{
+                $manager->persist($adresseArrivee);
+                $trajet->setAdresseArrivee($adresseArrivee);
+            }   
             $manager->persist($trajet);
-            $manager->persist($adresseDepart);
-            $manager->persist($adresseArrivee);
             $manager->flush();
             return $this->redirectToRoute('roadshare_home');
         }
@@ -169,7 +188,6 @@ class RoadshareController extends AbstractController
             'user' => $user
         ]);
     }
-  
     /**
      * @Route("/recherche", name="roadshare_recherche")
      */
@@ -177,21 +195,19 @@ class RoadshareController extends AbstractController
     {   
         $recherche = $request->request;
         $user = $this->getUser();
-        // $adresseDepart = new AdressePostale();
-        // $adresseArrivee = new AdressePostale();
 
         if($recherche->count()>0){ 
             
             $infosEntrees = Array(); // [adresseDepart, adresseArrivee, dateDepart, heureDepart]
             $trajetsExistants = $trajetRepo->findBy(array('etat'=>self::EN_COURS));
             $infosEntrees[0] = new AdressePostale();
-            $infosEntrees[0]->setRue($recherche->get('adresseDepart'))
+            $infosEntrees[0]->setRue($recherche->get('rueDepart'))
                             ->setVille($recherche->get('villeDepart'))
-                            ->setCodePostale($recherche->get('codePostaleDepart')); 
+                            ->setNumeroRue($recherche->get('numeroRueDepart')); 
             $infosEntrees[1] = new AdressePostale();
-            $infosEntrees[1]->setRue($recherche->get('adresseArrivee'))
+            $infosEntrees[1]->setRue($recherche->get('rueArrivee'))
                             ->setVille($recherche->get('villeArrivee'))
-                            ->setCodePostale($recherche->get('codePostaleArrivee'));
+                            ->setNumeroRue($recherche->get('numeroRueArrivee'));
             $infosEntrees[2] = $recherche->get('dateDepart');
             $infosEntrees[3]= $recherche->get('heureDepart');
             $infosEntrees[4] = Array($recherche->get('fumeur')=='on', $recherche->get('animaux')=='on', $recherche->get('musique')=='on');
@@ -331,8 +347,6 @@ class RoadshareController extends AbstractController
     public function AnnulationReservation($id,ReservationRepository $reservationRepo, ObjectManager $manager): Response
     {   
         $reservation = $reservationRepo->findOneBy(array("id" => $id));
-        dump($reservation);
-        dump($id);
         $manager->remove($reservation);
         $manager->flush();
 
@@ -382,7 +396,7 @@ class RoadshareController extends AbstractController
     /**
      * @Route("/modiftrajet/{id}", name="roadshare_modifierTrajet")
      */
-    public function ModifierTrajet($id,TrajetRepository $repo, Request $request, ObjectManager $manager){
+    public function ModifierTrajet($id,AdressePostaleRepository $adresseRepo, TrajetRepository $repo, Request $request, ObjectManager $manager){
         $user = $this->getUser();
         $trajet = $repo->findOneBy(array("id" => $id));
 
@@ -405,11 +419,28 @@ class RoadshareController extends AbstractController
             ($form['adresseDepart']->isSubmitted() && $form['adresseDepart']->isValid()) && 
             ($form['adresseArrivee']->isSubmitted() && $form['adresseArrivee']->isValid()) &&($date>$datenow)){
             
-            $trajet->setAdresseDepart($adresseDepart);
-            $trajet->setAdresseArrivee($adresseArrivee);    
+
+            $adresseDepart->setRue(strtolower($adresseDepart->getRue()));
+            $adresseDepart->setVille(strtolower($adresseDepart->getVille()));
+
+            $adresseArrivee->setRue(strtolower($adresseArrivee->getRue()));
+            $adresseArrivee->setVille(strtolower($adresseArrivee->getVille()));
+
+            $adresseDepartExistante = $adresseRepo->findOneBy(array('numeroRue'=>$adresseDepart->getNumeroRue(),'rue'=>$adresseDepart->getRue(), 'ville'=> $adresseDepart->getVille()));
+            $adresseArriveeExistante = $adresseRepo->findOneBy(array('numeroRue'=>$adresseArrivee->getNumeroRue(),'rue'=>$adresseArrivee->getRue(), 'ville'=> $adresseArrivee->getVille()));
+            if(isset($adresseDepartExistante)){
+                $trajet->setAdresseDepart($adresseDepartExistante);
+            }else{
+                $manager->persist($adresseDepart);
+                $trajet->setAdresseDepart($adresseDepart);
+            }
+            if(isset($adresseArriveeExistante)){
+                $trajet->setAdresseArrivee($adresseArriveeExistante);
+            }else{
+                $manager->persist($adresseArrivee);
+                $trajet->setAdresseArrivee($adresseArrivee);
+            }     
             $manager->persist($trajet);
-            $manager->persist($adresseDepart);
-            $manager->persist($adresseArrivee);
             $manager->flush();
             return $this->redirectToRoute('roadshare_home');
         }
@@ -556,7 +587,6 @@ class RoadshareController extends AbstractController
         if(!empty($trajetsProposes)){
             foreach($trajetsProposes as $trajet){
                 $reservations = $reservationRepo->findBy(array('trajet'=>$trajet->getId(),'etat'=>self::ACCEPTEE));
-                dump($reservations);
                 if(!empty($reservations)){
                     foreach($reservations as $res){
                         $dejaPoster = false;
@@ -576,7 +606,6 @@ class RoadshareController extends AbstractController
                 }
             }
         }
-        dump($avisARediger);
         return $avisARediger;
     }
     public function getAvisARedigerConducteur($reservations, $avisPoster){
@@ -606,7 +635,7 @@ class RoadshareController extends AbstractController
     /**
      * @Route("/setinformation", name="roadshare_setinformation") 
     */
-    public function setInformation(Request $request,ObjectManager $manager,UtilisateurRepository $repo, UserPasswordEncoderInterface $encoder){
+    public function setInformation(AdressePostaleRepository $adresseRepo, Request $request,ObjectManager $manager,UtilisateurRepository $repo, UserPasswordEncoderInterface $encoder){
     
         
         $user = $this->getUser();
@@ -629,7 +658,7 @@ class RoadshareController extends AbstractController
         $formData['entreprise'] = $entreprise;
         $formData['adressepostale'] = $adressePostaleEntreprise;
         $formData['informationTravail']  =  $informationTravail;
-
+        
 
         if(!isset($voiture)){
             $voiture = new Voiture();
@@ -651,12 +680,12 @@ class RoadshareController extends AbstractController
         $formpassword = $this->createForm(ChangePasswordType::class, $compte);
         $formpassword->handleRequest($request);
 
-        if(($formVoiture->isSubmitted() && $formVoiture->isValid())){
+        if($formVoiture->isSubmitted() && $formVoiture->isValid()){
             $utilisateur->setVoiture($voiture);
             $manager->persist($voiture);
             $manager->flush();
         }
-        if(($formDescription->isSubmitted() && $formDescription->isValid())){
+        if($formDescription->isSubmitted() && $formDescription->isValid()){
             $utilisateur->setDescription($description);
             $manager->persist($description);
             $manager->flush();
@@ -664,6 +693,16 @@ class RoadshareController extends AbstractController
         if(($formTravail['entreprise']->isSubmitted() && $formTravail['entreprise']->isValid()) && 
         ($formTravail['informationTravail']->isSubmitted() && $formTravail['informationTravail']->isValid())&& 
         ($formTravail['adressepostale']->isSubmitted() && $formTravail['adressepostale']->isValid()) ){
+
+            $adressePostaleEntreprise->setRue(strtolower($adressePostaleEntreprise->getRue()));
+            $adressePostaleEntreprise->setVille(strtolower($adressePostaleEntreprise->getVille()));
+            $adresseExistante = $adresseRepo->findOneBy(array('numeroRue'=>$adressePostaleEntreprise->getNumeroRue(),'rue'=>$adressePostaleEntreprise->getRue(), 'ville'=> $adressePostaleEntreprise->getVille()));
+            if(isset($adresseExistante)){
+                $entreprise->setAdressePostale($adresseExistante);
+            }else{
+                $manager->persist($adressePostaleEntreprise);
+                $entreprise->setAdressePostale($adressePostaleEntreprise);
+            }
 
             $entreprise->setAdressePostale($adressePostaleEntreprise);
             $informationTravail->setEntreprise($entreprise);
@@ -676,7 +715,7 @@ class RoadshareController extends AbstractController
             $manager->flush();
 
         }
-        if(($formUtilisateur->isSubmitted() && $formUtilisateur->isValid())){
+        if($formUtilisateur->isSubmitted() && $formUtilisateur->isValid()){
 
             $manager->persist($utilisateur);
             $manager->flush();

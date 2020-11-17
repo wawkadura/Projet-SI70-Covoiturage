@@ -15,8 +15,13 @@ class AdressePostale
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+
     private $id;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $numeroRue;
     /**
      * @ORM\Column(type="string", length=255)
      */
@@ -27,10 +32,6 @@ class AdressePostale
      */
     private $ville;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $codePostale;
 
     public function getId(): ?int
     {
@@ -61,14 +62,14 @@ class AdressePostale
         return $this;
     }
 
-    public function getCodePostale(): ?int
+    public function getNumeroRue(): ?int
     {
-        return $this->codePostale;
+        return $this->numeroRue;
     }
 
-    public function setCodePostale(int $codePostale): self
+    public function setNumeroRue(int $numeroRue): self
     {
-        $this->codePostale = $codePostale;
+        $this->numeroRue = $numeroRue;
 
         return $this;
     }
