@@ -207,8 +207,6 @@ class RoadshareController extends AbstractController
 
         $trajetsEntreprise = $this->getTrajetsEntreprise($utilisateur,$utilisateurRepo,$trajetRepo,$informationTravailRepo);
 
-        dump($trajetsEntreprise);
-
         if($recherche->count()>0){ 
             
             $infosEntrees = Array(); // [adresseDepart, adresseArrivee, dateDepart, heureDepart]
@@ -238,6 +236,7 @@ class RoadshareController extends AbstractController
                 'adresseDomicile' =>$adresseDomicile,
                 'adresseEntreprise' => $adresseEntreprise,
                 'trajetsEntreprise' => $trajetsEntreprise,
+                'informationTravail'=>$utilisateur->getInformationTravail(),
                 'recherche' => ($recherche->count()>0),
                 'trajets' => $trajets,
                 'infosEntrees' => $infosEntrees
@@ -248,6 +247,7 @@ class RoadshareController extends AbstractController
             'adresseDomicile' =>$adresseDomicile,
             'adresseEntreprise' => $adresseEntreprise,
             'trajetsEntreprise' => $trajetsEntreprise,
+            'informationTravail'=>$utilisateur->getInformationTravail(),
             'recherche' => ($recherche->count()>0)
         ]);
     }
@@ -512,6 +512,7 @@ class RoadshareController extends AbstractController
         $voiture= $utilisateur->getVoiture();
         $informationTravail= $utilisateur->getInformationTravail();
         $compte=$utilisateur->getCompte();
+        $adresseDomicile= $utilisateur->getAdressePostale();
 
         if(isset($informationTravail)){
             $entreprise= $informationTravail->getEntreprise();
@@ -525,6 +526,7 @@ class RoadshareController extends AbstractController
             'description'=>$description,
             'voiture'=>$voiture,
             'informationTravail'=>$informationTravail,
+            'adresseDomicile'=> $utilisateur->getAdressePostale(),
             'compte'=>$compte,
             'entreprise'=>$entreprise
         ]);
@@ -537,7 +539,7 @@ class RoadshareController extends AbstractController
         $user = $this->getUser();
         $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
         $description= $utilisateur->getDescription();
-
+    
         $voiture= $utilisateur->getVoiture();
         $informationTravail= $utilisateur->getInformationTravail();
         $compte=$utilisateur->getCompte();
@@ -554,6 +556,7 @@ class RoadshareController extends AbstractController
             'voiture'=>$voiture,
             'informationTravail'=>$informationTravail,
             'compte'=>$compte,
+            'adresseDomicile'=> $utilisateur->getAdressePostale(),
             'entreprise'=>$entreprise
         ]);
     }
@@ -696,6 +699,7 @@ class RoadshareController extends AbstractController
         $description= $utilisateur->getDescription();
         $informationTravail= $utilisateur->getInformationTravail();
         $compte= $utilisateur->getCompte();
+        $adresseDomicile= $utilisateur->getAdressePostale();
 
         if(!isset($informationTravail )){
             $informationTravail = new InformationTravail();
@@ -707,7 +711,8 @@ class RoadshareController extends AbstractController
             $adressePostaleEntreprise= $entreprise->getAdressePostale();
         }
         $formData['entreprise'] = $entreprise;
-        $formData['adressepostale'] = $adressePostaleEntreprise;
+        $formData['adressepostaleTravail'] = $adressePostaleEntreprise;
+        $formData['adressepostale'] = $adresseDomicile;
         $formData['informationTravail']  =  $informationTravail;
         
 
@@ -743,6 +748,7 @@ class RoadshareController extends AbstractController
         }
         if(($formTravail['entreprise']->isSubmitted() && $formTravail['entreprise']->isValid()) && 
         ($formTravail['informationTravail']->isSubmitted() && $formTravail['informationTravail']->isValid())&& 
+        ($formTravail['adressepostaleTravail']->isSubmitted() && $formTravail['adressepostaleTravail']->isValid()) &&
         ($formTravail['adressepostale']->isSubmitted() && $formTravail['adressepostale']->isValid()) ){
 
             $adressePostaleEntreprise->setRue(strtolower($adressePostaleEntreprise->getRue()));
@@ -758,10 +764,13 @@ class RoadshareController extends AbstractController
             $entreprise->setAdressePostale($adressePostaleEntreprise);
             $informationTravail->setEntreprise($entreprise);
             $utilisateur->setInformationTravail($informationTravail);
+            $utilisateur->setAdressePostale($adresseDomicile);
+
 
             $manager->persist($adressePostaleEntreprise);
             $manager->persist($entreprise);
             $manager->persist($informationTravail);
+            $manager->persist($adresseDomicile);
             $manager->persist($utilisateur);
             $manager->flush();
 
