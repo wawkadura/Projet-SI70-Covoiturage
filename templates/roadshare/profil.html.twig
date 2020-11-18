@@ -7,22 +7,20 @@
         <h4> Informations personnelles </h4>
       </div>
       <div class="card-body">
-      
-           <img
-              src="https://cdn.discordapp.com/attachments/759864377767100477/776891983858892880/profile-icon-png-1.png" 
-               height="95px" 
-               width="95px" 
-            />
-            <p>Nom : {{ utilisateur.nom |upper }}</p>
-            <p>Prenom : {{ utilisateur.prenom |upper }}</p>
-            <p>Speudo : {{ user.email}} </p>
-            <p>Date de naissance : {{ utilisateur.dateDeNaissance | date('d/m/Y')}}</p>
-            {% if owner %}
-            <p>Numéro : {{ utilisateur.telephone}}</p>
+        
+        <img class ="text-muted" src="https://cdn.discordapp.com/attachments/759864377767100477/776891983858892880/profile-icon-png-1.png" height="200px" width="200px" />
+
+        <div class="card-body">
+          <p class="text-primary">{{ utilisateur.nom |upper }} {{ utilisateur.prenom |upper }}</p>
+          <p class="text-primary">{{ utilisateur.dateDeNaissance | date('d/m/Y')}}</p>
+          {% if owner %}
+            <p class="text-primary">{{ user.email}} </p>
+            <p class="text-primary">{{ utilisateur.telephone}}</p>
             <div class="modal-footer">
                 <button type="button" onclick="window.location.href='{{path('roadshare_setinformation')}}';" class="btn btn-primary">Modifier vos informations personnelles</button>
             </div>
-            {% endif %}
+          {% endif %}
+        </div>
       </div>
 </div>  
 <div class="card text-blue bg-secondary mb-3" style="max-width: 55rem;">
@@ -104,9 +102,9 @@
             <p> Horaire de début : {{ informationTravail.horaireDebut|date("H:i")  }}</p>
             <p> Horaire de fin : {{ informationTravail.horaireFin|date("H:i")}}</p>
             {% if entreprise.adressePostale.numeroRue == null %}
-              <p>{{entreprise.adressePostale.rue}} {{entreprise.adressePostale.ville}} 
+              <p>Adresse : {{entreprise.adressePostale.rue}} {{entreprise.adressePostale.ville}} 
             {% else %}
-              <p> {{entreprise.adressePostale.numeroRue}} {{entreprise.adressePostale.rue}} {{entreprise.adressePostale.ville}} 
+              <p>Adresse : {{entreprise.adressePostale.numeroRue}} {{entreprise.adressePostale.rue}} {{entreprise.adressePostale.ville}} 
             {% endif %}
             
             <div class="modal-footer">
