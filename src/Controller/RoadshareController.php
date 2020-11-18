@@ -207,6 +207,8 @@ class RoadshareController extends AbstractController
 
         $trajetsEntreprise = $this->getTrajetsEntreprise($utilisateur,$utilisateurRepo,$trajetRepo,$informationTravailRepo);
 
+        dump($trajetsEntreprise);
+
         if($recherche->count()>0){ 
             
             $infosEntrees = Array(); // [adresseDepart, adresseArrivee, dateDepart, heureDepart]
@@ -245,6 +247,7 @@ class RoadshareController extends AbstractController
             'user' => $user,
             'adresseDomicile' =>$adresseDomicile,
             'adresseEntreprise' => $adresseEntreprise,
+            'trajetsEntreprise' => $trajetsEntreprise,
             'recherche' => ($recherche->count()>0)
         ]);
     }
@@ -299,6 +302,7 @@ class RoadshareController extends AbstractController
         }
         return true;
     }
+
     public function getTrajetsEntreprise($utilisateur, $utilisateurRepo, $trajetRepo, $informationTravailRepo){
         
         $informationTravail= $utilisateur->getInformationTravail();
@@ -306,7 +310,7 @@ class RoadshareController extends AbstractController
       
         if(isset($informationTravail)){ 
             
-            $allInfoTravail= $informationTravailRepo->findBy(array('horaireDebut'=> $informationTravail->getHoraireDebut(),'horaireFin'=>$informationTravail->getHoraireDebut()));
+            $allInfoTravail= $informationTravailRepo->findBy(array('horaireDebut'=> $informationTravail->getHoraireDebut(),'horaireFin'=>$informationTravail->getHoraireFin()));
             $i=0;
             foreach($allInfoTravail as $info){
 
@@ -314,9 +318,11 @@ class RoadshareController extends AbstractController
                 {
                     $conducteur = $utilisateurRepo->findOneBy(array("informationTravail" => $info->getId()));
                     $trajets = $trajetRepo->findBy(array("heureArrivee" => $info->getHoraireDebut(), 'conducteur' => $conducteur->getId()));
+                    dump($trajets);
                     foreach($trajets as $trajet){
                         $adresseDepart = $trajet->getAdresseDepart();
                         if($adresseDepart->getVille()==$informationTravail->getEntreprise()->getAdressePostale()->getVille()){
+                            dump($trajet);
                             $trajetsEntreprise[$i]= $trajet;
                             $i++;
                         }
@@ -325,6 +331,7 @@ class RoadshareController extends AbstractController
             }
         }
         return $trajetsEntreprise;
+
        
     }
 

@@ -178,6 +178,26 @@
       <p class="mb-0">Nous somme désoler, aucun trajet correspond à vos critéres de recherche</a>.</p>
     </div>
   {% endif %}
+{% endif %}</br>
+
+
+{% if trajetsEntreprise|length >0 %}
+    Nous avons trouver {{trajetsEntreprise|length}} covoitureur qui à le même trajet d'entrepreise 
+    <div class="list-group">
+    {% for trajet in trajetsEntreprise %}
+
+       <a href="{{path('roadshare_trajet',{'id':trajet.id})}}" class="list-group-item list-group-item-action flex-column align-items-start ">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{trajet.heureDepart|date("H:i")}} - {{trajet.heureArrivee|date("H:i")}}</h5>
+              <h5 class="mb-1">{{trajet.date|date("d/m/Y")}}</h5>
+            <h5 class="text-muted">{{trajet.prix}}€</h5>
+          </div>
+          <p class="mb-1">{{trajet.adresseDepart.ville}} --> {{trajet.adresseArrivee.ville}}</p>
+          <small class="text-muted">Proposer par : {{trajet.conducteur.prenom}}</small>
+      </a>
+     {% endfor %}
+  </div>
+  {% else %}
 {% endif %}
 <br>
 <br>
