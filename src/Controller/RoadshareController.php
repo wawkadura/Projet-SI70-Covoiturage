@@ -295,9 +295,9 @@ class RoadshareController extends AbstractController
     }
     public function Criteres($description,$criteres){
 
-        if($criteres[0] && !$description->getVoyagerAvecFumeur() // si true et false
-        || $criteres[1] && !$description->getVoyagerAvecAnimaux() // si true et false
-        || $criteres[2] && !$description->getVoyagerAvecMusique()){ // si true et true
+        if($criteres[0] && !$description->getVoyagerAvecFumeur() 
+        || $criteres[1] && !$description->getVoyagerAvecAnimaux() 
+        || $criteres[2] && !$description->getVoyagerAvecMusique()){ 
             return False;
         }
         return true;
