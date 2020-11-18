@@ -14,6 +14,7 @@ class TravailType extends AbstractType
             ->add('entreprise',EntrepriseType::class)
             ->add('informationTravail',InformationTravailType::class)
             ->add('adressepostale', AdressePostaleType::class)
+            ->add('adressepostaleTravail', AdressePostaleType::class)
         ;
     }
 

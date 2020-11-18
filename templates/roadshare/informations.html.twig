@@ -121,13 +121,13 @@
           {{form_row(formTravail.entreprise.nom, {'label':'Nom de l\'entreprise:', 'attr' : {
                   'placeholder': 'Nom de l\'entreprise pour laquelle vous travaillez'
                 }})}}
-          {{form_row(formTravail.adressepostale.numeroRue, {'label':'N° :', 'attr' : {
+          {{form_row(formTravail.adressepostaleTravail.numeroRue, {'label':'N° :', 'attr' : {
                   'placeholder': 'Entrer le numero rue'
                 }})}}    
-          {{form_row(formTravail.adressepostale.rue, {'label':'Rue:', 'attr' : {
+          {{form_row(formTravail.adressepostaleTravail.rue, {'label':'Rue:', 'attr' : {
                   'placeholder': 'Entrer la rue de votre lieu de travail'
                 }})}}
-          {{form_row(formTravail.adressepostale.ville, {'label':'ville:', 'attr' : {
+          {{form_row(formTravail.adressepostaleTravail.ville, {'label':'ville:', 'attr' : {
                   'placeholder': 'Saisir le ville où vous travaillez'
                 }})}}   
 
@@ -138,6 +138,25 @@
           {{form_row(formTravail.informationTravail.horaireFin, {'label':'Heure fin de journée', 'attr' : {
                   'placeholder': 'Saisir a laquelle vous finissez'
                 }})}}                
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
+          </div>
+
+
+          <div class="card-header">
+        <h4> Modifier son adresse de domicile </h4>
+      </div>
+      <div class="card-body">
+          {{form_row(formTravail.adressepostale.numeroRue, {'label':'N° :', 'attr' : {
+                  'placeholder': 'Entrer le numero rue'
+                }})}}    
+          {{form_row(formTravail.adressepostale.rue, {'label':'Rue:', 'attr' : {
+                  'placeholder': 'Entrer la rue de votre de domicile'
+                }})}}
+          {{form_row(formTravail.adressepostale.ville, {'label':'ville:', 'attr' : {
+                  'placeholder': 'Saisir le ville de domicile'
+                }})}}   
 
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 

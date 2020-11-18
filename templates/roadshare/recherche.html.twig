@@ -180,24 +180,28 @@
   {% endif %}
 {% endif %}</br>
 
+{% if informationTravail %}
+  {% if trajetsEntreprise|length >0 %}
+      Nous avons trouver {{trajetsEntreprise|length}} covoitureur qui à le même trajet d'entreprise que vous
+      <div class="list-group">
+      {% for trajet in trajetsEntreprise %}
 
-{% if trajetsEntreprise|length >0 %}
-    Nous avons trouver {{trajetsEntreprise|length}} covoitureur qui à le même trajet entreprise que vous
-    <div class="list-group">
-    {% for trajet in trajetsEntreprise %}
-
-       <a href="{{path('roadshare_trajet',{'id':trajet.id})}}" class="list-group-item list-group-item-action flex-column align-items-start ">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{trajet.heureDepart|date("H:i")}} - {{trajet.heureArrivee|date("H:i")}}</h5>
-              <h5 class="mb-1">{{trajet.date|date("d/m/Y")}}</h5>
-            <h5 class="text-muted">{{trajet.prix}}€</h5>
-          </div>
-          <p class="mb-1">{{trajet.adresseDepart.ville}} --> {{trajet.adresseArrivee.ville}}</p>
-          <small class="text-muted">Proposer par : {{trajet.conducteur.prenom}}</small>
-      </a>
-     {% endfor %}
-  </div>
+        <a href="{{path('roadshare_trajet',{'id':trajet.id})}}" class="list-group-item list-group-item-action flex-column align-items-start ">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">{{trajet.heureDepart|date("H:i")}} - {{trajet.heureArrivee|date("H:i")}}</h5>
+                <h5 class="mb-1">{{trajet.date|date("d/m/Y")}}</h5>
+              <h5 class="text-muted">{{trajet.prix}}€</h5>
+            </div>
+            <p class="mb-1">{{trajet.adresseDepart.ville}} --> {{trajet.adresseArrivee.ville}}</p>
+            <small class="text-muted">Proposer par : {{trajet.conducteur.prenom}}</small>
+        </a>
+      {% endfor %}
+    </div>
   {% else %}
+  {% endif %}
+{% else %}
+    <a class="nav-link" href="{{path('roadshare_setinformation')}}"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="kirk-icon sc-bZQynM jLitmr" width="24" height="24" aria-hidden="true"><g fill="none" stroke="#00AFF5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><circle cx="12" cy="12" r="11"></circle><path d="M12 7v10M17 12H7"></path></g></svg>
+          Ajouter des informations par rapport à votre lieu de travail pourait vous permettre de trouver des utilisateurs qui travaillent dans la même entreprise que vous</a>
 {% endif %}
 <br>
 <br>
