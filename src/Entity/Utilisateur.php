@@ -54,7 +54,8 @@ class Utilisateur
 
     /**
      * @ORM\OneToOne(targetEntity=Voiture::class, mappedBy="id")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true)  
+     * @ORM\JoinColumn(onDelete="SET NULL", name="id_voiture") 
      */
     private $voiture;
 

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\AvisRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=AvisRepository::class)
@@ -24,6 +25,7 @@ class Avis
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Range(min=1, max=5, minMessage= "la note doir être au moins égale a 1", maxMessage="La note doit moins inférieur à 6 ")
      */
     private $note;
 

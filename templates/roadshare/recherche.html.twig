@@ -84,7 +84,7 @@
                     {% else %}
                       <input type="checkbox" name="fumeur" class="custom-control-input" id="fumeur">
                     {% endif %}                    
-                    <label class="custom-control-label" for="fumeur">vous voulais fumer lors du trajet</label>
+                    <label class="custom-control-label" for="fumeur">vous vouliez fumer lors du trajet</label>
                   </div>
                   <div class="custom-control custom-checkbox mb-3">
                     {% if infosEntrees[4][1] %}
@@ -92,7 +92,7 @@
                     {% else %}
                       <input type="checkbox" name="animaux" class="custom-control-input" id="animaux">
                     {% endif %} 
-                    <label class="custom-control-label" for="animaux">vous voulais amener un animale avec vous</label>
+                    <label class="custom-control-label" for="animaux">vous vouliez amener un animale avec vous</label>
                   </div>
                   <div class="custom-control custom-checkbox mb-3">
                     {% if infosEntrees[4][2] %}
@@ -100,22 +100,22 @@
                     {% else %}
                       <input type="checkbox" name="musique" class="custom-control-input" id="musique">
                     {% endif %}
-                    <label class="custom-control-label" for="musique">vous ne voulais pas de musique lors du trajet</label>
+                    <label class="custom-control-label" for="musique">vous ne vouliez pas de musique lors du trajet</label>
                   </div>
                 </div>
             {% else %}
                 <div class="form-group">
                   <div class="custom-control custom-checkbox mb-3">
                     <input type="checkbox" name="fumeur" class="custom-control-input" id="fumeur">
-                    <label class="custom-control-label" for="fumeur">vous voulais fumer lors du trajet</label>
+                    <label class="custom-control-label" for="fumeur">vous vouliez fumer lors du trajet</label>
                   </div>
                   <div class="custom-control custom-checkbox mb-3">
                     <input type="checkbox" name="animaux" class="custom-control-input" id="animaux">
-                    <label class="custom-control-label" for="animaux">vous voulais amener un animale avec vous</label>
+                    <label class="custom-control-label" for="animaux">vous vouliez amener un animale avec vous</label>
                   </div>
                   <div class="custom-control custom-checkbox mb-3">
                     <input type="checkbox" name="musique" class="custom-control-input" id="musique">
-                    <label class="custom-control-label" for="musique">vous ne voulais pas de musique lors du trajet</label>
+                    <label class="custom-control-label" for="musique">vous ne vouliez pas de musique lors du trajet</label>
                   </div>
                 </div>
             {% endif %}
@@ -186,7 +186,7 @@
   {% endif %}
 {% else %}
     <a class="nav-link" href="{{path('roadshare_setinformation')}}"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="kirk-icon sc-bZQynM jLitmr" width="24" height="24" aria-hidden="true"><g fill="none" stroke="#00AFF5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><circle cx="12" cy="12" r="11"></circle><path d="M12 7v10M17 12H7"></path></g></svg>
-          Ajouter des informations par rapport à votre lieu de travail pourait vous permettre de trouver des utilisateurs qui travaillent dans la même entreprise que vous</a>
+          Ajouter des informations par rapport à votre lieu de travail. Cela vous permettre de trouver des utilisateurs qui travaillent dans la même entreprise que vous</a>
 {% endif %}
 <br>
 <br>

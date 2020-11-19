@@ -34,6 +34,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 
 class RoadshareController extends AbstractController
@@ -55,7 +57,6 @@ class RoadshareController extends AbstractController
     public function home(): Response
     {
         $user = $this->getUser();
-
         return $this->render('roadshare/home.html.twig', [
             'user' => $user
         ]);
@@ -63,11 +64,15 @@ class RoadshareController extends AbstractController
     /**
      * @Route("/connexion", name="roadshare_connexion")
      */
-    public function Connexion(): Response
+    public function Connexion(AuthenticationUtils $authenticationUtils): Response
     {
         $user = $this->getUser();
+        // gestion me message d'erreur de connection  
+        $error = $authenticationUtils->getLastAuthenticationError();
+    
         return $this->render('roadshare/connexion.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'error' => $error
         ]);
     }
     /**
@@ -864,5 +869,44 @@ class RoadshareController extends AbstractController
             'entreprises' => $entreprises,
             'user' => $user
         ]);
+    }
+
+    /**
+     * @Route("/surprimeCompte", name="roadshare_surprimerCompte") 
+     */
+    public function Surprimercompte(UtilisateurRepository $repo, ObjectManager $manager){
+        $user= $this->getUser();
+        $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
+        
+        $manager->remove($utilisateur);
+        $manager->flush();
+        return $this->redirectToRoute('roadshare_home');
+    }
+
+
+      /**
+     * @Route("/suprimeVoiture", name="roadshare_surprimerVoiture") 
+     */
+    public function SurprimerVoiture(UtilisateurRepository $repo, ObjectManager $manager){
+        $user= $this->getUser();
+        $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
+        $voiture= $utilisateur->getVoiture();
+
+        $manager->remove($voiture);
+        $manager->flush();
+        return $this->redirectToRoute('roadshare_profil');
+    }
+
+     /**
+     * @Route("/surprimeInformationTravail", name="roadshare_surprimeInformationTravail") 
+     */
+    public function SurprimerInfomationTravail(UtilisateurRepository $repo, ObjectManager $manager){
+        $user= $this->getUser();
+        $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
+        $informationTravail= $utilisateur->getInformationTravail();
+
+        $manager->remove($utilisateur);
+        $manager->flush();
+        return $this->redirectToRoute('roadshare_profil');
     }
 }

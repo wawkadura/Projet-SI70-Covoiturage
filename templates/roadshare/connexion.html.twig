@@ -19,6 +19,10 @@
         <div class="modal-footer">
             <button class="btn btn-lg btn-primary" type="submit">Connexion</button>
         </div>
+
+        {% if error %}
+            <div class="alert alert-danger"><p> Identifiant ou mot de passe incorrect</p></div>
+        {% endif %}
     </form>
   </div>
 </div>

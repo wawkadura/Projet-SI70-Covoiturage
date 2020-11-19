@@ -81,34 +81,6 @@
   </div>
 
 
-
-  <div class="card text-white bg-dark mb-3">
-      <div class="card-header">
-        <h4> Modifier votre Voiture</h4>
-      </div>
-      <div class="card-body">
-      {{form_start(formVoiture)}}
-        {{form_row(formVoiture.marque, {'label':'Marque:', 'attr' : {
-                'placeholder': 'marque du véhicule'
-              }})}}
-          
-        {{form_row(formVoiture.couleur, {'label':'Couleur :','attr' : {
-                'placeholder': 'Couleur du véhicule'
-              }})}}
-            
-        {{form_row(formVoiture.immatriculation, {'label':'Immatriculation:', 'attr' : {
-                'placeholder': 'Immatriculation du véhicule'
-              }})}}
-        {{form_row(formVoiture.model, {'label':'Model:', 'attr' : {
-                'placeholder': 'Model du véhicule'
-              }})}}      
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
-        </div>
-      {{form_end(formVoiture)}}
-    </div>
-  </div>  
-
   <div class="card text-white bg-dark mb-3">
       <div class="card-header">
         <h4> Modifier vos informations de travail</h4>
@@ -171,4 +143,36 @@
         {{form_end(formTravail)}}
     </div>
   </div>
+
+    <div class="card text-white bg-dark mb-3">
+      <div class="card-header">
+        <h4> Modifier votre Voiture</h4>
+      </div>
+      <div class="card-body">
+      {{form_start(formVoiture)}}
+
+        {{form_row(formVoiture.marque, {'label':'Marque:', 'attr' : {
+                'placeholder': 'marque du véhicule'
+              }})}}
+          
+        {{form_row(formVoiture.couleur, {'label':'Couleur :','attr' : {
+                'placeholder': 'Couleur du véhicule'
+              }})}}
+            
+        {{form_row(formVoiture.immatriculation, {'label':'Immatriculation:', 'attr' : {
+                'placeholder': 'Immatriculation du véhicule'
+              }})}}
+        {{form_row(formVoiture.model, {'label':'Model:', 'attr' : {
+                'placeholder': 'Model du véhicule'
+              }})}}      
+    
+        <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
+        <button type="button" onclick="window.location.href='{{path('roadshare_surprimerVoiture')}}';" class="btn btn-danger" data-dismiss="modal">Surprimer</button>
+          
+        </div>
+      {{form_end(formVoiture)}}
+    </div>
+  </div>  
+
 {% endblock %}
