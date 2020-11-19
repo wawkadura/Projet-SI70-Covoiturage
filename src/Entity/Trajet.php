@@ -35,13 +35,13 @@ class Trajet
 
     /**
      * @ORM\Column(type="time")
-     * @Assert\LessThan(propertyPath ="heureArrivee", message="verifier que l'heure départ est inférieur à l'heure d'arrivée")
+     * @Assert\LessThan(propertyPath ="heureArrivee", message="verifier que l'heure de départ est inférieur à l'heure d'arrivée")
      */
     private $heureDepart;
 
     /**
      * @ORM\Column(type="time")
-     * * @Assert\GreaterThan(propertyPath ="heureDepart", message="verifier que l'heure départ est inférieur à l'heure d'arrivée")
+     * * @Assert\GreaterThan(propertyPath ="heureDepart", message="verifier que l'heure de départ est inférieur à l'heure d'arrivée")
      */
     private $heureArrivee;
 

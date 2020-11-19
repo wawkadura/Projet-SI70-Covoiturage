@@ -39,6 +39,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 
 class RoadshareController extends AbstractController
@@ -60,7 +61,6 @@ class RoadshareController extends AbstractController
     public function home(): Response
     {
         $user = $this->getUser();
-
         return $this->render('roadshare/home.html.twig', [
             'user' => $user
         ]);
@@ -68,11 +68,15 @@ class RoadshareController extends AbstractController
     /**
      * @Route("/connexion", name="roadshare_connexion")
      */
-    public function Connexion(): Response
+    public function Connexion(AuthenticationUtils $authenticationUtils): Response
     {
         $user = $this->getUser();
+        // gestion me message d'erreur de connection  
+        $error = $authenticationUtils->getLastAuthenticationError();
+    
         return $this->render('roadshare/connexion.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'error' => $error
         ]);
     }
     /**
