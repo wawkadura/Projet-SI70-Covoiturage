@@ -210,7 +210,6 @@ class RoadshareController extends AbstractController
         if($recherche->count()>0){ 
             
             $infosEntrees = Array(); // [adresseDepart, adresseArrivee, dateDepart, heureDepart]
-            $trajetsExistants = $trajetRepo->findBy(array('etat'=>self::EN_COURS), array('heureDepart' => 'ASC'));
             $infosEntrees[0] = new AdressePostale();
             $infosEntrees[0]->setRue($recherche->get('rueDepart'))
                             ->setVille($recherche->get('villeDepart'));
@@ -226,10 +225,12 @@ class RoadshareController extends AbstractController
             {
                 $infosEntrees[1]->setNumeroRue($recherche->get('numeroRueArrivee')); 
             }
-
             $infosEntrees[2] = $recherche->get('dateDepart');
             $infosEntrees[3]= $recherche->get('heureDepart');
+
             $infosEntrees[4] = Array($recherche->get('fumeur')=='on', $recherche->get('animaux')=='on', $recherche->get('musique')=='on');
+            $date = new DateTime($infosEntrees[2]);
+            $trajetsExistants = $trajetRepo->findBy(array('date'=>$date,'etat'=>self::EN_COURS), array('heureDepart' => 'ASC'));
             $trajets = $this->Comparaison($infosEntrees, $trajetsExistants);
             return $this->render('roadshare/recherche.html.twig', [
                 'user' => $user,
@@ -254,7 +255,6 @@ class RoadshareController extends AbstractController
     public function Comparaison($infosEntrees , $trajetsExistants){
         $adresseDepart = $infosEntrees[0];
         $adresseArrivee = $infosEntrees[1];
-        $dateDepart = $infosEntrees[2];
         $heureDepart = $infosEntrees[3];
         
         $trajetsAvecNiv= Array(); 
@@ -267,17 +267,16 @@ class RoadshareController extends AbstractController
         $i=0;
         foreach ($trajetsExistants as $trajet) {
             
-            if($trajet->getDate()->format('Y-m-d')==$dateDepart
-            && $trajet->getHeureDepart()->format('H:i')>=$heureDepart
+            if($trajet->getHeureDepart()->format('H:i')>=$heureDepart
             && strtolower($trajet->getAdresseDepart()->getVille())==strtolower($adresseDepart->getVille() )
             && strtolower($trajet->getAdresseArrivee()->getVille())==strtolower($adresseArrivee->getVille())
             && $this->Criteres($trajet->getConducteur()->getDescription(),$infosEntrees[4])
             ){// niveau 1
                 if(strtolower($trajet->getAdresseDepart()->getRue())==strtolower($adresseDepart->getRue()) 
-                || strtolower($trajet->getAdresseArrivee()->getRue())==strtolower($adresseArrivee->getRue() )
+                && strtolower($trajet->getAdresseArrivee()->getRue())==strtolower($adresseArrivee->getRue() )
                 ){// niveau 2
                     if($trajet->getAdresseDepart()->getNumeroRue()==$adresseDepart->getNumeroRue()
-                    || $trajet->getAdresseArrivee()->getNumeroRue()==$adresseArrivee->getNumeroRue()
+                    && $trajet->getAdresseArrivee()->getNumeroRue()==$adresseArrivee->getNumeroRue()
                     ){// niveau 3
                         $trajetsAvecNiv[$i]=array( '3' => $trajet );
                     }else{
@@ -318,11 +317,9 @@ class RoadshareController extends AbstractController
                 {
                     $conducteur = $utilisateurRepo->findOneBy(array("informationTravail" => $info->getId()));
                     $trajets = $trajetRepo->findBy(array("heureArrivee" => $info->getHoraireDebut(), 'conducteur' => $conducteur->getId()));
-                    dump($trajets);
                     foreach($trajets as $trajet){
                         $adresseDepart = $trajet->getAdresseDepart();
                         if($adresseDepart->getVille()==$informationTravail->getEntreprise()->getAdressePostale()->getVille()){
-                            dump($trajet);
                             $trajetsEntreprise[$i]= $trajet;
                             $i++;
                         }

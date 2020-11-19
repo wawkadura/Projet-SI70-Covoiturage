@@ -21,7 +21,7 @@ class AvisFixtures extends Fixture implements DependentFixtureInterface
             $i--;
             $avis = new Avis();
             $nom = $expediteur->getNom();
-            $avis->setMessage(" wesh je suis $nom et j'ai adorer être avec toi !")
+            $avis->setMessage(" salut je suis $nom et j'ai adorer être avec toi !")
                  ->setNote(4.5)
                  ->setDestinataire($destinataire)
                  ->setExpediteur($expediteur);

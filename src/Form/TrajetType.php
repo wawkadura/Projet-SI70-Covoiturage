@@ -21,8 +21,8 @@ class TrajetType extends AbstractType
             ->add('date',DateType::class, array(
                 'widget' => 'choice',
                 'years' => range(date('Y'), date('Y')+1),
-                'months' => range(date('m'), 12),
-                'days' => range(date('d'), 31),
+                'months' => range(1, 12),
+                'days' => range(1, 31),
               ))
             ->add('heureDepart',TimeType::class)
             ->add('heureArrivee',TimeType::class)

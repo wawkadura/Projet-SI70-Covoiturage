@@ -10,6 +10,8 @@ use App\Entity\InformationTravail;
 use App\Entity\Utilisateur;
 use App\Entity\Voiture;
 use App\Repository\CompteRepository;
+use DateTime;
+use DateTimeZone;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -18,15 +20,40 @@ class UtilisateurFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
+        $dateTimeZone = new DateTimeZone('Europe/Paris');
+        $dateTimeHoraireDebut = new DateTime('08:00:00', $dateTimeZone);
+        $dateTimeHoraireFin = new DateTime('17:00:00', $dateTimeZone);
+
+        $donnees = array(
+            array('walid','kadura', new DateTime('1999-04-24'),$dateTimeHoraireDebut,$dateTimeHoraireFin),
+            array('lucas','modric',new DateTime('2000-04-24'),new DateTime('07:00:00', $dateTimeZone),new DateTime('16:00:00', $dateTimeZone)),
+            array('benjamin','pavard',new DateTime('1995-04-24'),new DateTime('09:00:00', $dateTimeZone),new DateTime('18:00:00', $dateTimeZone)),
+            array('muftah','lionel',new DateTime('1994-04-12'),new DateTime('09:30:00', $dateTimeZone),new DateTime('18:30:00', $dateTimeZone)),
+            array('thomas','Du sud',new DateTime('1998-04-03'),$dateTimeHoraireDebut,new DateTime('16:00:00', $dateTimeZone)),
+            array('annie','bertran',new DateTime('1995-04-24'),$dateTimeHoraireDebut,$dateTimeHoraireFin),
+            array('elise','koman',new DateTime('1990-06-05'),$dateTimeHoraireDebut,$dateTimeHoraireFin),
+            array('melodie','tse',new DateTime('1999-04-10'),$dateTimeHoraireDebut,$dateTimeHoraireFin),
+            array('john','wiliam',new DateTime('1999-04-15'),$dateTimeHoraireDebut,$dateTimeHoraireFin),
+            array('charlotte','kawafi',new DateTime('2001-07-23'),$dateTimeHoraireDebut,$dateTimeHoraireFin)
+        );
         $adressePostale = new AdressePostale();
         $adressePostale->setNumeroRue(99)
-                        ->setRue("RandomRue")
-                        ->setVille("RandomVille");
+                        ->setRue("RueDomicile")
+                        ->setVille("VilleDomicile");
+        $adressePostaleSpecial = new AdressePostale();
+        $adressePostaleSpecial->setNumeroRue(99)
+                        ->setRue("rue charles de gaules")
+                        ->setVille("Belfort");
                         
         $manager->persist($adressePostale);
         $entreprises = $manager->getRepository(Entreprise::class)->findAll();
 
         for ($i=0; $i < 10; $i++) {
+            $nom = $donnees[$i][1];
+            $prenom= $donnees[$i][0];
+            $dateNaissance = $donnees[$i][2];
+            $horaireDebut = $donnees[$i][3];
+            $horaireFin = $donnees[$i][4];
 
             $description = new Description();
             if($i%3 ==0){
@@ -46,8 +73,8 @@ class UtilisateurFixtures extends Fixture implements DependentFixtureInterface
             $manager->persist($description);
 
             $compte = new Compte();
-            $compte->setEmail("random$i@yahoo.com")
-                    ->setMotDePasse(password_hash("$i",PASSWORD_DEFAULT));
+            $compte->setEmail("$prenom@yahoo.com")
+                    ->setMotDePasse(password_hash("$prenom",PASSWORD_DEFAULT));
             $manager->persist($compte);
 
             $voiture = new Voiture();
@@ -58,22 +85,22 @@ class UtilisateurFixtures extends Fixture implements DependentFixtureInterface
             $manager->persist($voiture);
 
             $informationsTravail= new InformationTravail();
-            $informationsTravail->setHoraireDebut(new \DateTime())
-                                ->setHoraireFin(new \DateTime());
+            $informationsTravail->setHoraireDebut($horaireDebut)
+                                ->setHoraireFin($horaireFin);
                                 
-            if($i==1 && $i ==2 && $i==3){
+            if($i==0 && $i ==1 && $i==2){
                 $informationsTravail->setEntreprise($entreprises[0]);
             }
             else{
-                $informationsTravail->setEntreprise($entreprises[$i]);
+                $informationsTravail->setEntreprise($entreprises[$i%4]);
             }
             $manager->persist($informationsTravail);
 
             $utilisateur = new Utilisateur();
-            $utilisateur->setNom("RANDOM$i");
-            $utilisateur->setPrenom("Number$i");
+            $utilisateur->setNom("$nom");
+            $utilisateur->setPrenom("$prenom");
             $utilisateur->setTelephone('0612345678');
-            $utilisateur->setDateDeNaissance(new \DateTime());
+            $utilisateur->setDateDeNaissance($dateNaissance);
             $utilisateur->setDescription($description);
             $utilisateur->setAdressePostale($adressePostale);
             $utilisateur->setVoiture($voiture);
