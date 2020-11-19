@@ -8,18 +8,15 @@
         <div class="card-body">
           <h5 class="card-title">Départ : </h5>
           <div class="form-inline">
-            <datalist id="listNumeorRue">
-              {% if adresseDomicile.numeroRue != null %}
-                <option value="{{adresseDomicile.numeroRue}}">
-              {% endif %}
-              {% if adresseEntreprise != null  and adresseEntreprise.numeroRue != null %}
-                <option value="{{adresseEntreprise.numeroRue}}">
-              {% endif %}
-            </datalist>
             <datalist id="listRue">
                 <option value="{{adresseDomicile.rue}}">
               {% if adresseEntreprise != null %}
                 <option value="{{adresseEntreprise.rue}}">
+              {% endif %}
+              {% if historiqueTrajets|length >0 %}
+                 {% for adresse in historiqueTrajets %}
+                  <option value="{{adresse.rue}}">
+                {% endfor %}
               {% endif %}
             </datalist>
             <datalist id="listVille">
@@ -27,14 +24,19 @@
               {% if adresseEntreprise != null %}
                 <option value="{{adresseEntreprise.ville}}">
               {% endif %}
+              {% if historiqueTrajets|length >0 %}
+                 {% for adresse in historiqueTrajets %}
+                  <option value="{{adresse.ville}}">
+                {% endfor %}
+              {% endif %}
             </datalist>
             {% if recherche %}
-              <input list="listNumeroRue" class="form-control mr-sm-2" name="numeroRueDepart" value="{{infosEntrees[0].numeroRue}}" type="Number" placeholder="N° (facultatif)">
-              <input list="listRue" class="form-control mr-sm-2" name="rueDepart" value="{{infosEntrees[0].rue}}" type="text" placeholder="Rue" required>
+              <input  class="form-control mr-sm-2" name="numeroRueDepart" value="{{infosEntrees[0].numeroRue}}" type="Number" placeholder="N° (facultatif)">
+              <input autocomplete="off" list="listRue" class="form-control mr-sm-2" name="rueDepart" value="{{infosEntrees[0].rue}}" type="text" placeholder="Rue" required>
               <input list="listVille" class="form-control mr-sm-2" name="villeDepart" value="{{infosEntrees[0].ville}}" type="text" placeholder="Ville" required>
             {% else %}
-              <input list="listNumeroRue" class="form-control mr-sm-2" name="numeroRueDepart" type="Number" placeholder="N° (facultatif)">
-              <input list="listRue" class="form-control mr-sm-2" name="rueDepart" type="text" placeholder="Rue" required>
+              <input class="form-control mr-sm-2" name="numeroRueDepart" type="Number" placeholder="N° (facultatif)">
+              <input autocomplete="off" list="listRue" class="form-control mr-sm-2" name="rueDepart" type="text" placeholder="Rue" required>
               <input list="listVille" class="form-control mr-sm-2" name="villeDepart" type="text" placeholder="Ville" required>
             {% endif %}
           </div>
@@ -45,11 +47,11 @@
           <h5 class="card-title">Arrivée : </h5>
           <div class="form-inline">
             {% if recherche %}
-              <input list="listNumeroRue" class="form-control mr-sm-2" name="numeroRueArrivee" value="{{infosEntrees[1].numeroRue}}" type="Number" placeholder="N° (facultatif)">
+              <input  class="form-control mr-sm-2" name="numeroRueArrivee" value="{{infosEntrees[1].numeroRue}}" type="Number" placeholder="N° (facultatif)">
               <input list="listRue" class="form-control mr-sm-2" name="rueArrivee" value="{{infosEntrees[1].rue}}" type="text" placeholder="Rue" required>
               <input list="listVille" class="form-control mr-sm-2" name="villeArrivee" value="{{infosEntrees[1].ville}}" type="text" placeholder="Ville" required>
             {% else %}
-              <input list="listNumeroRue" class="form-control mr-sm-2" name="numeroRueArrivee" type="Number" placeholder="N° (facultatif)">
+              <input  class="form-control mr-sm-2" name="numeroRueArrivee" type="Number" placeholder="N° (facultatif)">
               <input list="listRue" class="form-control mr-sm-2" name="rueArrivee" type="text" placeholder="Rue" required>
               <input list="listVille" class="form-control mr-sm-2" name="villeArrivee" type="text" placeholder="Ville" required>
             {% endif %}
@@ -155,23 +157,6 @@
     {% endfor %}
 
   </div>
-{# 
-    <div>
-      <ul class="pagination pagination-lg">
-        <li class="page-item disabled">
-          <a class="page-link" href="#">&laquo;</a>
-        </li>
-        <li class="page-item active">
-          <a class="page-link" href="#">1</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">2</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">&raquo;</a>
-        </li>
-      </ul>
-    </div> #}
   {% else %}
     <div class="alert alert-dismissible alert-warning">
       <h4 class="alert-heading">Nous avons rien trouvée</h4>

@@ -19,7 +19,6 @@ class Trajet
      * @ORM\Column(type="integer")
      */
     private $id;
-
    
     /**
      * @ORM\Column(type="date")
@@ -35,13 +34,11 @@ class Trajet
 
     /**
      * @ORM\Column(type="time")
-     * @Assert\LessThan(propertyPath ="heureArrivee", message="verifier que l'heure départ est inférieur à l'heure d'arrivée")
      */
     private $heureDepart;
 
     /**
      * @ORM\Column(type="time")
-     * * @Assert\GreaterThan(propertyPath ="heureDepart", message="verifier que l'heure départ est inférieur à l'heure d'arrivée")
      */
     private $heureArrivee;
 
@@ -72,15 +69,9 @@ class Trajet
      */
     private $etat;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Avis::class, mappedBy="trajet", orphanRemoval=true)
-     */
-    private $avis;
 
     public function __construct()
     {
-        $this->reservations = new ArrayCollection();
-        $this->avis = new ArrayCollection(); 
         $this->date = new \DateTime('now');
     }
 
@@ -197,33 +188,4 @@ class Trajet
         return $this;
     }
 
-    /**
-     * @return Collection|Avis[]
-     */
-    public function getAvis(): Collection
-    {
-        return $this->avis;
-    }
-
-    public function addAvi(Avis $avi): self
-    {
-        if (!$this->avis->contains($avi)) {
-            $this->avis[] = $avi;
-            $avi->setTrajet($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAvi(Avis $avi): self
-    {
-        if ($this->avis->removeElement($avi)) {
-            // set the owning side to null (unless already changed)
-            if ($avi->getTrajet() === $this) {
-                $avi->setTrajet(null);
-            }
-        }
-
-        return $this;
-    }
 }

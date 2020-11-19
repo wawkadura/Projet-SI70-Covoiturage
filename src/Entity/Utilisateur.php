@@ -47,12 +47,6 @@ class Utilisateur
     private $adressePostale;
     
     /**
-     * @ORM\OneToMany(targetEntity=Trajet::class, mappedBy="conducteur")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $trajetsProposer;
-    
-    /**
      * @ORM\OneToOne(targetEntity=Description::class, mappedBy="id")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -76,18 +70,9 @@ class Utilisateur
      */
     private $informationTravail;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="id")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $reservations;
-
     public function __construct()
     {
-        $this->trajetsProposer = new ArrayCollection();
-        $this->reservations = new ArrayCollection();
-        $this->avisRecu = new ArrayCollection();
-        $this->avisPoste = new ArrayCollection();
+
     }
 
 
@@ -186,64 +171,5 @@ class Utilisateur
     {
         $this->informationTravail = $informationTravail;
     }
-    /**
-     * @return Collection|Trajet[]
-     */
-    public function getTrajetsProposer(): Collection
-    {
-        return $this->trajetsProposer;
-    }
-
-    public function addTrajet(Trajet $trajet): self
-    {
-        if (!$this->trajetsProposer->contains($trajet)) {
-            $this->trajetsProposer[] = $trajet;
-            $trajet->setConducteur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTrajet(Trajet $trajet): self
-    {
-        if ($this->trajetsProposer->removeElement($trajet)) {
-            // set the owning side to null (unless already changed)
-            if ($trajet->getConducteur() === $this) {
-                $trajet->setConducteur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Reservation[]
-     */
-    public function getReservations(): Collection
-    {
-        return $this->reservations;
-    }
-
-    public function addReservation(Reservation $reservation): self
-    {
-        if (!$this->reservations->contains($reservation)) {
-            $this->reservations[] = $reservation;
-            $reservation->setDemandeur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReservation(Reservation $reservation): self
-    {
-        if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
-            if ($reservation->getDemandeur() === $this) {
-                $reservation->setDemandeur(null);
-            }
-        }
-
-        return $this;
-    }
-
+    
 }

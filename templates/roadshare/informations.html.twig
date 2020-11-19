@@ -88,7 +88,6 @@
       </div>
       <div class="card-body">
       {{form_start(formVoiture)}}
-
         {{form_row(formVoiture.marque, {'label':'Marque:', 'attr' : {
                 'placeholder': 'marque du véhicule'
               }})}}
@@ -103,7 +102,6 @@
         {{form_row(formVoiture.model, {'label':'Model:', 'attr' : {
                 'placeholder': 'Model du véhicule'
               }})}}      
-    
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
         </div>
@@ -116,10 +114,18 @@
         <h4> Modifier vos informations de travail</h4>
       </div>
       <div class="card-body">
+        <datalist id="listEntreprise">
+          {% if entreprises|length >0 %}
+            {% for entreprise in entreprises %}
+            <option value="{{entreprise.nom}}">
+            {% endfor %}
+          {% endif %}
+        </datalist>
         {{form_start(formTravail)}}
 
           {{form_row(formTravail.entreprise.nom, {'label':'Nom de l\'entreprise:', 'attr' : {
-                  'placeholder': 'Nom de l\'entreprise pour laquelle vous travaillez'
+                  'placeholder': 'Nom de l\'entreprise pour laquelle vous travaillez',
+                  'list': 'listEntreprise'
                 }})}}
           {{form_row(formTravail.adressepostaleTravail.numeroRue, {'label':'N° :', 'attr' : {
                   'placeholder': 'Entrer le numero rue'
