@@ -32,7 +32,6 @@
       </div>
   </div>  
 
-
   <div class="card text-white bg-dark mb-3">
       <div class="card-header">
         <h4> Changer votre mot de passe</h4>
@@ -119,8 +118,8 @@
 
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
+            <button type="button" onclick="window.location.href='{{path('roadshare_surprimeInformationTravail')}}';" class="btn btn-danger" data-dismiss="modal">Surprimer</button>
           </div>
-
 
           <div class="card-header">
         <h4> Modifier son adresse de domicile </h4>
@@ -144,6 +143,7 @@
     </div>
   </div>
 
+</div>
     <div class="card text-white bg-dark mb-3">
       <div class="card-header">
         <h4> Modifier votre Voiture</h4>
@@ -169,8 +169,8 @@
         <div class="modal-footer">
         <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
         <button type="button" onclick="window.location.href='{{path('roadshare_surprimerVoiture')}}';" class="btn btn-danger" data-dismiss="modal">Surprimer</button>
-          
         </div>
+
       {{form_end(formVoiture)}}
     </div>
   </div>  

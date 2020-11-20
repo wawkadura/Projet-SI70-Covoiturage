@@ -54,8 +54,7 @@ class Utilisateur
 
     /**
      * @ORM\OneToOne(targetEntity=Voiture::class, mappedBy="id")
-     * @ORM\JoinColumn(nullable=true)  
-     * @ORM\JoinColumn(onDelete="SET NULL", name="id_voiture") 
+     * @ORM\JoinColumn(nullable=true,onDelete="SET NULL")
      */
     private $voiture;
 
@@ -67,7 +66,7 @@ class Utilisateur
     
     /**
      * @ORM\OneToOne(targetEntity=InformationTravail::class, mappedBy="id")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true,onDelete="SET NULL")
      */
     private $informationTravail;
 
