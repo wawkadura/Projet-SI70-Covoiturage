@@ -1116,26 +1116,15 @@ class RoadshareController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/surprimeCompte", name="roadshare_surprimerCompte") 
-     */
-    public function Surprimercompte(UtilisateurRepository $repo, ObjectManager $manager){
-        $user= $this->getUser();
-        $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
-        
-        $manager->remove($utilisateur);
-        $manager->flush();
-        return $this->redirectToRoute('roadshare_home');
-    }
 
-    /**
+      /**
      * @Route("/suprimeVoiture", name="roadshare_surprimerVoiture") 
      */
     public function SurprimerVoiture(UtilisateurRepository $repo, ObjectManager $manager){
         $user= $this->getUser();
         $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
         $voiture= $utilisateur->getVoiture();
-
+        dump($voiture);
         $manager->remove($voiture);
         $manager->flush();
         return $this->redirectToRoute('roadshare_profil');
@@ -1149,7 +1138,7 @@ class RoadshareController extends AbstractController
         $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
         $informationTravail= $utilisateur->getInformationTravail();
 
-        $manager->remove($utilisateur);
+        $manager->remove($informationTravail);
         $manager->flush();
         return $this->redirectToRoute('roadshare_profil');
     }
