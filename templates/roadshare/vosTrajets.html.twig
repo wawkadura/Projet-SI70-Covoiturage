@@ -32,7 +32,7 @@
                                 <div class="modal-footer">
                                     <button type="button" onclick="window.location.href='{{path('roadshare_trajet_effectue',{'id':trajet.id})}}';" class="btn btn-success">Trajet effectué</button>
                                     <button type="button" onclick="window.location.href='{{path('roadshare_trajet',{'id':trajet.id})}}';" class="btn btn-info">Consulter</button>
-                                    <button type="button" onclick="window.location.href='{{path('roadshare_annulation',{'id':trajet.id})}}';" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+                                    <button type="button" onclick="window.location.href='{{path('roadshare_annulation_trajet',{'id':trajet.id})}}';" class="btn btn-danger" data-dismiss="modal">Annuler</button>
                                 </div>
                             </div>
                         {% endfor %}

@@ -41,10 +41,10 @@
             {% elseif  owner %}
                 {% if reservationsAcceptee|length >0 %}
                     <button onclick="window.location.href='{{path('roadshare_modifierTrajet',{'id':trajet.id})}}';" type="button" class="btn btn-warning" disabled>Modifier le trajet</button>
-                    <button onclick="window.location.href='{{path('roadshare_annulation',{'id':trajet.id})}}';" type="button" class="btn btn-danger">Annuler</button>
+                    <button onclick="window.location.href='{{path('roadshare_annulation_trajet',{'id':trajet.id})}}';" type="button" class="btn btn-danger">Annuler</button>
                     <p class="text-warning">Vous ne pouvez plus modifier votre trajet puisque vous avez accpetée une ou plusieurs reservations</p>
                 {% else %}
-                    <button onclick="window.location.href='{{path('roadshare_annulation',{'id':trajet.id})}}';" type="button" class="btn btn-danger">Annuler</button>
+                    <button onclick="window.location.href='{{path('roadshare_annulation_trajet',{'id':trajet.id})}}';" type="button" class="btn btn-danger">Annuler</button>
                     <button onclick="window.location.href='{{path('roadshare_modifierTrajet',{'id':trajet.id})}}';" type="button" class="btn btn-warning">Modifier le trajet</button>
                 {% endif %}
             {% else %}

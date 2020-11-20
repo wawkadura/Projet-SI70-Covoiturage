@@ -77,8 +77,8 @@
               <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
             </div>
         {{form_end(formDescription)}}
+      </div>
     </div>
-  </div>
 
 
   <div class="card text-white bg-dark mb-3">
@@ -120,57 +120,59 @@
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
           </div>
+        {{form_end(formTravail)}}
+      </div>
+    </div>
 
-
-          <div class="card-header">
+    <div class="card text-white bg-dark mb-3">
+      <div class="card-header">
         <h4> Modifier son adresse de domicile </h4>
       </div>
       <div class="card-body">
-          {{form_row(formTravail.adressepostale.numeroRue, {'label':'N° :', 'attr' : {
+        {{form_start(formDomicile)}}
+          {{form_row(formDomicile.numeroRue, {'label':'N° :', 'attr' : {
                   'placeholder': 'Entrer le numero rue'
                 }})}}    
-          {{form_row(formTravail.adressepostale.rue, {'label':'Rue:', 'attr' : {
+          {{form_row(formDomicile.rue, {'label':'Rue:', 'attr' : {
                   'placeholder': 'Entrer la rue de votre de domicile'
                 }})}}
-          {{form_row(formTravail.adressepostale.ville, {'label':'ville:', 'attr' : {
+          {{form_row(formDomicile.ville, {'label':'ville:', 'attr' : {
                   'placeholder': 'Saisir le ville de domicile'
                 }})}}   
 
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
           </div>
-
-        {{form_end(formTravail)}}
+        {{form_end(formDomicile)}}
     </div>
   </div>
 
-    <div class="card text-white bg-dark mb-3">
-      <div class="card-header">
-        <h4> Modifier votre Voiture</h4>
-      </div>
-      <div class="card-body">
+  <div class="card text-white bg-dark mb-3">
+    <div class="card-header">
+      <h4> Modifier votre Voiture</h4>
+    </div>
+    <div class="card-body">
       {{form_start(formVoiture)}}
 
-        {{form_row(formVoiture.marque, {'label':'Marque:', 'attr' : {
-                'placeholder': 'marque du véhicule'
-              }})}}
+      {{form_row(formVoiture.marque, {'label':'Marque:', 'attr' : {
+              'placeholder': 'marque du véhicule'
+            }})}}
+        
+      {{form_row(formVoiture.couleur, {'label':'Couleur :','attr' : {
+              'placeholder': 'Couleur du véhicule'
+            }})}}
           
-        {{form_row(formVoiture.couleur, {'label':'Couleur :','attr' : {
-                'placeholder': 'Couleur du véhicule'
-              }})}}
-            
-        {{form_row(formVoiture.immatriculation, {'label':'Immatriculation:', 'attr' : {
-                'placeholder': 'Immatriculation du véhicule'
-              }})}}
-        {{form_row(formVoiture.model, {'label':'Model:', 'attr' : {
-                'placeholder': 'Model du véhicule'
-              }})}}      
-    
-        <div class="modal-footer">
+      {{form_row(formVoiture.immatriculation, {'label':'Immatriculation:', 'attr' : {
+              'placeholder': 'Immatriculation du véhicule'
+            }})}}
+      {{form_row(formVoiture.model, {'label':'Model:', 'attr' : {
+              'placeholder': 'Model du véhicule'
+            }})}}      
+  
+      <div class="modal-footer">
         <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
         <button type="button" onclick="window.location.href='{{path('roadshare_surprimerVoiture')}}';" class="btn btn-danger" data-dismiss="modal">Surprimer</button>
-          
-        </div>
+      </div>
       {{form_end(formVoiture)}}
     </div>
   </div>  
