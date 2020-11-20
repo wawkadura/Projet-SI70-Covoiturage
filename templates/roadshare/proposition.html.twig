@@ -11,12 +11,18 @@
 {{form_start(form)}}
  <fieldset>
 {{ form_row(form.trajet.date, {'label':'Date du trajet : '})}}
+{% if errors.0 != "" %}
+  <p class="text-danger">{{errors.0}}</p>
+{% endif %}
 {{ form_row(form.trajet.heureDepart, {'label':'Heure de départ :', 'attr' : {
         'placeholder': 'Entrée le nombre de places'
       }})}}
 {{ form_row(form.trajet.heureArrivee, {'label':'Heure d\'arrivée :', 'attr' : {
         'placeholder': 'Entrée le nombre de places'
       }})}}
+ {% if errors.1 != "" %}
+  <p class="text-danger">{{errors.1}}</p>
+ {% endif %}
 
 <div class="card bg-secondary mb-3" >
   <div class="card-body">
