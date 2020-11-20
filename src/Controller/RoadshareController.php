@@ -822,7 +822,7 @@ class RoadshareController extends AbstractController
         $user= $this->getUser();
         $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
         $voiture= $utilisateur->getVoiture();
-
+dump($voiture);
         $manager->remove($voiture);
         $manager->flush();
         return $this->redirectToRoute('roadshare_profil');
