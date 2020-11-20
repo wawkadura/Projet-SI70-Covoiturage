@@ -49,7 +49,7 @@
                 {% endfor %}
                 {% if afficher %}
                     <div class="card border-secondary mb-3">
-                        <div class="card-header"><h4>Demandes de reservations Accepter</h4></div>
+                        <div class="card-header"><h4>Demandes de réservations Accepter</h4></div>
                         <div class="card-body">
                             {% for res in reservationsAcceptee  %}
                                 {% if res.trajet.etat == 'EN_COURS' or res.trajet.etat == 'COMPLET' %}
@@ -75,7 +75,7 @@
 
             {% if reservationsEnAttente|length >0 %}
                 <div class="card border-secondary mb-3">
-                    <div class="card-header"><h4>Demandes de reservations en attentes</h4></div>
+                    <div class="card-header"><h4>Demandes de réservations en attentes</h4></div>
                     <div class="card-body">
                         {% for res in reservationsEnAttente  %}
                             {% if res.trajet.etat == 'EN_COURS' %}
@@ -104,7 +104,7 @@
                         
             {% if trajetsEffectuer|length >0 %}
                 <div class="card border-secondary mb-3">
-                    <div class="card-header"><h4>Trajets proposés effectué</h4></div>
+                    <div class="card-header"><h4>Trajets proposés effectués</h4></div>
                     <div class="card-body">
                         {% for trajet in trajetsEffectuer  %}
                             <div class="alert alert-success">
@@ -130,7 +130,7 @@
                 {% endfor %}
                 {% if resAccepEffectue %}
                 <div class="card border-secondary mb-3">
-                    <div class="card-header"><h4>Trajets avec reservation effectué</h4></div>
+                    <div class="card-header"><h4>Trajets avec réservation effectués</h4></div>
                     <div class="card-body">
                         {% for res in reservationsAcceptee  %}
                             {% if res.trajet.etat=='EFFECTUE' %}
@@ -169,7 +169,7 @@
             {% endif %}
             {% if reservationsRefuser|length >0 %}
                 <div class="card border-secondary mb-3">
-                    <div class="card-header"><h4>Reservations de trajets refusées</h4></div>
+                    <div class="card-header"><h4>Réservations de trajets refusées</h4></div>
                     <div class="card-body">
                         {% for res in reservationsRefuser  %}
                                 <div class="alert alert-danger">

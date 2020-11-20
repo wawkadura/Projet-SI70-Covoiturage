@@ -74,7 +74,7 @@
       </div>
       <div class="card bg-secondary mb-3" >
         <div class="card-body">
-          <h5 class="card-title">Critéres : </h5>
+          <h5 class="card-title">Critères : </h5>
           <div class="form">
             {% if recherche %}
                 <div class="form-group">
@@ -84,7 +84,7 @@
                     {% else %}
                       <input type="checkbox" name="fumeur" class="custom-control-input" id="fumeur">
                     {% endif %}                    
-                    <label class="custom-control-label" for="fumeur">vous vouliez fumer lors du trajet</label>
+                    <label class="custom-control-label" for="fumeur">Vous vouliez fumer lors du trajet</label>
                   </div>
                   <div class="custom-control custom-checkbox mb-3">
                     {% if infosEntrees[4][1] %}
@@ -92,7 +92,7 @@
                     {% else %}
                       <input type="checkbox" name="animaux" class="custom-control-input" id="animaux">
                     {% endif %} 
-                    <label class="custom-control-label" for="animaux">vous vouliez amener un animale avec vous</label>
+                    <label class="custom-control-label" for="animaux">Vous vouliez amener un animale avec vous</label>
                   </div>
                   <div class="custom-control custom-checkbox mb-3">
                     {% if infosEntrees[4][2] %}
@@ -100,7 +100,7 @@
                     {% else %}
                       <input type="checkbox" name="musique" class="custom-control-input" id="musique">
                     {% endif %}
-                    <label class="custom-control-label" for="musique">vous ne vouliez pas de musique lors du trajet</label>
+                    <label class="custom-control-label" for="musique">Vous ne vouliez pas de musique lors du trajet</label>
                   </div>
                 </div>
             {% else %}
@@ -129,7 +129,7 @@
 
 {% if recherche %}
   {% if trajets|length >0 %}
-    Nous avons trouver {{trajets|length}} trajets
+    Nous avons trouvé {{trajets|length}} trajet(s)
     <div class="list-group">
     {% for index in trajets %}
       {% for niv,trajet in index %}
@@ -159,15 +159,15 @@
   </div>
   {% else %}
     <div class="alert alert-dismissible alert-warning">
-      <h4 class="alert-heading">Nous avons rien trouvée</h4>
-      <p class="mb-0">Nous somme désoler, aucun trajet correspond à vos critéres de recherche</a>.</p>
+      <h4 class="alert-heading">Nous n'avons rien trouvée</h4>
+      <p class="mb-0">Nous somme désolés, aucun trajet ne correspond à vos critères de recherche</a>.</p>
     </div>
   {% endif %}
 {% endif %}</br>
 
 {% if informationTravail %}
   {% if trajetsEntreprise|length >0 %}
-      Nous avons trouver {{trajetsEntreprise|length}} covoitureur qui à le même trajet d'entreprise que vous
+      Nous avons trouvé {{trajetsEntreprise|length}} covoitureur qui a le même trajet d'entreprise que vous
       <div class="list-group">
       {% for trajet in trajetsEntreprise %}
 
