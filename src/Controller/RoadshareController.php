@@ -668,7 +668,7 @@ class RoadshareController extends AbstractController
             $adresseArrivee->setRue(strtolower($adresseArrivee->getRue()));
             $adresseArrivee->setVille(strtolower($adresseArrivee->getVille()));
 
-            // Vérifier dans la base de données si les adresses saisie existe déjà, si oui les utiliser sinon les créées 
+            // Vérifier dans la base de données si les adresses saisie existe déjà, si oui les utilisers, sinon les créées 
             $adresseDepartExistante = $adresseRepo->findOneBy(array('numeroRue'=>$adresseDepart->getNumeroRue(),'rue'=>$adresseDepart->getRue(), 'ville'=> $adresseDepart->getVille()));
             $adresseArriveeExistante = $adresseRepo->findOneBy(array('numeroRue'=>$adresseArrivee->getNumeroRue(),'rue'=>$adresseArrivee->getRue(), 'ville'=> $adresseArrivee->getVille()));
             if(isset($adresseDepartExistante)){
