@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20201117015104 extends AbstractMigration
+final class Version20201121001840 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -41,9 +41,9 @@ final class Version20201117015104 extends AbstractMigration
         $this->addSql('ALTER TABLE trajet ADD CONSTRAINT FK_2B5BA98C85ED0E35 FOREIGN KEY (adresse_arrivee_id) REFERENCES adresse_postale (id)');
         $this->addSql('ALTER TABLE utilisateur ADD CONSTRAINT FK_1D1C63B3C96EEC07 FOREIGN KEY (adresse_postale_id) REFERENCES adresse_postale (id)');
         $this->addSql('ALTER TABLE utilisateur ADD CONSTRAINT FK_1D1C63B3D9F966B FOREIGN KEY (description_id) REFERENCES description (id)');
-        $this->addSql('ALTER TABLE utilisateur ADD CONSTRAINT FK_1D1C63B3181A8BA FOREIGN KEY (voiture_id) REFERENCES voiture (id)');
+        $this->addSql('ALTER TABLE utilisateur ADD CONSTRAINT FK_1D1C63B3181A8BA FOREIGN KEY (voiture_id) REFERENCES voiture (id) ON DELETE SET NULL');
         $this->addSql('ALTER TABLE utilisateur ADD CONSTRAINT FK_1D1C63B3F2C56620 FOREIGN KEY (compte_id) REFERENCES compte (id)');
-        $this->addSql('ALTER TABLE utilisateur ADD CONSTRAINT FK_1D1C63B3EDF610A0 FOREIGN KEY (information_travail_id) REFERENCES information_travail (id)');
+        $this->addSql('ALTER TABLE utilisateur ADD CONSTRAINT FK_1D1C63B3EDF610A0 FOREIGN KEY (information_travail_id) REFERENCES information_travail (id) ON DELETE SET NULL');
     }
 
     public function down(Schema $schema) : void

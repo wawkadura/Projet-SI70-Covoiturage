@@ -15,6 +15,7 @@ use App\Entity\Reservation;
 use App\Form\AvisType;
 use App\Form\TravailType;
 use App\Form\VoitureType;
+use App\Form\AdressePostaleType;
 use App\Form\DescriptionType;
 use App\Form\PropositionType;
 use App\Form\ChangePasswordType;
@@ -34,7 +35,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 
@@ -841,7 +841,7 @@ class RoadshareController extends AbstractController
     /**
      * @Route("/avis/{id}", name="roadshare_avis")
      */
-    public function Avis($id,ObjectManager $manager, Request $request, AvisRepository $avisRepo,ReservationRepository $reservationRepo, UtilisateurRepository $utilisateurRepo, TrajetRepository $trajetRepo): Response
+    public function Avis($id,ObjectManager $manager, Request $request, UtilisateurRepository $utilisateurRepo): Response
     {
         // Récupération de l'utilisateur connecté
         $user = $this->getUser();
@@ -980,7 +980,8 @@ class RoadshareController extends AbstractController
     /**
      * @Route("/setinformation", name="roadshare_setinformation") 
     */
-    public function setInformation(AdressePostaleRepository $adresseRepo, Request $request,ObjectManager $manager,UtilisateurRepository $repo, UserPasswordEncoderInterface $encoder, EntrepriseRepository $entrepriseRepo){
+    public function setInformation(AdressePostaleRepository $adresseRepo, Request $request,ObjectManager $manager,UtilisateurRepository $repo, UserPasswordEncoderInterface $encoder, EntrepriseRepository $entrepriseRepo)
+    {
     
         // Récupération de l'utilisateur connecté
         $user = $this->getUser();
@@ -1080,14 +1081,25 @@ class RoadshareController extends AbstractController
             $entreprise->setAdressePostale($adressePostaleEntreprise);
             $informationTravail->setEntreprise($entreprise);
             $utilisateur->setInformationTravail($informationTravail);
-            $utilisateur->setAdressePostale($adresseDomicile);
             $manager->persist($adressePostaleEntreprise);
             $manager->persist($entreprise);
             $manager->persist($informationTravail);
-            $manager->persist($adresseDomicile);
             $manager->persist($utilisateur);
             $manager->flush();
 
+        }
+        //////////////////// Formulaire informations personnelles //////////////////
+        if($formDomicile->isSubmitted() && $formDomicile->isValid()){
+            
+            $adresseExistante = $adresseRepo->findOneBy(array('numeroRue'=>$adresseDomicile->getNumeroRue(),'rue'=>$adresseDomicile->getRue(), 'ville'=> $adresseDomicile->getVille()));
+            if(isset($adresseExistante)){
+                $utilisateur->setAdressePostale($adresseExistante);
+            }else{
+                $manager->persist($adresseDomicile);
+                $utilisateur->setAdressePostale($adresseDomicile);
+            }
+            $manager->persist($utilisateur);
+            $manager->flush();
         }
         //////////////////// Formulaire informations personnelles //////////////////
         if($formUtilisateur->isSubmitted() && $formUtilisateur->isValid()){
@@ -1116,30 +1128,50 @@ class RoadshareController extends AbstractController
         ]);
     }
 
-
-      /**
-     * @Route("/suprimeVoiture", name="roadshare_surprimerVoiture") 
+    /**
+     * @Route("/supprimerVoiture", name="roadshare_supprimerVoiture") 
      */
-    public function SurprimerVoiture(UtilisateurRepository $repo, ObjectManager $manager){
+    public function SupprimerVoiture(UtilisateurRepository $repo, ObjectManager $manager)
+    {    
+        // Récupération de l'utilisateur connecté
         $user= $this->getUser();
-        $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
+        $utilisateur = $repo->findOneBy(array("compte" => $user->getId()));
+        
+        // Récupération de la voiture de l'utilisateur
         $voiture= $utilisateur->getVoiture();
-        dump($voiture);
-        $manager->remove($voiture);
-        $manager->flush();
+
+        // Vérifier que l'utilisateur à bien renseignée une voiture
+        if(isset($voiture)){
+
+            // Créer la requête SQL permettant de supprimer la voiture
+            $manager->remove($voiture);
+
+            // Exécuter la requete dans la base
+            $manager->flush();
+        }
         return $this->redirectToRoute('roadshare_profil');
     }
 
      /**
-     * @Route("/surprimeInformationTravail", name="roadshare_surprimeInformationTravail") 
+     * @Route("/supprimerInformationTravail", name="roadshare_supprimerInformationTravail") 
      */
-    public function SurprimerInfomationTravail(UtilisateurRepository $repo, ObjectManager $manager){
+    public function SupprimerInfomationTravail(UtilisateurRepository $repo, ObjectManager $manager)
+    {    
+        // Récupération de l'utilisateur connecté
         $user= $this->getUser();
-        $utilisateur = $repo->findBy(array("compte" => $user->getId()))[0];
+        $utilisateur = $repo->findOneBy(array("compte" => $user->getId()));
+        
+        // Récupération de la voiture de l'utilisateur
         $informationTravail= $utilisateur->getInformationTravail();
+        // Vérifier que l'utilisateur à bien renseignée des informations de travail
+        if(isset($informationTravail)){
 
-        $manager->remove($informationTravail);
-        $manager->flush();
+            // Créer la requête SQL permettant de supprimer les informations de travail
+            $manager->remove($informationTravail);
+
+            // Exécuter la requete dans la base
+            $manager->flush();
+        }
         return $this->redirectToRoute('roadshare_profil');
     }
 }

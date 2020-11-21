@@ -99,7 +99,8 @@
                   'list': 'listEntreprise'
                 }})}}
           {{form_row(formTravail.adressepostaleTravail.numeroRue, {'label':'N° :', 'attr' : {
-                  'placeholder': 'Entrée le numero de la rue'
+                  'placeholder': 'Entrée le numero de la rue',
+                  'required' : "required"
                 }})}}    
           {{form_row(formTravail.adressepostaleTravail.rue, {'label':'Rue:', 'attr' : {
                   'placeholder': 'Entrée la rue de votre lieu de travail'
@@ -118,7 +119,7 @@
 
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
-            <button type="button" onclick="window.location.href='{{path('roadshare_surprimeInformationTravail')}}';" class="btn btn-danger" data-dismiss="modal">Surprimer</button>
+            <button type="button" onclick="window.location.href='{{path('roadshare_supprimerInformationTravail')}}';" class="btn btn-danger" data-dismiss="modal">Surprimer</button>
           </div>
         {{form_end(formTravail)}}
       </div>
@@ -131,7 +132,8 @@
       <div class="card-body">
         {{form_start(formDomicile)}}
           {{form_row(formDomicile.numeroRue, {'label':'N° :', 'attr' : {
-                  'placeholder': 'Entrer le numero rue'
+                  'placeholder': 'Entrer le numero rue',
+                  'required' : "required"
                 }})}}    
           {{form_row(formDomicile.rue, {'label':'Rue:', 'attr' : {
                   'placeholder': 'Entrer la rue de votre de domicile'
@@ -171,7 +173,7 @@
   
       <div class="modal-footer">
         <button type="submit" class="btn btn-primary">Enregistrer</button><br/> 
-        <button type="button" onclick="window.location.href='{{path('roadshare_surprimerVoiture')}}';" class="btn btn-danger" data-dismiss="modal">Surprimer</button>
+        <button type="button" onclick="window.location.href='{{path('roadshare_supprimerVoiture')}}';" class="btn btn-danger" data-dismiss="modal">Surprimer</button>
       </div>
       {{form_end(formVoiture)}}
     </div>

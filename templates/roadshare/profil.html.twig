@@ -16,7 +16,7 @@
           {% if owner %}
             <p class="text-primary">{{ user.email}} </p>
             <p class="text-primary">{{ utilisateur.telephone}}</p>
-            <p>Adresse domicile : {{adresseDomicile.numeroRue}} {{adresseDomicile.rue}} {{adresseDomicile.ville}}</p>
+            <p class="text-primary">{{adresseDomicile.numeroRue}} {{adresseDomicile.rue}} {{adresseDomicile.ville}}</p>
             <div class="modal-footer">
                 <button type="button" onclick="window.location.href='{{path('roadshare_setinformation')}}';" class="btn btn-primary">Modifier vos informations personnelles</button>
             </div>
