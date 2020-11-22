@@ -52,7 +52,4 @@ password : walid
 
 ## Authors
 ***
-Give instructions on how to collaborate with your project.
-> Maybe you want to write a quote in this part. 
-> It should go over several rows?
-> This is how you do it.
+Walid KADURA(https://github.com/wawkadura) & Wilfrid BEAUNES
