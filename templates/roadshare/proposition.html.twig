@@ -27,10 +27,16 @@
 <div class="card bg-secondary mb-3" >
   <div class="card-body">
     <h4 class="card-title">Adresse départ</h4>
+    {% if modification %}
+      {{form_row(form.adresseDepart.numeroRue, {'label':'N° :', 'attr' : {
+              'placeholder': 'Entrée le numero de rue',
+              'required' : 'required'
+            }})}}
+    {% else %}
       {{form_row(form.adresseDepart.numeroRue, {'label':'N° :', 'attr' : {
               'placeholder': 'Entrée le numero de rue (facultatif)'
             }})}}
-
+    {% endif %}
       {{form_row(form.adresseDepart.rue, {'label':'Rue:', 'attr' : {
               'placeholder': 'Entrée la rue'
             }})}}
@@ -44,9 +50,16 @@
 <div class="card bg-secondary mb-3">
   <div class="card-body">
     <h4 class="card-title">Adresse de destination</h4>
+      {% if modification %}
       {{form_row(form.adresseArrivee.numeroRue, {'label':'N° :', 'attr' : {
-        'placeholder': 'Entrée le numero de rue (facultatif)'
-      }})}} 
+              'placeholder': 'Entrée le numero de rue',
+              'required' : 'required'
+            }})}}
+    {% else %}
+      {{form_row(form.adresseArrivee.numeroRue, {'label':'N° :', 'attr' : {
+              'placeholder': 'Entrée le numero de rue (facultatif)'
+            }})}}
+    {% endif %}
       {{form_row(form.adresseArrivee.rue, {'label':'Rue:', 'attr' : {
         'placeholder': 'Entrée la rue'
       }})}}

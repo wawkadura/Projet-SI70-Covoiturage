@@ -23,7 +23,7 @@
             <h6> Passagers acceptés : </h6>
             <div class="list-group">
                 {% for res in reservationsAcceptee %}
-                        <a href="{{path('roadshare_profil',{'id':res.demandeur.id} )}}" class="list-group-item list-group-item-action active" style="max-width: 18em;">
+                        <a href="{{path('roadshare_profil_public',{'id':res.demandeur.id} )}}" class="list-group-item list-group-item-action active" style="max-width: 18em;">
                             {{res.demandeur.nom}} {{res.demandeur.prenom}}
                         </a>
                         {% set placesReserver = placesReserver + 1 %}

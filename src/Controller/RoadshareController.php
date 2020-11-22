@@ -318,7 +318,6 @@ class RoadshareController extends AbstractController
             
             // Récuperer les trajets en cours(non complét) qui correspondent à la date saisie et avec une heure de départ supérieur ou égale à l'heure saisie
             $trajetsExistants = $trajetRepo->findBy(array('date'=>new DateTime($infosEntrees[2]),'etat'=>self::EN_COURS), array('heureDepart' => 'ASC'));
-
             // Récupérer la list de trajets à afficher par rapport à les adresses postales et les critéres saisies 
             $trajets = $this->Comparaison($infosEntrees, $trajetsExistants);
 
@@ -366,15 +365,25 @@ class RoadshareController extends AbstractController
         // Parcourir la list des trajets trouvés précédemment 
         foreach ($trajetsExistants as $trajet) 
         {
-            // Si 
+            // Vérifier si l'heure de depart du trajet est supérieur ou égale à celle renseignée
+            // Vérifier si la date de depart du trajet est égale à celle renseignée
+            // Vérifier si la ville de depart du trajet est égale à celle renseignée
+            // Vérifier si la ville d'arrivée du trajet est égale à celle renseignée
+            // Vérifier si les critéres du conducteur correspondent au critéres renseignés
             if($trajet->getHeureDepart()->format('H:i')>=$heureDepart
             && strtolower($trajet->getAdresseDepart()->getVille())==strtolower($adresseDepart->getVille() )
             && strtolower($trajet->getAdresseArrivee()->getVille())==strtolower($adresseArrivee->getVille())
             && $this->Criteres($trajet->getConducteur()->getDescription(),$infosEntrees[4])
             ){// Niveau 1
-                if(strtolower($trajet->getAdresseDepart()->getRue())==strtolower($adresseDepart->getRue()) 
-                && strtolower($trajet->getAdresseArrivee()->getRue())==strtolower($adresseArrivee->getRue() )
+
+                // Verifier si la rue de depart du trajet est égale à celle renseignée
+                // Verifier si la rue d'arrivée du trajet est égale à celle renseignée
+                if(strtolower($this->enleverAccents($trajet->getAdresseDepart()->getRue()))==strtolower($this->enleverAccents($adresseDepart->getRue())) 
+                && strtolower($this->enleverAccents($trajet->getAdresseArrivee()->getRue()))==strtolower($this->enleverAccents($adresseArrivee->getRue()) )
                 ){// Niveau 2
+                    
+                    // Verifier si le numéro de rue de depart du trajet est égale à celui renseignée
+                    // Verifier si le numéro de rue d'arrivée du trajet est égale à celui renseignée
                     if($trajet->getAdresseDepart()->getNumeroRue()==$adresseDepart->getNumeroRue()
                     && $trajet->getAdresseArrivee()->getNumeroRue()==$adresseArrivee->getNumeroRue()
                     ){// Niveau 3
@@ -404,7 +413,29 @@ class RoadshareController extends AbstractController
         return true;
     }
 
-    // Fonction permettant de retourner les trajets correspondent au informations de travail de l'utilisateur connecté
+    // Fonction permettant de retirer les accents d'une chaine de caractéres
+    Function enleverAccents($chaine)
+    {
+            $url = $chaine;
+            $url = preg_replace('#Ç#', 'C', $url);
+            $url = preg_replace('#ç#', 'c', $url);
+            $url = preg_replace('#è|é|ê|ë#', 'e', $url);
+            $url = preg_replace('#È|É|Ê|Ë#', 'E', $url);
+            $url = preg_replace('#à|á|â|ã|ä|å#', 'a', $url);
+            $url = preg_replace('#@|À|Á|Â|Ã|Ä|Å#', 'A', $url);
+            $url = preg_replace('#ì|í|î|ï#', 'i', $url);
+            $url = preg_replace('#Ì|Í|Î|Ï#', 'I', $url);
+            $url = preg_replace('#ð|ò|ó|ô|õ|ö#', 'o', $url);
+            $url = preg_replace('#Ò|Ó|Ô|Õ|Ö#', 'O', $url);
+            $url = preg_replace('#ù|ú|û|ü#', 'u', $url);
+            $url = preg_replace('#Ù|Ú|Û|Ü#', 'U', $url);
+            $url = preg_replace('#ý|ÿ#', 'y', $url);
+            $url = preg_replace('#Ý#', 'Y', $url);
+             
+            return ($url);
+    }
+    
+        // Fonction permettant de retourner les trajets correspondent au informations de travail de l'utilisateur connecté
     public function getTrajetsEntreprise($utilisateur, $utilisateurRepo, $trajetRepo, $informationTravailRepo)
     {
         // Récupérer les informations de travail de l'utilisateur connecté
