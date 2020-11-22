@@ -39,7 +39,7 @@ Don't forget to run your local sever with those parametres (DATABASE_URL=mysql:/
 
 Now you are all set ! you can now type the following command line to run your symfony server : 
  ```
-php bin/console server:run
+$ php bin/console server:run
 ```
 
 ## Testing
