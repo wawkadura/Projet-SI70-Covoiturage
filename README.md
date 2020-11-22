@@ -18,8 +18,10 @@ A list of technologies used within the project:
 * [Bootstraps]
 ## Installation
 ***
-This project can be run in any device (linux, IOS, Windows)
-first you have to obtain the source code
+This project can be run in any device (linux, IOS, Windows).
+
+First you have to obtain the source code
+
 From a git repo :
 ```
 $ git clone https://github.com/wawkadura/Projet-SI70-Covoiturage.git
