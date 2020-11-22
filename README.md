@@ -6,7 +6,7 @@
 5. [Authors](#authors)
 ### General Info
 ***
-This is a school engineer project, it's a web site about carpooling
+School engineer project: creating a web site about carpooling
 
 ## Technologies
 ***
