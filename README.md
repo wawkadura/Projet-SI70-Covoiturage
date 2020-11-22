@@ -52,4 +52,4 @@ password : walid
 
 ## Authors
 ***
-Walid KADURA(https://github.com/wawkadura) & Wilfrid BEAUNES
+Walid KADURA(https://github.com/wawkadura) & Wilfrid BEAUNES (https://github.com/wilfridbeaunes)
