@@ -19,6 +19,9 @@ class AdressePostaleType extends AbstractType
             ->add('rue',TextType::class)
             ->add('ville',TextType::class)
         ;
+
+
+        
     }
 
     public function configureOptions(OptionsResolver $resolver)
