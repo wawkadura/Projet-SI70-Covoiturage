@@ -20,11 +20,11 @@ A list of technologies used within the project:
 ***
 This project can be run in any device (linux, IOS, Windows)
 first you have to obtain the source code
-> From a git repo
+From a git repo :
 ```
 $ git clone https://github.com/wawkadura/Projet-SI70-Covoiturage.git
 ```
-> Or From a zip file
+Or From a zip file
 
 then you have to install the requirements  :
 * [PHP] : version 7.2.5 or higher 
